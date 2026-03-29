@@ -1,12 +1,12 @@
 {
-  "name": "@thabet/react-data-kit",
+  "name": "@thabeut/react-data-kit",
   "version": "0.1.0",
   "description": "React data kit: datatable, query table, dynamic forms, CRUD, infinite scroll — TypeScript, Ant Design, React Hook Form",
   "license": "MIT",
   "author": "Thabet Khiari",
   "repository": {
     "type": "git",
-    "url": "https://github.com/thabet/react-data-kit.git"
+    "url": "https://github.com/thabeut/react-data-kit.git"
   },
   "publishConfig": {
     "access": "public"
@@ -26,10 +26,15 @@
     "dist"
   ],
   "sideEffects": false,
+  "workspaces": [
+    "playground"
+  ],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
+    "playground:dev": "npm run dev -w react-data-kit-playground",
+    "playground:build": "npm run build -w react-data-kit-playground",
     "prepublishOnly": "npm run build"
   },
   "peerDependencies": {

@@ -1,5 +1,5 @@
 /**
- * @thabet/react-data-kit
+ * @thabeut/react-data-kit
  * Datatable, query table, dynamic forms, CRUD, infinite scroll — coming in upcoming releases.
  */
 
