@@ -1,0 +1,111 @@
+@use "../../styles/variables" as *;
+
+.ui-delete-modal__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding: 24px;
+  padding-top: 40px;
+  box-sizing: border-box;
+}
+
+.ui-delete-modal__hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+}
+
+.ui-delete-modal__icon-wrap {
+  display: flex;
+  height: 48px;
+  width: 48px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: rgb(254 242 242);
+}
+
+.ui-delete-modal__icon {
+  color: $color-error-500;
+}
+
+.ui-delete-modal__text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+  width: 100%;
+}
+
+.ui-delete-modal__title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 24px;
+  color: $color-text-primary;
+}
+
+.ui-delete-modal__description {
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: $color-text-secondary;
+}
+
+.ui-delete-modal__actions {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  width: 100%;
+}
+
+.ui-delete-modal__confirm.ui-btn.ant-btn {
+  border-style: solid !important;
+  border-color: $color-error-500 !important;
+  color: $color-error-500 !important;
+  background: $color-bg-primary !important;
+
+  &:hover:not(:disabled) {
+    border-color: $color-error-500 !important;
+    color: $color-error-600 !important;
+    background: rgb(254 242 242) !important;
+  }
+}
+
+html.dark,
+:root[data-theme="dark"] {
+  .ui-delete-modal__icon-wrap {
+    background: rgb(127 29 29 / 0.3);
+  }
+
+  .ui-delete-modal__icon {
+    color: $color-error-400;
+  }
+
+  .ui-delete-modal__title {
+    color: $color-text-primary-dark;
+  }
+
+  .ui-delete-modal__description {
+    color: $color-text-secondary-dark;
+  }
+
+  .ui-delete-modal__confirm.ui-btn.ant-btn {
+    border-color: $color-error-400 !important;
+    color: $color-error-400 !important;
+    background: $color-bg-primary-dark !important;
+
+    &:hover:not(:disabled) {
+      border-color: $color-error-400 !important;
+      color: $color-error-300 !important;
+      background: rgb(127 29 29 / 0.2) !important;
+    }
+  }
+}

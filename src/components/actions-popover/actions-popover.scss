@@ -1,0 +1,82 @@
+@use "../../styles/variables" as *;
+
+.ui-actions-popover__list {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  min-width: 140px;
+  gap: 4px;
+  padding: 4px 0;
+}
+
+.ui-actions-popover__item {
+  gap: 12px;
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 14px;
+  font-weight: 400;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+  color: $color-text-primary;
+  transition: background 0.15s ease;
+
+  &:hover {
+    background: var(--dt-light-popover-option-hover);
+  }
+
+  &--danger {
+    color: $color-error-500;
+
+    &:hover {
+      color: $color-error-600;
+    }
+  }
+}
+
+.ui-actions-popover__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: $color-text-primary;
+
+  &:hover {
+    background: $surface-active;
+  }
+}
+
+html.dark,
+:root[data-theme="dark"] {
+  .ui-actions-popover__item {
+    color: $color-text-primary-dark;
+
+    &:hover {
+      background: var(--dt-dark-popover-option-hover);
+    }
+
+    &--danger {
+      color: $color-error-400;
+
+      &:hover {
+        color: $color-error-300;
+      }
+    }
+  }
+
+  .ui-actions-popover__trigger {
+    color: $color-text-primary-dark;
+
+    &:hover {
+      background: $color-secondary-800;
+    }
+  }
+
+}
