@@ -1,0 +1,154 @@
+@use "../../styles/variables" as *;
+
+.ui-btn.ant-btn {
+  font-weight: 500;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+
+  &.ui-btn--sm {
+    height: 32px;
+    min-height: 32px;
+    padding: 0 12px;
+    font-size: 14px;
+    gap: 6px;
+  }
+
+  &.ui-btn--md {
+    height: 36px;
+    min-height: 36px;
+    padding: 0 16px;
+    font-size: 14px;
+    line-height: 20px;
+    gap: 8px;
+    border-radius: 6px;
+  }
+
+  &.ui-btn--lg {
+    height: 40px;
+    min-height: 40px;
+    padding: 0 20px;
+    font-size: 16px;
+    line-height: 24px;
+    gap: 8px;
+    border-radius: 6px;
+  }
+
+  &.ui-btn--primary.ant-btn-primary {
+    background: var(--dt-primary, #{$color-primary-500}) !important;
+    border-color: transparent !important;
+    color: #fff !important;
+
+    &:hover:not(:disabled) {
+      background: color-mix(in srgb, var(--dt-primary, #{$color-primary-500}) 85%, black) !important;
+    }
+  }
+
+  &.ui-btn--default.ant-btn-default {
+    background: var(--dt-light-surface-bg, #{$color-bg-primary}) !important;
+    color: var(--dt-light-text-primary, #{$color-text-primary}) !important;
+    border: 1px solid var(--dt-light-surface-border, #{$color-border-surface}) !important;
+    border-radius: 6px !important;
+    transition: all 0.3s ease-in-out;
+
+    &:hover:not(:disabled) {
+      border-color: color-mix(in srgb, var(--dt-primary, #{$color-primary-400}) 75%, white) !important;
+      background: color-mix(in srgb, var(--dt-primary, #{$color-primary-400}) 10%, white) !important;
+      color: color-mix(in srgb, var(--dt-primary, #{$color-primary-500}) 85%, black) !important;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  &.ui-btn--outlined.ant-btn-default {
+    background: var(--dt-light-surface-bg, #{$color-bg-primary}) !important;
+    color: var(--dt-light-text-primary, #{$color-text-primary}) !important;
+    border: 1px dashed var(--dt-light-surface-border, #{$color-border-surface}) !important;
+
+    &:hover:not(:disabled) {
+      border-color: var(--dt-primary, #{$color-primary-400}) !important;
+      border-style: solid !important;
+      color: color-mix(in srgb, var(--dt-primary, #{$color-primary-500}) 85%, black) !important;
+      background: color-mix(in srgb, var(--dt-primary, #{$color-primary-500}) 8%, transparent) !important;
+    }
+
+    &:focus-visible:not(:disabled) {
+      border-color: var(--dt-primary, #{$color-primary-500}) !important;
+      box-shadow:
+        0 0 0 2px
+        color-mix(in srgb, var(--dt-primary, #{$color-primary-500}) 20%, transparent) !important;
+      outline: none;
+    }
+  }
+
+  &.ui-btn--icon-only {
+    width: 32px !important;
+    min-width: 32px !important;
+    height: 32px !important;
+    min-height: 32px !important;
+    padding: 0 !important;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.ui-btn-native {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
+
+html.dark,
+:root[data-theme="dark"] {
+  .ui-btn--default.ant-btn-default,
+  .ui-btn--outlined.ant-btn-default {
+    background: var(--dt-dark-surface-bg, #{$color-bg-primary-dark}) !important;
+    color: var(--dt-dark-text-primary, #{$color-text-primary-dark}) !important;
+    border-color: var(--dt-dark-surface-border, #{$surface-border-dark}) !important;
+  }
+
+  .ui-btn--default.ant-btn-default {
+    &:hover:not(:disabled) {
+      border-color: color-mix(in srgb, var(--dt-primary, #{$color-primary-300}) 75%, white) !important;
+      background: transparent !important;
+      color: color-mix(in srgb, var(--dt-primary, #{$color-primary-300}) 85%, black) !important;
+    }
+  }
+
+  .ui-btn--outlined.ant-btn-default {
+    border-style: dashed !important;
+
+    &:hover:not(:disabled) {
+      border-color: var(--dt-primary, #{$color-primary-300}) !important;
+      border-style: solid !important;
+      color: color-mix(in srgb, var(--dt-primary, #{$color-primary-300}) 75%, white) !important;
+      background: color-mix(in srgb, var(--dt-primary, #{$color-primary-300}) 12%, transparent) !important;
+    }
+
+    &:focus-visible:not(:disabled) {
+      border-color: var(--dt-primary, #{$color-primary-300}) !important;
+      box-shadow:
+        0 0 0 2px
+        color-mix(in srgb, var(--dt-primary, #{$color-primary-300}) 20%, transparent) !important;
+      outline: none;
+    }
+  }
+}
