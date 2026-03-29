@@ -1,0 +1,156 @@
+.dt-playground {
+  --dt-playground-border: rgba(0, 0, 0, 0.08);
+  --dt-playground-muted: rgba(0, 0, 0, 0.55);
+  --dt-playground-surface: rgba(0, 0, 0, 0.02);
+  --dt-playground-sticky-top: 1rem;
+  --dt-playground-sticky-bg: var(--docs-bg, #fafafa);
+  width: 100%;
+}
+
+html.dark .dt-playground {
+  --dt-playground-border: rgba(255, 255, 255, 0.12);
+  --dt-playground-muted: rgba(255, 255, 255, 0.55);
+  --dt-playground-surface: rgba(255, 255, 255, 0.04);
+  --dt-playground-sticky-bg: var(--docs-bg, #18181b);
+}
+
+.dt-playground__grid {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 24px;
+  width: 100%;
+}
+
+.dt-playground__panel {
+  flex: 0 1 420px;
+  min-width: min(100%, 300px);
+  max-width: 420px;
+  width: 100%;
+}
+
+/* Stays in view while you scroll the long control column */
+.dt-playground__preview {
+  flex: 1 1 0;
+  min-width: 0;
+  width: 100%;
+  position: sticky;
+  top: var(--dt-playground-sticky-top);
+  align-self: flex-start;
+  z-index: 1;
+  max-height: calc(100vh - var(--dt-playground-sticky-top) - 1rem);
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: 4px;
+  box-sizing: border-box;
+  background: var(--dt-playground-sticky-bg);
+  border-radius: 12px;
+}
+
+.dt-playground__panel .ant-card {
+  border-radius: 12px;
+  box-shadow: 0 1px 2px var(--dt-playground-border);
+}
+
+.dt-playground__panel-head {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--dt-playground-muted);
+  margin: 0 0 12px;
+}
+
+.dt-playground__textarea.ant-input {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 8px;
+}
+
+.dt-playground__switch-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 16px;
+}
+
+@media (max-width: 500px) {
+  .dt-playground__switch-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.dt-playground__switch-item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: var(--dt-playground-surface);
+  border: 1px solid var(--dt-playground-border);
+}
+
+.dt-playground__switch-item span {
+  font-size: 13px;
+  line-height: 1.35;
+  color: inherit;
+}
+
+.dt-playground__preview .ant-card {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px var(--dt-playground-border);
+}
+
+.dt-playground__preview-inner {
+  width: 100%;
+  min-height: 280px;
+}
+
+.dt-playground__echo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 20px;
+  margin-bottom: 16px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: var(--dt-playground-surface);
+  border: 1px solid var(--dt-playground-border);
+  font-size: 13px;
+}
+
+.dt-playground__echo code {
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: var(--dt-playground-surface);
+  border: 1px solid var(--dt-playground-border);
+}
+
+.dt-playground__toolbar-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+@media (max-width: 1100px) {
+  .dt-playground__grid {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .dt-playground__panel {
+    flex: 0 0 auto;
+    max-width: none;
+    order: 2;
+  }
+
+  /* Table first on small screens; stays sticky while you scroll settings */
+  .dt-playground__preview {
+    order: 1;
+    flex: 1 1 auto;
+    top: 0.5rem;
+    max-height: min(52vh, 560px);
+  }
+}
