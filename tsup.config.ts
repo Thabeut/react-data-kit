@@ -1,4 +1,5 @@
 import { defineConfig } from "tsup";
+import { sassPlugin } from "esbuild-sass-plugin";
 
 export default defineConfig({
   entry: ["src/index.ts"],
@@ -8,6 +9,7 @@ export default defineConfig({
   sourcemap: true,
   clean: true,
   treeshake: true,
+  esbuildPlugins: [sassPlugin()],
   external: [
     "react",
     "react-dom",
@@ -16,5 +18,10 @@ export default defineConfig({
     "react-hook-form",
     "@hookform/resolvers",
     "yup",
+    "@iconify/react",
+    "clsx",
+    "dayjs",
+    "i18next",
+    "react-i18next",
   ],
 });
