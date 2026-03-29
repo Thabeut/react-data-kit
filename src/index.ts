@@ -1,6 +1,29 @@
-/**
- * @thabeut/react-data-kit
- * Datatable, query table, dynamic forms, CRUD, infinite scroll — coming in upcoming releases.
- */
+import "./styles/antd-overrides.scss";
 
-export const REACT_DATA_KIT_VERSION = "0.1.0";
+export { DataTable } from "./features/data-table";
+export type {
+  DataTableProps,
+  DataTableColumnInfo,
+  DataTableKey,
+  DataTableSortOrder,
+  DataTableSortState,
+  DataTableFilterConfig,
+  DataTableGroupConfig,
+  DataTablePaginationConfig,
+  DataTablePaginationState,
+  DataTableCustomColors,
+  DataTableModeColors,
+  DataTableActionsConfig,
+  InternalRow,
+  InternalGroupRow,
+  IDateFilterOption,
+  IMultiFilterOption,
+  IOptionsQueryConfig,
+  ActionItem,
+  DeleteModalConfig,
+} from "./types/data-table";
+
+export {
+  DATA_TABLE_I18N_KEYS,
+  type DataTableI18nKey,
+} from "./constants/data-table-i18n-keys";
