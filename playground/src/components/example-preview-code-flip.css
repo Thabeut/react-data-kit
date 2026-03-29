@@ -1,0 +1,167 @@
+.dt-example-flip {
+  width: 100%;
+}
+
+.dt-example-flip__toolbar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 12px;
+  gap: 10px;
+}
+
+.dt-example-flip__toggle {
+  display: inline-flex;
+}
+
+.dt-example-flip__toggle.ant-btn,
+.dt-example-flip__copy.ant-btn {
+  border-radius: 999px !important;
+  height: 32px !important;
+  padding: 0 12px !important;
+  box-shadow: none !important;
+}
+
+.dt-example-flip__toggle.ant-btn {
+  background: rgba(59, 130, 246, 0.08) !important;
+  border: 1px solid rgba(59, 130, 246, 0.28) !important;
+  color: rgba(37, 99, 235, 0.95) !important;
+}
+
+.dt-example-flip__toggle.ant-btn:hover {
+  background: rgba(59, 130, 246, 0.12) !important;
+  border-color: rgba(59, 130, 246, 0.38) !important;
+  color: rgba(37, 99, 235, 1) !important;
+}
+
+.dt-example-flip__copy.ant-btn {
+  background: rgba(59, 130, 246, 0.12) !important;
+  border: 1px solid rgba(59, 130, 246, 0.35) !important;
+  color: rgba(37, 99, 235, 1) !important;
+}
+
+.dt-example-flip__copy.ant-btn:disabled {
+  opacity: 0.55 !important;
+  cursor: not-allowed;
+}
+
+.dt-example-flip__copy--copied.ant-btn {
+  background: rgba(16, 185, 129, 0.14) !important;
+  border-color: rgba(16, 185, 129, 0.55) !important;
+  color: rgba(16, 185, 129, 1) !important;
+}
+
+.dt-example-flip__copy--copied.ant-btn:hover {
+  background: rgba(16, 185, 129, 0.18) !important;
+  border-color: rgba(16, 185, 129, 0.65) !important;
+  color: rgba(16, 185, 129, 1) !important;
+}
+
+@keyframes dtExampleCopiedPulse {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  35% {
+    transform: translateY(-1px) scale(1.05);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+.dt-example-flip__copy--copied.ant-btn {
+  animation: dtExampleCopiedPulse 1.2s ease-in-out;
+}
+
+html.dark .dt-example-flip__toggle.ant-btn {
+  background: rgba(59, 130, 246, 0.14) !important;
+  border-color: rgba(59, 130, 246, 0.35) !important;
+  color: rgba(147, 197, 253, 1) !important;
+}
+
+html.dark .dt-example-flip__copy.ant-btn {
+  background: rgba(59, 130, 246, 0.16) !important;
+  border-color: rgba(59, 130, 246, 0.4) !important;
+  color: rgba(147, 197, 253, 1) !important;
+}
+
+.dt-example-flip__stage {
+  width: 100%;
+}
+
+.dt-example-flip__card {
+  position: relative;
+  width: 100%;
+  transform-style: preserve-3d;
+  perspective: 1200px;
+}
+
+.dt-example-flip__face {
+  width: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.dt-example-flip__face--front {
+  display: block;
+}
+
+.dt-example-flip__face--back {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: 10px;
+  padding: 12px 12px 14px;
+  overflow: hidden;
+  transform: rotateY(180deg);
+}
+
+html.dark .dt-example-flip__face--back {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.dt-example-flip__code-head {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.dt-example-flip__code-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+html.dark .dt-example-flip__code-label {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.dt-example-flip__code {
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+  background: transparent;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 12px;
+  flex: 1;
+  min-height: 220px;
+}
+
+html.dark .dt-example-flip__code {
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.dt-example-flip__code code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 12px;
+  line-height: 1.5;
+  white-space: pre;
+}
+
