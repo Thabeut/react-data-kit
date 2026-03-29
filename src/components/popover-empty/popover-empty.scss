@@ -1,0 +1,34 @@
+@use "../../styles/variables" as *;
+
+.ui-popover-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 20px 16px;
+  text-align: center;
+}
+
+.ui-popover-empty__icon {
+  color: $color-text-secondary;
+  opacity: 0.85;
+}
+
+.ui-popover-empty__text {
+  font-size: 13px;
+  line-height: 18px;
+  color: $color-text-secondary;
+  max-width: 220px;
+}
+
+html.dark,
+:root[data-theme="dark"] {
+  .ui-popover-empty__icon {
+    color: $color-text-secondary-dark;
+  }
+
+  .ui-popover-empty__text {
+    color: $color-text-secondary-dark;
+  }
+}

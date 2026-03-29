@@ -1,0 +1,53 @@
+@use "../../styles/variables" as *;
+
+.datatable-multi-filter {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  box-sizing: border-box;
+  min-width: 220px;
+  max-height: 320px;
+  text-align: start;
+}
+
+.datatable-multi-filter-list {
+  display: flex;
+  max-height: 280px;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.datatable-multi-filter-item {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  border-radius: 6px;
+  padding: 6px 8px;
+  text-align: left;
+  font-size: 14px;
+  line-height: 20px;
+  color: $color-text-primary;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s ease;
+
+  &:hover {
+    background: var(--dt-light-popover-option-hover);
+  }
+}
+
+html.dark,
+:root[data-theme="dark"] {
+  .datatable-multi-filter-item {
+    color: $color-text-primary-dark;
+  }
+
+  .datatable-multi-filter-item:hover {
+    background: var(--dt-dark-popover-option-hover);
+  }
+}
