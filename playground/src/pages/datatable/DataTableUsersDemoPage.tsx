@@ -145,7 +145,7 @@ import { Avatar, Tag, Tooltip, Typography } from "antd";
 import { Icon } from "@iconify/react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { DataTable, type InternalRow } from "@thabeut/react-data-kit";
+import { DataTable, type InternalRow, type DataTableColumnInfo } from "@thabeut/react-data-kit";
 
 dayjs.extend(relativeTime);
 
@@ -166,6 +166,83 @@ const users: UserDemoRow[] = [
   { id: 3, name: "Priya Nair", email: "priya.nair@example.com", role: "Design lead", department: "Design", status: "away", joinedAt: "2019-11-04", location: "Singapore" },
 ];
 
+const columnsInfo: DataTableColumnInfo<UserDemoRow>[] = [
+  {
+    id: "member",
+    label: "Member",
+    dataIndex: "name",
+    render: (_value, record: InternalRow<UserDemoRow>) => {
+      const row = record as UserDemoRow;
+      return (
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <Avatar size={36} src={avatarUrl(row.name)} />
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <strong>{row.name}</strong>
+            <Tooltip title={row.email}>
+              <span>{row.email}</span>
+            </Tooltip>
+          </div>
+        </div>
+      );
+    },
+  },
+  {
+    id: "role",
+    label: "Role",
+    dataIndex: "role",
+    render: (value) => <Tag color="blue">{String(value)}</Tag>,
+  },
+  {
+    id: "location",
+    label: "Location",
+    dataIndex: "location",
+    render: (value) => (
+      <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+        <Icon icon="lucide:map-pin" width={16} height={16} />
+        {String(value)}
+      </span>
+    ),
+  },
+  {
+    id: "status",
+    label: "Status",
+    dataIndex: "status",
+    render: (value) => {
+      const v = String(value);
+      const color = v === "active" ? "success" : v === "away" ? "warning" : "default";
+      return <Tag color={color}>{v}</Tag>;
+    },
+  },
+  {
+    id: "joinedAt",
+    label: "Joined",
+    dataIndex: "joinedAt",
+    render: (value) => {
+      const d = dayjs(String(value));
+      return (
+        <div>
+          <span>{d.format("MMM D, YYYY")}</span>
+          <br />
+          <Typography.Text type="secondary">{d.fromNow()}</Typography.Text>
+        </div>
+      );
+    },
+  },
+  {
+    id: "department",
+    label: "Department",
+    dataIndex: "department",
+    render: (value) => (
+      <Typography.Text type="secondary">{String(value)}</Typography.Text>
+    ),
+  },
+];
+
+const pagination = {
+  pageSizeOptions: [10, 20, 50],
+  defaultPageSize: 10,
+};
+
 function avatarUrl(seed: string) {
   return \`https://api.dicebear.com/7.x/notionists/svg?seed=\${encodeURIComponent(seed)}\`;
 }
@@ -179,70 +256,8 @@ export function DataTableUsersExample() {
       rowKey="id"
       columnResize
       dataSource={data}
-      pagination={{ pageSizeOptions: [10, 20, 50], defaultPageSize: 10 }}
-      columnsInfo={[
-        {
-          id: "member",
-          label: "Member",
-          dataIndex: "name",
-          render: (_value, record: InternalRow<UserDemoRow>) => {
-            const row = record as UserDemoRow;
-            return (
-              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                <Avatar size={36} src={avatarUrl(row.name)} />
-                <div style={{ display: "flex", flexDirection: "column" }}>
-                  <strong>{row.name}</strong>
-                  <Tooltip title={row.email}>
-                    <span>{row.email}</span>
-                  </Tooltip>
-                </div>
-              </div>
-            );
-          },
-        },
-        {
-          id: "role",
-          label: "Role",
-          dataIndex: "role",
-          render: (value) => <Tag color="blue">{String(value)}</Tag>,
-        },
-        {
-          id: "location",
-          label: "Location",
-          dataIndex: "location",
-          render: (value) => (
-            <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
-              <Icon icon="lucide:map-pin" width={16} height={16} />
-              {String(value)}
-            </span>
-          ),
-        },
-        {
-          id: "status",
-          label: "Status",
-          dataIndex: "status",
-          render: (value) => {
-            const v = String(value);
-            const color = v === "active" ? "success" : v === "away" ? "warning" : "default";
-            return <Tag color={color}>{v}</Tag>;
-          },
-        },
-        {
-          id: "joinedAt",
-          label: "Joined",
-          dataIndex: "joinedAt",
-          render: (value) => {
-            const d = dayjs(String(value));
-            return (
-              <div>
-                <span>{d.format("MMM D, YYYY")}</span>
-                <br />
-                <Typography.Text type="secondary">{d.fromNow()}</Typography.Text>
-              </div>
-            );
-          },
-        },
-      ]}
+      pagination={pagination}
+      columnsInfo={columnsInfo}
     />
   );
 }`;

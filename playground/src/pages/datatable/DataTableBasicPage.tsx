@@ -6,7 +6,7 @@ import { basicRows, type BasicRow } from "../../data";
 
 export function DataTableBasicPage() {
   const { t } = useTranslation();
-  const code = String.raw`import { DataTable } from "@thabeut/react-data-kit";
+  const code = String.raw`import { DataTable, type DataTableColumnInfo } from "@thabeut/react-data-kit";
 
 type BasicRow = { id: number; name: string; email: string };
 
@@ -16,6 +16,16 @@ const basicRows: BasicRow[] = [
   { id: 3, name: "Grace Hopper", email: "grace@example.com" },
 ];
 
+const columnsInfo: DataTableColumnInfo<BasicRow>[] = [
+  { id: "name", label: "Name", dataIndex: "name" },
+  { id: "email", label: "Email", dataIndex: "email" },
+];
+
+const pagination = {
+  pageSizeOptions: [10, 20, 50],
+  defaultPageSize: 10,
+};
+
 export function BasicDataTableExample() {
   return (
     <DataTable<BasicRow>
@@ -23,14 +33,8 @@ export function BasicDataTableExample() {
       columnResize
       rowKey="id"
       dataSource={basicRows}
-      pagination={{
-        pageSizeOptions: [10, 20, 50],
-        defaultPageSize: 10,
-      }}
-      columnsInfo={[
-        { id: "name", label: "Name", dataIndex: "name" },
-        { id: "email", label: "Email", dataIndex: "email" },
-      ]}
+      pagination={pagination}
+      columnsInfo={columnsInfo}
       actions={{
         onEdit: (row) => console.log("edit", row),
         onDelete: async (row) => console.log("delete", row),
@@ -63,16 +67,8 @@ export function BasicDataTableExample() {
               defaultPageSize: 10,
             }}
             columnsInfo={[
-              {
-                id: "name",
-                label: t("Name"),
-                dataIndex: "name",
-              },
-              {
-                id: "email",
-                label: t("Email"),
-                dataIndex: "email",
-              },
+              { id: "name", label: t("Name"), dataIndex: "name" },
+              { id: "email", label: t("Email"), dataIndex: "email" },
             ]}
             actions={{
               onEdit: (row) => console.log("edit", row),

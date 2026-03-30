@@ -24,7 +24,7 @@ export function DataTableSelectionPage() {
   );
 
   const code = String.raw`import { useMemo, useState } from "react";
-import { DataTable, type DataTableKey } from "@thabeut/react-data-kit";
+import { DataTable, type DataTableKey, type DataTableColumnInfo } from "@thabeut/react-data-kit";
 
 type BasicRow = { id: number; name: string; email: string };
 
@@ -33,6 +33,16 @@ const basicRows: BasicRow[] = [
   { id: 2, name: "Alan Turing", email: "alan@example.com" },
   { id: 3, name: "Grace Hopper", email: "grace@example.com" },
 ];
+
+const columnsInfo: DataTableColumnInfo<BasicRow>[] = [
+  { id: "name", label: "Name", dataIndex: "name" },
+  { id: "email", label: "Email", dataIndex: "email" },
+];
+
+const pagination = {
+  pageSizeOptions: [10, 20, 50],
+  defaultPageSize: 10,
+};
 
 export function DataTableSelectionExample() {
   const [selectedKeys, setSelectedKeys] = useState<DataTableKey[]>([]);
@@ -49,14 +59,11 @@ export function DataTableSelectionExample() {
       columnResize
       rowKey="id"
       dataSource={basicRows}
-      pagination={{ pageSizeOptions: [10, 20, 50], defaultPageSize: 10 }}
+      pagination={pagination}
       onSelectionChange={(keys) => setSelectedKeys(keys)}
       onBookmarkChange={(keys) => setBookmarkKeys(keys)}
       onRefresh={() => console.log("refresh")}
-      columnsInfo={[
-        { id: "name", label: "Name", dataIndex: "name" },
-        { id: "email", label: "Email", dataIndex: "email" },
-      ]}
+      columnsInfo={columnsInfo}
     />
   );
 }`;

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ConfigProvider, Segmented, Select, theme as antdTheme } from "antd";
 import { Icon } from "@iconify/react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   BrowserRouter,
   Navigate,
@@ -28,6 +29,11 @@ import {
   DataTableSortPage,
   DataTableColorsPage,
 } from "./pages/datatable";
+import {
+  QueryTablePage,
+  QueryTableRtkQueryPage,
+  QueryTableReactQueryPage,
+} from "./pages/querytable";
 import "antd/dist/reset.css";
 
 const LANGUAGE_OPTIONS: { value: string; label: string }[] = [
@@ -46,6 +52,20 @@ function AppShell() {
   const [lang, setLang] = useState<string>(() => readStoredLang());
   const [colorMode, setColorMode] = useState<PlaygroundColorMode>(() =>
     readStoredTheme(),
+  );
+  const queryClient = useMemo(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            retry: false,
+            refetchOnWindowFocus: false,
+            staleTime: 30_000,
+            gcTime: 5 * 60_000,
+          },
+        },
+      }),
+    [],
   );
 
   useEffect(() => {
@@ -79,6 +99,15 @@ function AppShell() {
           { to: "/datatable/sort", label: t("dtNavSort") },
           { to: "/datatable/server", label: t("dtNavServer") },
           { to: "/datatable/users-demo", label: t("dtNavUsersDemo") },
+        ],
+      },
+      {
+        id: "querytable",
+        label: "Query table",
+        children: [
+          { to: "/querytable/overview", label: "Intro & props" },
+          { to: "/querytable/rtk-query", label: "RTK Query" },
+          { to: "/querytable/react-query", label: "React Query" },
         ],
       },
     ],
@@ -134,14 +163,16 @@ function AppShell() {
             : antdTheme.defaultAlgorithm,
       }}
     >
-      <DocsLayout
-        title={t("docsSiteTitle")}
-        packageName="@thabeut/react-data-kit"
-        navGroups={navGroups}
-        toolbar={toolbar}
-      >
-        <Outlet />
-      </DocsLayout>
+      <QueryClientProvider client={queryClient}>
+        <DocsLayout
+          title={t("docsSiteTitle")}
+          packageName="@thabeut/react-data-kit"
+          navGroups={navGroups}
+          toolbar={toolbar}
+        >
+          <Outlet />
+        </DocsLayout>
+      </QueryClientProvider>
     </ConfigProvider>
   );
 }
@@ -170,6 +201,12 @@ export default function App() {
           <Route path="datatable/server" element={<DataTableServerPage />} />
           <Route path="datatable/sort" element={<DataTableSortPage />} />
           <Route path="datatable/colors" element={<DataTableColorsPage />} />
+          <Route path="querytable/overview" element={<QueryTablePage />} />
+          <Route path="querytable/rtk-query" element={<QueryTableRtkQueryPage />} />
+          <Route
+            path="querytable/react-query"
+            element={<QueryTableReactQueryPage />}
+          />
           <Route
             path="datatable/loading"
             element={<Navigate to="/datatable/overview" replace />}

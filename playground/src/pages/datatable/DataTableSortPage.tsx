@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DataTable } from "@thabeut/react-data-kit";
 import type { DataTableSortState } from "@thabeut/react-data-kit";
@@ -95,7 +95,7 @@ export function DataTableSortPage() {
   const [sortState, setSortState] = useState<DataTableSortState | null>(null);
 
   const code = String.raw`import { useState } from "react";
-import { DataTable } from "@thabeut/react-data-kit";
+import { DataTable, type DataTableColumnInfo } from "@thabeut/react-data-kit";
 
 type Row = {
   id: number;
@@ -109,18 +109,25 @@ const rows: Row[] = [
   { id: 2, product: "Aurora Mouse", price: 79, rating: 4.5 },
 ];
 
+const columnsInfo: DataTableColumnInfo<Row>[] = [
+  { id: "product", label: "Product", dataIndex: "product", sortable: true },
+  { id: "price", label: "Price", dataIndex: "price", sortable: true },
+  { id: "rating", label: "Rating", dataIndex: "rating", sortable: true },
+];
+
+const pagination = {
+  pageSizeOptions: [10, 20, 50],
+  defaultPageSize: 10,
+};
+
 export function SortExample() {
   return (
     <DataTable<Row>
       tableId="sort-example"
       rowKey="id"
       dataSource={rows}
-      pagination={{ pageSizeOptions: [10, 20, 50], defaultPageSize: 10 }}
-      columnsInfo={[
-        { id: "product", label: "Product", dataIndex: "product", sortable: true },
-        { id: "price", label: "Price", dataIndex: "price", sortable: true },
-        { id: "rating", label: "Rating", dataIndex: "rating", sortable: true },
-      ]}
+      pagination={pagination}
+      columnsInfo={columnsInfo}
     />
   );
 }`;

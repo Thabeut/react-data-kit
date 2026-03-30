@@ -31,7 +31,11 @@ export function DataTableGroupsPage() {
   }, [groupBy]);
 
   const code = String.raw`import { useMemo, useState } from "react";
-import { DataTable } from "@thabeut/react-data-kit";
+import {
+  DataTable,
+  type DataTableColumnInfo,
+  type DataTableGroupConfig,
+} from "@thabeut/react-data-kit";
 
 type GroupedRow = {
   id: number;
@@ -54,7 +58,7 @@ const groupedRows: GroupedRow[] = [
 export function DataTableGroupsExample() {
   const [groupBy, setGroupBy] = useState<GroupBy>("department");
 
-  const groupConfig = useMemo(() => {
+  const groupConfig = useMemo<DataTableGroupConfig<GroupedRow>>(() => {
     if (groupBy === "department") {
       return {
         getGroupLabel: (row: GroupedRow) => row.department,
@@ -69,6 +73,17 @@ export function DataTableGroupsExample() {
     };
   }, [groupBy]);
 
+  const columnsInfo: DataTableColumnInfo<GroupedRow>[] = [
+    { id: "name", label: "Name", dataIndex: "name" },
+    { id: "role", label: "Role", dataIndex: "role" },
+    { id: "department", label: "Department", dataIndex: "department" },
+  ];
+
+const pagination = {
+  pageSizeOptions: [10, 20, 50],
+  defaultPageSize: 10,
+};
+
   return (
     <DataTable<GroupedRow>
       tableId="playground-groups"
@@ -76,12 +91,8 @@ export function DataTableGroupsExample() {
       rowKey="id"
       dataSource={groupedRows}
       groupConfig={groupConfig}
-      pagination={{ pageSizeOptions: [10, 20, 50], defaultPageSize: 10 }}
-      columnsInfo={[
-        { id: "name", label: "Name", dataIndex: "name" },
-        { id: "role", label: "Role", dataIndex: "role" },
-        { id: "department", label: "Department", dataIndex: "department" },
-      ]}
+      pagination={pagination}
+      columnsInfo={columnsInfo}
     />
   );
 }`;

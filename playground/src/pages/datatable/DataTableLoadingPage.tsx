@@ -11,7 +11,7 @@ export function DataTableLoadingPage() {
   const [loading, setLoading] = useState(false);
 
   const code = String.raw`import { useState } from "react";
-import { DataTable } from "@thabeut/react-data-kit";
+import { DataTable, type DataTableColumnInfo } from "@thabeut/react-data-kit";
 
 type BasicRow = { id: number; name: string; email: string };
 
@@ -20,6 +20,13 @@ const basicRows: BasicRow[] = [
   { id: 2, name: "Alan Turing", email: "alan@example.com" },
   { id: 3, name: "Grace Hopper", email: "grace@example.com" },
 ];
+
+const columnsInfo: DataTableColumnInfo<BasicRow>[] = [
+  { id: "name", label: "Name", dataIndex: "name" },
+  { id: "email", label: "Email", dataIndex: "email" },
+];
+
+const pagination = { pageSizeOptions: [10, 20, 50], defaultPageSize: 10 };
 
 export function DataTableLoadingExample() {
   const [loading, setLoading] = useState(false);
@@ -36,11 +43,8 @@ export function DataTableLoadingExample() {
         rowKey="id"
         dataSource={basicRows}
         loading={loading}
-        pagination={{ pageSizeOptions: [10, 20, 50], defaultPageSize: 10 }}
-        columnsInfo={[
-          { id: "name", label: "Name", dataIndex: "name" },
-          { id: "email", label: "Email", dataIndex: "email" },
-        ]}
+        pagination={pagination}
+        columnsInfo={columnsInfo}
       />
     </>
   );

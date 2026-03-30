@@ -19,7 +19,7 @@ export function DataTableLayoutPage() {
 
   const code = String.raw`import { useMemo, useState } from "react";
 import { Tag } from "antd";
-import { DataTable } from "@thabeut/react-data-kit";
+import { DataTable, type DataTableColumnInfo } from "@thabeut/react-data-kit";
 
 type BasicRow = { id: number; name: string; email: string };
 
@@ -28,6 +28,16 @@ const rows: BasicRow[] = Array.from({ length: 48 }).map((_, i) => ({
   name: \`User \${i + 1}\`,
   email: \`user\${i + 1}@example.com\`,
 }));
+
+const columnsInfo: DataTableColumnInfo<BasicRow>[] = [
+  { id: "name", label: "Name", dataIndex: "name" },
+  { id: "email", label: "Email", dataIndex: "email" },
+];
+
+const pagination = {
+  pageSizeOptions: [10, 20, 50, 100],
+  defaultPageSize: 50,
+};
 
 export function DataTableLayoutExample() {
   const [hideColumnToggle, setHideColumnToggle] = useState(false);
@@ -44,14 +54,11 @@ export function DataTableLayoutExample() {
       maxTableHeight="min(320px, 45vh)"
       disableSelectionAndBookmark
       hideColumnOptions={hideColumnToggle}
-      pagination={{ pageSizeOptions: [10, 20, 50, 100], defaultPageSize: 50 }}
+      pagination={pagination}
       onRowClick={(row) => setLastClicked(row)}
       renderToolbarLeft={<Tag color="processing">Left slot</Tag>}
       renderToolbarRight={<Tag color="default">Right slot</Tag>}
-      columnsInfo={[
-        { id: "name", label: "Name", dataIndex: "name" },
-        { id: "email", label: "Email", dataIndex: "email" },
-      ]}
+      columnsInfo={columnsInfo}
     />
   );
 }`;

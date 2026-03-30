@@ -11,7 +11,13 @@ import {
 
 export function DataTableFiltersPage() {
   const { t } = useTranslation();
-  const code = String.raw`import { DataTable } from "@thabeut/react-data-kit";
+  const code = String.raw`import {
+  DataTable,
+  type DataTableColumnInfo,
+  type DataTableFilterConfig,
+  type IMultiFilterOption,
+  type IDateFilterOption,
+} from "@thabeut/react-data-kit";
 
 type FilterDemoRow = {
   id: number;
@@ -21,14 +27,19 @@ type FilterDemoRow = {
   updatedAt: string;
 };
 
-const statusOptions = [
+const statusOptions: IMultiFilterOption[] = [
   { value: "Active", label: "Active" },
   { value: "Away", label: "Away" },
 ];
 
-const categoryOptions = [
+const categoryOptions: IMultiFilterOption[] = [
   { value: "Core", label: "Core" },
   { value: "Billing", label: "Billing" },
+];
+
+const dateOptions: IDateFilterOption[] = [
+  { value: "today", label: "Today" },
+  { value: "last_7_days", label: "Last 7 days" },
 ];
 
 const rows: FilterDemoRow[] = [
@@ -37,6 +48,35 @@ const rows: FilterDemoRow[] = [
   { id: 3, title: "Feature request", status: "Active", category: "Billing", updatedAt: "2025-02-01" },
 ];
 
+const filters: DataTableFilterConfig[] = [
+  {
+    id: "status",
+    label: "Status",
+    type: "multi",
+    options: statusOptions,
+    searchPlaceholder: "Search",
+  },
+  { id: "category", label: "Category", type: "multi", options: categoryOptions },
+  {
+    id: "updatedAt",
+    label: "Updated",
+    type: "date",
+    dateOptions,
+  },
+];
+
+const columnsInfo: DataTableColumnInfo<FilterDemoRow>[] = [
+  { id: "title", label: "Title", dataIndex: "title" },
+  { id: "status", label: "Status", dataIndex: "status" },
+  { id: "category", label: "Category", dataIndex: "category" },
+  { id: "updatedAt", label: "Updated", dataIndex: "updatedAt" },
+];
+
+const pagination = {
+  pageSizeOptions: [10, 20, 50],
+  defaultPageSize: 10,
+};
+
 export function DataTableFiltersExample() {
   return (
     <DataTable<FilterDemoRow>
@@ -44,26 +84,9 @@ export function DataTableFiltersExample() {
       columnResize
       rowKey="id"
       dataSource={rows}
-      filters={[
-        { id: "status", label: "Status", type: "multi", options: statusOptions, searchPlaceholder: "Search" },
-        { id: "category", label: "Category", type: "multi", options: categoryOptions },
-        {
-          id: "updatedAt",
-          label: "Updated",
-          type: "date",
-          dateOptions: [
-            { value: "today", label: "Today" },
-            { value: "last_7_days", label: "Last 7 days" },
-          ],
-        },
-      ]}
-      pagination={{ pageSizeOptions: [10, 20, 50], defaultPageSize: 10 }}
-      columnsInfo={[
-        { id: "title", label: "Title", dataIndex: "title" },
-        { id: "status", label: "Status", dataIndex: "status" },
-        { id: "category", label: "Category", dataIndex: "category" },
-        { id: "updatedAt", label: "Updated", dataIndex: "updatedAt" },
-      ]}
+      filters={filters}
+      pagination={pagination}
+      columnsInfo={columnsInfo}
     />
   );
 }`;

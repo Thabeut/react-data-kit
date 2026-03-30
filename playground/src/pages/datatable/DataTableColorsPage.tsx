@@ -100,7 +100,11 @@ export function DataTableColorsPage() {
 import { Tag } from "antd";
 import {
   DataTable,
-  type DataTableCustomColors
+  type DataTableCustomColors,
+  type DataTableFilterConfig,
+  type DataTableColumnInfo,
+  type IMultiFilterOption,
+  type IDateFilterOption,
 } from "@thabeut/react-data-kit";
 
 type Row = {
@@ -120,6 +124,58 @@ const rows: Row[] = Array.from({ length: 120 }).map((_, i) => ({
   category: i % 3 === 0 ? "Core" : i % 3 === 1 ? "Billing" : "Security",
   updatedAt: \`2025-01-\${String((i % 28) + 1).padStart(2, "0")}\`,
 }));
+
+const statusOptions: IMultiFilterOption[] = [
+  { value: "Active", label: "Active" },
+  { value: "Away", label: "Away" },
+  { value: "Offline", label: "Offline" },
+];
+
+const categoryOptions: IMultiFilterOption[] = [
+  { value: "Core", label: "Core" },
+  { value: "Billing", label: "Billing" },
+  { value: "Security", label: "Security" },
+];
+
+const dateOptions: IDateFilterOption[] = [
+  { value: "today", label: "Today" },
+  { value: "last_7_days", label: "Last 7 days" },
+  { value: "custom", label: "Custom range" },
+];
+
+const filters: DataTableFilterConfig[] = [
+  {
+    id: "status",
+    label: "Status",
+    type: "multi",
+    options: statusOptions,
+  },
+  {
+    id: "category",
+    label: "Category",
+    type: "multi",
+    options: categoryOptions,
+  },
+  {
+    id: "updatedAt",
+    label: "Updated",
+    type: "date",
+    dateOptions,
+  },
+];
+
+const columnsInfo: DataTableColumnInfo<Row>[] = [
+  { id: "name", label: "Name", dataIndex: "name" },
+  { id: "email", label: "Email", dataIndex: "email" },
+  { id: "status", label: "Status", dataIndex: "status" },
+  { id: "category", label: "Category", dataIndex: "category" },
+  { id: "updatedAt", label: "Updated", dataIndex: "updatedAt" },
+];
+
+const pagination = {
+  pageSizeOptions: [10, 20, 50],
+  defaultPageSize: 10,
+};
 
 export function DataTableColorsExample() {
   const [primary, setPrimary] = useState("#0ea5e9");
@@ -146,38 +202,7 @@ export function DataTableColorsExample() {
         dataSource={rows}
         customColors={customColors}
         maxTableHeight="380px"
-        filters={[
-          {
-            id: "status",
-            label: "Status",
-            type: "multi",
-            options: [
-              { value: "Active", label: "Active" },
-              { value: "Away", label: "Away" },
-              { value: "Offline", label: "Offline" },
-            ],
-          },
-          {
-            id: "category",
-            label: "Category",
-            type: "multi",
-            options: [
-              { value: "Core", label: "Core" },
-              { value: "Billing", label: "Billing" },
-              { value: "Security", label: "Security" },
-            ],
-          },
-          {
-            id: "updatedAt",
-            label: "Updated",
-            type: "date",
-            dateOptions: [
-              { value: "today", label: "Today" },
-              { value: "last_7_days", label: "Last 7 days" },
-              { value: "custom", label: "Custom range" },
-            ],
-          },
-        ]}
+        filters={filters}
         searchPlaceholder="Search users"
         onRefresh={() => console.log("refresh")}
         renderToolbarLeft={
@@ -192,14 +217,8 @@ export function DataTableColorsExample() {
           </Tag>
         }
         onRowClick={(row) => console.log("click", row.id)}
-        pagination={{ pageSizeOptions: [10, 20, 50], defaultPageSize: 10 }}
-        columnsInfo={[
-          { id: "name", label: "Name", dataIndex: "name" },
-          { id: "email", label: "Email", dataIndex: "email" },
-          { id: "status", label: "Status", dataIndex: "status" },
-          { id: "category", label: "Category", dataIndex: "category" },
-          { id: "updatedAt", label: "Updated", dataIndex: "updatedAt" },
-        ]}
+        pagination={pagination}
+        columnsInfo={columnsInfo}
       />
     </>
   );
