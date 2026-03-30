@@ -233,7 +233,11 @@ export function DataTableColorsExample() {
       <ExamplePreviewCodeFlip
         view={
           <>
-            <Space wrap size={12} style={{ marginBottom: 16 }}>
+            <Space
+              wrap
+              size={12}
+              style={{ marginBottom: 16, alignItems: "end" }}
+            >
               <label>
                 <Text>{t("dtColorsPrimary")}</Text>
                 <Input

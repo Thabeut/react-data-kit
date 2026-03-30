@@ -4,6 +4,7 @@ import { Button, Space } from "antd";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { Icon } from "@iconify/react";
+import clsx from "clsx";
 import "./example-preview-code-flip.css";
 
 type ExamplePreviewCodeFlipProps = {
@@ -72,7 +73,7 @@ export function ExamplePreviewCodeFlip({
 
       <div className="dt-example-flip__stage" aria-live="polite">
         <motion.div
-          className="dt-example-flip__card"
+          className={clsx("dt-example-flip__card", showCode && "dt-example-flip__card--code")}
           animate={{ rotateY: showCode ? 180 : 0 }}
           transition={{ duration: 0.5 }}
         >

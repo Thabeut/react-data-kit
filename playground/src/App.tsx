@@ -34,6 +34,14 @@ import {
   QueryTableRtkQueryPage,
   QueryTableReactQueryPage,
 } from "./pages/querytable";
+import {
+  DynamicFormIntroPage,
+  DynamicFormPropsPage,
+  DynamicFormDefaultPage,
+  DynamicFormModalPage,
+  DynamicFormDrawerPage,
+  DynamicFormColorsPage,
+} from "./pages/dynamicform";
 import "antd/dist/reset.css";
 
 const LANGUAGE_OPTIONS: { value: string; label: string }[] = [
@@ -108,6 +116,18 @@ function AppShell() {
           { to: "/querytable/overview", label: "Intro & props" },
           { to: "/querytable/rtk-query", label: "RTK Query" },
           { to: "/querytable/react-query", label: "React Query" },
+        ],
+      },
+      {
+        id: "dynamicform",
+        label: "Dynamic form",
+        children: [
+          { to: "/dynamicform/overview", label: "Introduction" },
+          { to: "/dynamicform/props", label: "Props" },
+          { to: "/dynamicform/default", label: "Default" },
+          { to: "/dynamicform/modal", label: "Modal" },
+          { to: "/dynamicform/drawer", label: "Drawer" },
+          { to: "/dynamicform/colors", label: "Colors" },
         ],
       },
     ],
@@ -207,6 +227,12 @@ export default function App() {
             path="querytable/react-query"
             element={<QueryTableReactQueryPage />}
           />
+          <Route path="dynamicform/overview" element={<DynamicFormIntroPage />} />
+          <Route path="dynamicform/props" element={<DynamicFormPropsPage />} />
+          <Route path="dynamicform/default" element={<DynamicFormDefaultPage />} />
+          <Route path="dynamicform/modal" element={<DynamicFormModalPage />} />
+          <Route path="dynamicform/drawer" element={<DynamicFormDrawerPage />} />
+          <Route path="dynamicform/colors" element={<DynamicFormColorsPage />} />
           <Route
             path="datatable/loading"
             element={<Navigate to="/datatable/overview" replace />}

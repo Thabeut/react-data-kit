@@ -96,6 +96,10 @@ html.dark .dt-example-flip__copy.ant-btn {
   perspective: 1200px;
 }
 
+.dt-example-flip__card--code {
+  min-height: 420px;
+}
+
 .dt-example-flip__face {
   width: 100%;
   backface-visibility: hidden;
@@ -164,4 +168,3 @@ html.dark .dt-example-flip__code {
   line-height: 1.5;
   white-space: pre;
 }
-
