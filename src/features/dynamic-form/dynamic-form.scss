@@ -1,0 +1,158 @@
+@use "../../styles/variables" as *;
+
+.dynamic-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border-radius: 8px;
+  padding: 16px;
+  background: var(--dt-light-surface-bg, #{$color-bg-primary});
+}
+
+.dynamic-form__header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid
+    var(--dt-light-surface-border, #{$color-border-surface});
+}
+
+.dynamic-form__title {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 24px;
+  color: var(--dt-light-text-primary, #{$color-text-primary});
+}
+
+.dynamic-form__description {
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--dt-light-text-secondary, #{$color-text-secondary});
+}
+
+.dynamic-form__fields {
+  margin: 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.dynamic-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.dynamic-form__label {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 2px;
+}
+
+.dynamic-form__label-text {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  color: var(--dt-light-text-primary, #{$color-text-primary});
+}
+
+.dynamic-form__required {
+  color: $color-error-500;
+}
+
+.dynamic-form__actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--dt-light-surface-border, #{$color-border-surface});
+}
+
+.dynamic-form-modal .ant-modal-body {
+  padding: 0 !important;
+}
+
+.dynamic-form-modal .ant-modal-content {
+  background: var(--dt-light-surface-bg, #{$color-bg-primary});
+  border-radius: 16px !important;
+}
+
+.dynamic-form-drawer .ant-drawer-content-wrapper {
+  border-radius: 16px 0 0 16px;
+}
+
+.dynamic-form-drawer .ant-drawer-content {
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+
+.dynamic-form-drawer .ant-drawer-body {
+  padding: 20px;
+}
+
+.dynamic-form-drawer .ant-drawer-content {
+  background: var(--dt-light-surface-bg, #{$surface-bg});
+}
+
+.dynamic-form-drawer__inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.dynamic-form-drawer__content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.dynamic-form-drawer__form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-bottom: 8px;
+}
+
+.dynamic-form-drawer__footer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-bottom: 12px;
+}
+
+html.dark,
+:root[data-theme="dark"] {
+  .dynamic-form {
+    background: var(--dt-dark-surface-bg);
+  }
+
+  .dynamic-form__header,
+  .dynamic-form__actions {
+    border-color: var(--dt-dark-surface-border, #{$surface-border-dark});
+  }
+
+  .dynamic-form__title,
+  .dynamic-form__label-text {
+    color: var(--dt-dark-text-primary, #{$color-text-primary-dark});
+  }
+
+  .dynamic-form__description {
+    color: var(--dt-dark-text-secondary, #{$color-text-secondary-dark});
+  }
+
+  .dynamic-form__required {
+    color: $color-error-400;
+  }
+
+  .dynamic-form-modal .ant-modal-content {
+    background: var(--dt-dark-surface-bg);
+  }
+
+  .dynamic-form-drawer .ant-drawer-content {
+    background: var(--dt-dark-surface-bg, #{$surface-bg-dark});
+  }
+}
