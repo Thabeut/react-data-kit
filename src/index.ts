@@ -2,6 +2,7 @@ import "./styles/antd-overrides.scss";
 
 export { DataTable } from "./features/data-table";
 export { QueryTable } from "./features/queryTable";
+export { DynamicForm } from "./features/dynamic-form";
 export type {
   DataTableProps,
   DataTableColumnInfo,
@@ -24,25 +25,21 @@ export type {
   DeleteModalConfig,
 } from "./types/data-table";
 
-export {
-  parseTableState,
-  serializeTableState,
-} from "./utils/url-table-state";
-export type {
-  UrlTableState,
-  UrlTableFilters,
-  UrlTableFilterValue,
-  UrlTableRangeFilter,
-  UrlTableSort,
-  UrlTableSortDirection,
-  UrlTableStateConfig,
-} from "./utils/url-table-state";
+export { parseTableState, serializeTableState } from "./utils/url-table-state";
 
 export type {
   QueryResultAdapter,
   QueryTableProps,
   QueryTableQueryArgs,
 } from "./features/queryTable";
+
+export type {
+  DynamicFormProps,
+  DynamicFormField,
+  DynamicFieldType,
+  DynamicFormCustomColors,
+} from "./features/dynamic-form";
+export { DynamicFieldTypeEnum } from "./features/dynamic-form";
 
 export {
   DATA_TABLE_I18N_KEYS,

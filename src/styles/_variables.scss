@@ -1,9 +1,9 @@
 // Default theme — override before @use of data-table, or redefine in your app build.
 
 $color-bg-primary: #ffffff !default;
-$color-bg-secondary: #f4f4f5 !default;
-$color-border-surface: #e4e4e7 !default;
-$color-text-primary: #18181b !default;
+$color-bg-secondary: #ffffff !default;
+$color-border-surface: #e5e7eb !default;
+$color-text-primary: #111827 !default;
 $color-text-secondary: #71717a !default;
 
 $surface-bg: #fafafa !default;
@@ -11,7 +11,7 @@ $surface-bg: #fafafa !default;
 $color-primary-50: #eff6ff !default;
 $color-primary-100: #dbeafe !default;
 $color-primary-400: #60a5fa !default;
-$color-primary-500: #3b82f6 !default;
+$color-primary-500: #2f54eb !default;
 $color-primary-600: #2563eb !default;
 
 $color-error-300: #fca5a5 !default;
@@ -28,11 +28,11 @@ $color-secondary-700: #3f3f46 !default;
 $color-secondary-800: #27272a !default;
 
 // Dark palette
-$surface-bg-dark: #18181b !default;
-$surface-border-dark: #3f3f46 !default;
-$color-bg-primary-dark: #18181b !default;
-$color-bg-secondary-dark: #27272a !default;
-$color-text-primary-dark: #fafafa !default;
+$surface-bg-dark: #111827 !default;
+$surface-border-dark: #374151 !default;
+$color-bg-primary-dark: #111827 !default;
+$color-bg-secondary-dark: #111827 !default;
+$color-text-primary-dark: #f9fafb !default;
 $color-text-secondary-dark: #a1a1aa !default;
 
 $color-white: #ffffff !default;
@@ -45,7 +45,8 @@ $surface-text-dark: $color-text-primary-dark !default;
 $color-text-muted: $color-text-secondary !default;
 $color-text-muted-dark: $color-text-secondary-dark !default;
 
-$surface-active-dark: #27272a !default;
+$surface-active-dark: #162033 !default;
+$surface-selected-dark: #1c2a42 !default;
 
 $color-gray-200: #e5e7eb !default;
 $color-gray-700: #374151 !default;

@@ -1,32 +1,5 @@
 @use "../../styles/variables" as *;
 
-.datatable-root,
-.rdk-theme-scope {
-  --dt-primary: #2f54eb;
-  --dt-light-surface-bg: #ffffff;
-  --dt-light-popover-bg: #ffffff;
-  --dt-light-popover-option-hover: #{$color-primary-50};
-  --dt-light-surface-border: #e5e7eb;
-  --dt-light-text-primary: #111827;
-  --dt-light-text-secondary: #{$color-text-secondary};
-  --dt-light-row-hover: #{$color-primary-50};
-  --dt-light-row-selected: #{$color-primary-100};
-  --dt-light-group-row: var(--dt-light-surface-bg);
-  --dt-dark-surface-bg: #111827;
-  --dt-dark-popover-bg: #111827;
-  --dt-dark-popover-option-hover: color-mix(
-    in srgb,
-    var(--dt-dark-popover-bg) 88%,
-    #ffffff
-  );
-  --dt-dark-surface-border: #374151;
-  --dt-dark-text-primary: #f9fafb;
-  --dt-dark-text-secondary: #{$color-text-secondary-dark};
-  --dt-dark-row-hover: #162033;
-  --dt-dark-row-selected: #1c2a42;
-  --dt-dark-group-row: var(--dt-dark-surface-bg);
-}
-
 .datatable-root {
   display: flex;
   flex-direction: column;

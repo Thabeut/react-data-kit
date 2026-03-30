@@ -1,5 +1,33 @@
 @use "variables" as *;
 
+:root {
+  --dt-primary: #{$color-primary-500};
+
+  --dt-light-surface-bg: #{$color-bg-primary};
+  --dt-light-popover-bg: #{$color-bg-secondary};
+  --dt-light-popover-option-hover: #{$color-primary-50};
+  --dt-light-surface-border: #{$color-border-surface};
+  --dt-light-text-primary: #{$color-text-primary};
+  --dt-light-text-secondary: #{$color-text-secondary};
+  --dt-light-row-hover: #{$color-primary-50};
+  --dt-light-row-selected: #{$color-primary-100};
+  --dt-light-group-row: var(--dt-light-surface-bg);
+
+  --dt-dark-surface-bg: #{$surface-bg-dark};
+  --dt-dark-popover-bg: #{$color-bg-secondary-dark};
+  --dt-dark-popover-option-hover: color-mix(
+    in srgb,
+    var(--dt-dark-popover-bg) 88%,
+    #{$color-white}
+  );
+  --dt-dark-surface-border: #{$surface-border-dark};
+  --dt-dark-text-primary: #{$color-text-primary-dark};
+  --dt-dark-text-secondary: #{$color-text-secondary-dark};
+  --dt-dark-row-hover: #{$surface-active-dark};
+  --dt-dark-row-selected: #{$surface-selected-dark};
+  --dt-dark-group-row: var(--dt-dark-surface-bg);
+}
+
 .rdk-theme-scope {
   .ant-checkbox-inner {
     width: 16px !important;
