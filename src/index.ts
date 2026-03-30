@@ -4,6 +4,7 @@ export { DataTable } from "./features/data-table";
 export { QueryTable } from "./features/queryTable";
 export { DynamicForm } from "./features/dynamic-form";
 export { CrudManager } from "./features/crud-manager";
+export { InfiniteScrollList } from "./features/infinite-scroll";
 export type {
   DataTableProps,
   DataTableColumnInfo,
@@ -33,6 +34,10 @@ export type {
   QueryTableProps,
   QueryTableQueryArgs,
 } from "./features/queryTable";
+export type {
+  InfiniteScrollQueryArgs,
+  InfiniteScrollListProps,
+} from "./features/infinite-scroll";
 
 export type {
   DynamicFormProps,
