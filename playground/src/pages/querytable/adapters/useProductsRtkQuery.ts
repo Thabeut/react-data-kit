@@ -18,6 +18,12 @@ export type DummyJsonListResponse = {
   limit: number;
 };
 
+export type DummyJsonDeleteResponse = {
+  id: number;
+  isDeleted: boolean;
+  deletedOn?: string;
+};
+
 export type ProductsQueryArgs = {
   page?: number;
   limit?: number;
@@ -25,6 +31,17 @@ export type ProductsQueryArgs = {
   sort?: { field?: string; direction?: "asc" | "desc" };
   category?: string[]; // multi-filter from QueryTable
   [key: string]: unknown;
+};
+
+export type ProductMutationPayload = {
+  title: string;
+  price?: number;
+  category?: string;
+};
+
+type DummyJsonCategory = {
+  slug: string;
+  name: string;
 };
 
 function buildProductsUrl(args: ProductsQueryArgs): string {
@@ -76,6 +93,7 @@ type ProductsQueryPayload = {
 export const productsRtkApi = createApi({
   reducerPath: "querytableProductsRtk",
   baseQuery: fakeBaseQuery(),
+  tagTypes: ["products"],
   endpoints: (build) => ({
     list: build.query<DummyJsonListResponse, ProductsQueryPayload>({
       async queryFn(payload) {
@@ -87,6 +105,55 @@ export const productsRtkApi = createApi({
         const json = (await res.json()) as DummyJsonListResponse;
         return { data: json };
       },
+      providesTags: [{ type: "products", id: "LIST" }],
+    }),
+    categories: build.query<DummyJsonCategory[], void>({
+      async queryFn() {
+        const res = await fetch(`${BASE}/categories`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const json = (await res.json()) as DummyJsonCategory[];
+        return { data: json };
+      },
+    }),
+    addProduct: build.mutation<DummyJsonProduct, ProductMutationPayload>({
+      async queryFn(payload) {
+        const res = await fetch(`${BASE}/add`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const json = (await res.json()) as DummyJsonProduct;
+        return { data: json };
+      },
+      invalidatesTags: [{ type: "products", id: "LIST" }],
+    }),
+    updateProduct: build.mutation<
+      DummyJsonProduct,
+      { id: number; data: ProductMutationPayload }
+    >({
+      async queryFn(payload) {
+        const res = await fetch(`${BASE}/${payload.id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload.data),
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const json = (await res.json()) as DummyJsonProduct;
+        return { data: json };
+      },
+      invalidatesTags: [{ type: "products", id: "LIST" }],
+    }),
+    deleteProduct: build.mutation<DummyJsonDeleteResponse, { id: number }>({
+      async queryFn(payload) {
+        const res = await fetch(`${BASE}/${payload.id}`, {
+          method: "DELETE",
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const json = (await res.json()) as DummyJsonDeleteResponse;
+        return { data: json };
+      },
+      invalidatesTags: [{ type: "products", id: "LIST" }],
     }),
   }),
 });
@@ -119,3 +186,10 @@ export function useProductsRtkQuery(payload: ProductsQueryPayload): {
     },
   };
 }
+
+export const useProductsCategoriesQuery = productsRtkApi.useCategoriesQuery;
+export const useProductsCreateMutation = productsRtkApi.useAddProductMutation;
+export const useProductsUpdateMutation =
+  productsRtkApi.useUpdateProductMutation;
+export const useProductsDeleteMutation =
+  productsRtkApi.useDeleteProductMutation;

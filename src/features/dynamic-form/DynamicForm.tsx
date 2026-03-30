@@ -150,6 +150,7 @@ export interface DynamicFormProps<TValues extends Record<string, unknown>> {
   submitLabel: ReactNode;
   cancelLabel?: ReactNode;
   onSubmit: (values: TValues) => Promise<void> | void;
+  submitLoading?: boolean;
 
   customColors?: DynamicFormCustomColors;
 
@@ -173,6 +174,7 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
     submitLabel,
     cancelLabel = "Cancel",
     onSubmit,
+    submitLoading = false,
     customColors,
     className,
     modalWidth = 600,
@@ -478,7 +480,12 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
       <Button variant="default" size="md" type="button" onClick={handleClose}>
         {cancelLabel}
       </Button>
-      <Button variant="primary" size="md" loading={isSubmitting} type="submit">
+      <Button
+        variant="primary"
+        size="md"
+        loading={isSubmitting || submitLoading}
+        type="submit"
+      >
         {submitLabel}
       </Button>
     </div>
@@ -555,7 +562,7 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
             <Button
               variant="primary"
               size="md"
-              loading={isSubmitting}
+              loading={isSubmitting || submitLoading}
               type="button"
               onClick={submitFromFooter}
             >

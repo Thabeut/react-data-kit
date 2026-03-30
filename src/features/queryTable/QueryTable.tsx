@@ -13,7 +13,12 @@ import type {
   DataTableProps,
   DataTableSortState,
 } from "../../types/data-table";
-import type { UrlTableFilterValue, UrlTableRangeFilter, UrlTableSort, UrlTableState } from "../../utils/url-table-state";
+import type {
+  UrlTableFilterValue,
+  UrlTableRangeFilter,
+  UrlTableSort,
+  UrlTableState,
+} from "../../utils/url-table-state";
 
 export interface QueryResultAdapter<TItem, TRaw> {
   selectItems: (data: TRaw | undefined) => TItem[];
@@ -25,7 +30,9 @@ export type QueryTableQueryArgs = {
   [key: string]: unknown;
 };
 
-export type QueryTableRequestPayload<TQueryArgs extends object = QueryTableQueryArgs> = {
+export type QueryTableRequestPayload<
+  TQueryArgs extends object = QueryTableQueryArgs,
+> = {
   tag: { type: string };
   query: TQueryArgs;
 };
@@ -39,7 +46,10 @@ type TUseQueryHook<TQueryArgs extends object, TRaw> = (
   refetch: () => void;
 };
 
-export interface QueryTableProps<TItem extends { [key: string]: unknown }, TRaw> {
+export interface QueryTableProps<
+  TItem extends { [key: string]: unknown },
+  TRaw,
+> {
   tableState: UrlTableState;
   onTableStateChange: (next: UrlTableState) => void;
 
@@ -48,7 +58,7 @@ export interface QueryTableProps<TItem extends { [key: string]: unknown }, TRaw>
   columnsInfo: DataTableColumnInfo<TItem>[];
 
   useQuery: TUseQueryHook<Record<string, unknown>, TRaw>;
-  tag: { type: string };
+  tag: { type: string; id?: string };
   extraQuery?: Record<string, unknown>;
   resultAdapter: QueryResultAdapter<TItem, TRaw>;
 
@@ -79,7 +89,9 @@ export interface QueryTableProps<TItem extends { [key: string]: unknown }, TRaw>
   filterQueryKeys?: Record<string, string>;
 }
 
-function mapSortToDataTableSort(sort: UrlTableSort | undefined): DataTableSortState | null {
+function mapSortToDataTableSort(
+  sort: UrlTableSort | undefined,
+): DataTableSortState | null {
   if (!sort) return null;
   return {
     columnId: sort.field,
@@ -160,10 +172,9 @@ function mapFilterValueForQuery(
   return undefined;
 }
 
-export function QueryTable<
-  TItem extends { [key: string]: unknown },
-  TRaw,
->(props: QueryTableProps<TItem, TRaw>) {
+export function QueryTable<TItem extends { [key: string]: unknown }, TRaw>(
+  props: QueryTableProps<TItem, TRaw>,
+) {
   const {
     tableState,
     onTableStateChange,
@@ -202,10 +213,7 @@ export function QueryTable<
   } = props;
 
   const resolvedPageSize =
-    tableState.pageSize ||
-    initialPageSize ||
-    pageSizeOptions[0] ||
-    10;
+    tableState.pageSize || initialPageSize || pageSizeOptions[0] || 10;
 
   const paginationState: DataTablePaginationState = useMemo(
     () => ({
@@ -380,8 +388,7 @@ export function QueryTable<
       onTableStateChange({
         ...tableState,
         page: 1,
-        filters:
-          Object.keys(nextFilters).length > 0 ? nextFilters : undefined,
+        filters: Object.keys(nextFilters).length > 0 ? nextFilters : undefined,
       });
     },
     [filters, onTableStateChange, tableState],
@@ -426,4 +433,3 @@ export function QueryTable<
     />
   );
 }
-

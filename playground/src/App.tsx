@@ -42,6 +42,12 @@ import {
   DynamicFormDrawerPage,
   DynamicFormColorsPage,
 } from "./pages/dynamicform";
+import {
+  CrudManagerIntroPage,
+  CrudManagerPropsPage,
+  CrudManagerBasicPage,
+  CrudManagerModalPage,
+} from "./pages/crudmanager";
 import "antd/dist/reset.css";
 
 const LANGUAGE_OPTIONS: { value: string; label: string }[] = [
@@ -128,6 +134,16 @@ function AppShell() {
           { to: "/dynamicform/modal", label: "Modal" },
           { to: "/dynamicform/drawer", label: "Drawer" },
           { to: "/dynamicform/colors", label: "Colors" },
+        ],
+      },
+      {
+        id: "crudmanager",
+        label: "Crud manager",
+        children: [
+          { to: "/crudmanager/overview", label: "Introduction" },
+          { to: "/crudmanager/props", label: "Props" },
+          { to: "/crudmanager/basic", label: "Drawer default" },
+          { to: "/crudmanager/modal", label: "Modal" },
         ],
       },
     ],
@@ -233,6 +249,10 @@ export default function App() {
           <Route path="dynamicform/modal" element={<DynamicFormModalPage />} />
           <Route path="dynamicform/drawer" element={<DynamicFormDrawerPage />} />
           <Route path="dynamicform/colors" element={<DynamicFormColorsPage />} />
+          <Route path="crudmanager/overview" element={<CrudManagerIntroPage />} />
+          <Route path="crudmanager/props" element={<CrudManagerPropsPage />} />
+          <Route path="crudmanager/basic" element={<CrudManagerBasicPage />} />
+          <Route path="crudmanager/modal" element={<CrudManagerModalPage />} />
           <Route
             path="datatable/loading"
             element={<Navigate to="/datatable/overview" replace />}

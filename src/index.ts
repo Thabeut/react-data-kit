@@ -3,6 +3,7 @@ import "./styles/antd-overrides.scss";
 export { DataTable } from "./features/data-table";
 export { QueryTable } from "./features/queryTable";
 export { DynamicForm } from "./features/dynamic-form";
+export { CrudManager } from "./features/crud-manager";
 export type {
   DataTableProps,
   DataTableColumnInfo,
@@ -40,6 +41,7 @@ export type {
   DynamicFormCustomColors,
 } from "./features/dynamic-form";
 export { DynamicFieldTypeEnum } from "./features/dynamic-form";
+export type { CrudManagerProps } from "./features/crud-manager";
 
 export {
   DATA_TABLE_I18N_KEYS,
