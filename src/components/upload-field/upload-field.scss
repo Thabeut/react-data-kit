@@ -1,0 +1,70 @@
+@use "../../styles/variables" as *;
+
+.ui-upload-field.ant-upload-wrapper {
+  width: 100%;
+}
+
+.ui-upload-field.ant-upload-wrapper .ant-upload-drag {
+  border-radius: 8px;
+  border: 1px dashed var(--dt-light-surface-border, #{$color-border-surface});
+  background: var(--dt-light-surface-bg, #{$color-bg-primary});
+  transition: all 0.3s ease;
+}
+
+.ui-upload-field.ant-upload-wrapper .ant-upload-drag:hover {
+  border-color: var(--dt-primary, #{$color-primary-400}) !important;
+}
+
+.ui-upload-field__inner {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  text-align: start;
+}
+
+.ui-upload-field__icon {
+  flex-shrink: 0;
+  color: var(--dt-light-text-secondary, #{$color-text-secondary});
+}
+
+.ui-upload-field__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ui-upload-field__title {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  color: var(--dt-light-text-primary, #{$color-text-primary});
+}
+
+.ui-upload-field__description {
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--dt-light-text-secondary, #{$color-text-secondary});
+}
+
+html.dark,
+:root[data-theme="dark"] {
+  .ui-upload-field.ant-upload-wrapper .ant-upload-drag {
+    border-color: var(--dt-dark-surface-border, #{$surface-border-dark});
+    background: var(--dt-dark-surface-bg, #{$surface-bg-dark});
+  }
+
+  .ui-upload-field__icon {
+    color: var(--dt-dark-text-secondary, #{$color-text-secondary-dark});
+  }
+
+  .ui-upload-field__title {
+    color: var(--dt-dark-text-primary, #{$color-text-primary-dark});
+  }
+
+  .ui-upload-field__description {
+    color: var(--dt-dark-text-secondary, #{$color-text-secondary-dark});
+  }
+}

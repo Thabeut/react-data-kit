@@ -1,0 +1,74 @@
+@use "../../styles/variables" as *;
+
+.ui-textarea.ant-input {
+  width: 100%;
+  min-height: 72px;
+  border-radius: 6px;
+  border: 1px solid var(--dt-light-surface-border, #{$color-border-surface});
+  background: var(--dt-light-surface-bg, #{$color-bg-primary});
+  padding: 8px 12px;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--dt-light-text-primary, #{$color-text-primary});
+
+  &::placeholder {
+    color: var(--dt-light-text-secondary, #{$color-text-secondary});
+  }
+
+  &:hover:not(:disabled) {
+    border-color: var(--dt-primary, #{$color-primary-400}) !important;
+  }
+
+  &:focus,
+  &:focus-within {
+    border-color: var(--dt-primary, #{$color-primary-500}) !important;
+    box-shadow:
+      0 0 0 2px
+      color-mix(
+        in srgb,
+        var(--dt-primary, #{$color-primary-500}) 20%,
+        transparent
+      );
+    outline: none;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+  }
+}
+
+.ui-textarea--bare.ant-input {
+  width: 100%;
+  min-height: 0;
+  border: 0 !important;
+  background: transparent !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  font-size: 14px;
+  line-height: 24px;
+  color: var(--dt-light-text-primary, #{$color-text-primary});
+
+  &:focus {
+    box-shadow: none !important;
+    outline: none !important;
+  }
+}
+
+html.dark,
+:root[data-theme="dark"] {
+  .ui-textarea.ant-input {
+    border-color: var(--dt-dark-surface-border, #{$surface-border-dark});
+    background: var(--dt-dark-surface-bg, #{$color-bg-primary-dark});
+    color: var(--dt-dark-text-primary, #{$color-text-primary-dark});
+
+    &::placeholder {
+      color: var(--dt-dark-text-secondary, #{$color-text-secondary-dark});
+    }
+  }
+
+  .ui-textarea--bare.ant-input {
+    color: var(--dt-dark-text-primary, #{$color-text-primary-dark});
+  }
+}
+

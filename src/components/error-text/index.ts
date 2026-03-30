@@ -1,0 +1,2 @@
+export { ErrorText } from "./ErrorText";
+

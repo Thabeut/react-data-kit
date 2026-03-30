@@ -1,0 +1,27 @@
+@use "../../styles/variables" as *;
+
+.ui-color-picker {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+.ui-color-picker--disabled {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+// Keep AntD trigger aligned with provided overrides (hover/active border color).
+.ui-color-picker .ant-color-picker-trigger {
+  border-radius: 8px;
+}
+
+html.dark,
+:root[data-theme="dark"] {
+  .ui-color-picker .ant-color-picker-trigger {
+    background: $surface-bg-dark;
+    border-color: $surface-border-dark;
+  }
+}
+

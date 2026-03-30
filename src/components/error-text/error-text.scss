@@ -1,0 +1,14 @@
+@use "../../styles/variables" as *;
+
+.ui-error-text {
+  font-size: 12px;
+  line-height: 16px;
+  color: $color-error-500;
+}
+
+html.dark,
+:root[data-theme="dark"] {
+  .ui-error-text {
+    color: $color-error-400;
+  }
+}

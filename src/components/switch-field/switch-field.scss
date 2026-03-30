@@ -1,0 +1,120 @@
+@use "../../styles/variables" as *;
+
+.ui-switch-field {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 34px;
+
+  .ant-switch {
+    min-width: 42px;
+    height: 24px;
+    line-height: 24px;
+    background: color-mix(
+      in srgb,
+      var(--dt-primary, #{$color-primary-500}) 28%,
+      transparent
+    );
+    border: 1px solid
+      color-mix(
+        in srgb,
+        var(--dt-primary, #{$color-primary-500}) 55%,
+        transparent
+      );
+  }
+
+  .ant-switch .ant-switch-handle {
+    width: 20px;
+    height: 20px;
+    top: 1px;
+  }
+
+  .ant-switch.ant-switch-checked .ant-switch-handle {
+    inset-inline-start: calc(100% - 22px);
+  }
+
+  .ant-switch.ant-switch-checked {
+    background: var(--dt-primary, #{$color-primary-500});
+    border-color: var(--dt-primary, #{$color-primary-500});
+  }
+
+  .ant-switch:hover:not(.ant-switch-disabled) {
+    background: color-mix(
+      in srgb,
+      var(--dt-primary, #{$color-primary-500}) 36%,
+      transparent
+    );
+    border-color: color-mix(
+      in srgb,
+      var(--dt-primary, #{$color-primary-500}) 68%,
+      transparent
+    );
+  }
+
+  .ant-switch.ant-switch-checked:hover:not(.ant-switch-disabled) {
+    background: var(--dt-primary, #{$color-primary-500});
+    border-color: var(--dt-primary, #{$color-primary-500});
+    filter: brightness(0.96);
+  }
+}
+
+.ui-switch-field__label {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--dt-light-text-primary, #{$color-text-primary});
+}
+
+.ui-switch-field--checked .ui-switch-field__label {
+  color: var(--dt-primary, #{$color-primary-600});
+}
+
+html.dark,
+:root[data-theme="dark"] {
+  .ui-switch-field {
+    .ant-switch {
+      background: color-mix(
+        in srgb,
+        var(--dt-primary, #{$color-primary-400}) 30%,
+        transparent
+      );
+      border-color: color-mix(
+        in srgb,
+        var(--dt-primary, #{$color-primary-400}) 60%,
+        transparent
+      );
+    }
+
+    .ant-switch.ant-switch-checked {
+      background: var(--dt-primary, #{$color-primary-400});
+      border-color: var(--dt-primary, #{$color-primary-400});
+    }
+
+    .ant-switch:hover:not(.ant-switch-disabled) {
+      background: color-mix(
+        in srgb,
+        var(--dt-primary, #{$color-primary-400}) 40%,
+        transparent
+      );
+      border-color: color-mix(
+        in srgb,
+        var(--dt-primary, #{$color-primary-400}) 72%,
+        transparent
+      );
+    }
+
+    .ant-switch.ant-switch-checked:hover:not(.ant-switch-disabled) {
+      background: var(--dt-primary, #{$color-primary-400});
+      border-color: var(--dt-primary, #{$color-primary-400});
+      filter: brightness(1.06);
+    }
+  }
+
+  .ui-switch-field__label {
+    color: var(--dt-dark-text-primary, #{$color-text-primary-dark});
+  }
+
+  .ui-switch-field--checked .ui-switch-field__label {
+    color: var(--dt-primary, #{$color-primary-300});
+  }
+}

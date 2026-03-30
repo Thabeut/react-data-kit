@@ -1,0 +1,85 @@
+@use "../../styles/variables" as *;
+
+.ui-avatar-upload.ant-upload-wrapper {
+  width: fit-content;
+}
+
+.ui-avatar-upload .ant-upload-select {
+  width: auto !important;
+  height: auto !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+.ui-avatar-upload__trigger {
+  position: relative;
+  border-radius: 999px;
+  overflow: visible;
+  border: 2px solid var(--dt-light-surface-border, #{$color-border-surface});
+  background: var(--dt-light-surface-bg, #{$color-bg-primary});
+  transition: border-color 0.2s ease;
+}
+
+.ui-avatar-upload:hover .ui-avatar-upload__trigger {
+  border-color: var(--dt-primary, #{$color-primary-500}) !important;
+}
+
+.ui-avatar-upload__media {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  overflow: hidden;
+}
+
+.ui-avatar-upload__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.ui-avatar-upload__placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: var(--dt-light-text-secondary, #{$color-text-secondary});
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.ui-avatar-upload__edit {
+  position: absolute;
+  right: -2px;
+  bottom: -2px;
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--dt-primary, #{$color-primary-500});
+  color: $color-white;
+  border: 2px solid var(--dt-light-surface-bg, #{$color-bg-primary});
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+}
+
+html.dark,
+:root[data-theme="dark"] {
+  .ui-avatar-upload__trigger {
+    border-color: var(--dt-dark-surface-border, #{$surface-border-dark});
+    background: var(--dt-dark-surface-bg, #{$surface-bg-dark});
+  }
+
+  .ui-avatar-upload__placeholder {
+    color: var(--dt-dark-text-secondary, #{$color-text-secondary-dark});
+  }
+
+  .ui-avatar-upload__edit {
+    border-color: var(--dt-dark-surface-bg, #{$surface-bg-dark});
+  }
+}

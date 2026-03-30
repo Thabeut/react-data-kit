@@ -1,0 +1,101 @@
+@use "../../styles/variables" as *;
+
+.ui-string-array-field {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ui-string-array-field__composer {
+  position: relative;
+  border: 1px solid var(--dt-primary, #{$color-primary-500});
+  background: var(--dt-light-surface-bg, #{$color-bg-primary});
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0 0 0 2px
+    color-mix(
+      in srgb,
+      var(--dt-primary, #{$color-primary-500}) 20%,
+      transparent
+    );
+}
+
+.ui-string-array-field__input {
+  margin-bottom: 40px !important;
+}
+
+.ui-string-array-field__composer-actions {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  display: flex;
+  gap: 8px;
+}
+
+.ui-string-array-field__pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ui-string-array-field__pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  border-radius: 999px;
+  border: 1px solid var(--dt-light-surface-border, #{$color-border-surface});
+  background: var(--dt-light-surface-bg, #{$color-bg-primary});
+  color: var(--dt-light-text-primary, #{$color-text-primary});
+  padding: 6px 10px;
+}
+
+.ui-string-array-field__pill-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
+}
+
+.ui-string-array-field__pill-remove {
+  border: 0;
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+  cursor: pointer;
+  padding: 0;
+}
+
+.ui-string-array-field__add {
+  border-radius: 999px;
+  border: 1px dashed var(--dt-light-surface-border, #{$color-border-surface});
+  background: var(--dt-light-surface-bg, #{$color-bg-secondary});
+  color: var(--dt-light-text-primary, #{$color-text-primary});
+  padding: 6px 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+html.dark,
+:root[data-theme="dark"] {
+  .ui-string-array-field__composer {
+    background: var(--dt-dark-surface-bg, #{$color-bg-primary-dark});
+  }
+
+  .ui-string-array-field__pill {
+    border-color: var(--dt-dark-surface-border, #{$surface-border-dark});
+    background: var(--dt-dark-surface-bg, #{$color-bg-primary-dark});
+    color: var(--dt-dark-text-primary, #{$color-text-primary-dark});
+  }
+
+  .ui-string-array-field__add {
+    border-color: var(--dt-dark-surface-border, #{$surface-border-dark});
+    background: var(--dt-dark-surface-bg, #{$color-bg-secondary-dark});
+    color: var(--dt-dark-text-primary, #{$color-text-primary-dark});
+  }
+}
