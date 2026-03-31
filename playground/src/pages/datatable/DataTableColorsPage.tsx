@@ -210,7 +210,7 @@ export function DataTableColorsExample() {
             style={{
               borderColor: primary,
               color: primary,
-              background: "color-mix(in srgb, var(--dt-primary) 12%, transparent)",
+              background: "color-mix(in srgb, var(--rdk-primary) 12%, transparent)",
             }}
           >
             Theme test
@@ -507,7 +507,7 @@ export function DataTableColorsExample() {
                     borderColor: colors.primary,
                     color: colors.primary,
                     background:
-                      "color-mix(in srgb, var(--dt-primary) 12%, transparent)",
+                      "color-mix(in srgb, var(--rdk-primary) 12%, transparent)",
                   }}
                 >
                   {t("dtPageColorsTitle")}

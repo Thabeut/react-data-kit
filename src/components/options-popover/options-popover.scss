@@ -54,7 +54,7 @@
 }
 
 .datatable-columns-popover-item:hover {
-  background: var(--dt-light-popover-option-hover);
+  background: var(--rdk-light-popover-option-hover);
 }
 
 .datatable-columns-popover-label {
@@ -67,7 +67,7 @@
   justify-content: center;
   width: 16px;
   height: 16px;
-  color: var(--dt-primary, #{$color-primary-600});
+  color: var(--rdk-primary, #{$color-primary-600});
 }
 
 .ui-options-popover {
@@ -113,13 +113,13 @@
   transition: background 0.15s ease;
 
   &:hover {
-    background: var(--dt-light-popover-option-hover);
+    background: var(--rdk-light-popover-option-hover);
   }
 }
 
 .ui-options-popover__check {
   flex-shrink: 0;
-  color: var(--dt-primary, #{$color-primary-600});
+  color: var(--rdk-primary, #{$color-primary-600});
   opacity: 0;
 
   &--visible {
@@ -145,7 +145,7 @@ html.dark,
   }
 
   .datatable-columns-popover-item:hover {
-    background: var(--dt-dark-popover-option-hover);
+    background: var(--rdk-dark-popover-option-hover);
   }
 
   .ui-options-popover__title,
@@ -154,7 +154,7 @@ html.dark,
   }
 
   .ui-options-popover__item:hover {
-    background: var(--dt-dark-popover-option-hover);
+    background: var(--rdk-dark-popover-option-hover);
   }
 
   .ui-options-popover__footer {
@@ -162,6 +162,6 @@ html.dark,
   }
 
   .ui-options-popover__check {
-    color: var(--dt-primary, #{$color-primary-400});
+    color: var(--rdk-primary, #{$color-primary-400});
   }
 }

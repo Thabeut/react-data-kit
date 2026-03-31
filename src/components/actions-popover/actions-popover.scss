@@ -20,11 +20,11 @@
   border-radius: 6px;
   background: transparent;
   cursor: pointer;
-  color: var(--dt-light-text-primary, #{$color-text-primary});
+  color: var(--rdk-light-text-primary, #{$color-text-primary});
   transition: background 0.15s ease;
 
   &:hover {
-    background: var(--dt-light-popover-option-hover);
+    background: var(--rdk-light-popover-option-hover);
   }
 
   &--danger {
@@ -46,23 +46,23 @@
   border: none;
   background: transparent;
   cursor: pointer;
-  color: var(--dt-light-text-primary, #{$color-text-primary});
+  color: var(--rdk-light-text-primary, #{$color-text-primary});
   transition:
     background 0.15s ease,
     color 0.15s ease;
 
   &:hover {
-    background: var(--dt-light-popover-option-hover, #{$surface-active});
+    background: var(--rdk-light-popover-option-hover, #{$surface-active});
   }
 }
 
 html.dark,
 :root[data-theme="dark"] {
   .ui-actions-popover__item {
-    color: var(--dt-dark-text-primary, #{$color-text-primary-dark});
+    color: var(--rdk-dark-text-primary, #{$color-text-primary-dark});
 
     &:hover {
-      background: var(--dt-dark-popover-option-hover);
+      background: var(--rdk-dark-popover-option-hover);
     }
 
     &--danger {
@@ -75,10 +75,10 @@ html.dark,
   }
 
   .ui-actions-popover__trigger {
-    color: var(--dt-dark-text-primary, #{$color-text-primary-dark});
+    color: var(--rdk-dark-text-primary, #{$color-text-primary-dark});
 
     &:hover {
-      background: var(--dt-dark-popover-option-hover, #{$surface-active-dark});
+      background: var(--rdk-dark-popover-option-hover, #{$surface-active-dark});
     }
   }
 

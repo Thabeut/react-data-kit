@@ -12,13 +12,13 @@
     line-height: 24px;
     background: color-mix(
       in srgb,
-      var(--dt-primary, #{$color-primary-500}) 28%,
+      var(--rdk-primary, #{$color-primary-500}) 28%,
       transparent
     );
     border: 1px solid
       color-mix(
         in srgb,
-        var(--dt-primary, #{$color-primary-500}) 55%,
+        var(--rdk-primary, #{$color-primary-500}) 55%,
         transparent
       );
   }
@@ -34,26 +34,26 @@
   }
 
   .ant-switch.ant-switch-checked {
-    background: var(--dt-primary, #{$color-primary-500});
-    border-color: var(--dt-primary, #{$color-primary-500});
+    background: var(--rdk-primary, #{$color-primary-500});
+    border-color: var(--rdk-primary, #{$color-primary-500});
   }
 
   .ant-switch:hover:not(.ant-switch-disabled) {
     background: color-mix(
       in srgb,
-      var(--dt-primary, #{$color-primary-500}) 36%,
+      var(--rdk-primary, #{$color-primary-500}) 36%,
       transparent
     );
     border-color: color-mix(
       in srgb,
-      var(--dt-primary, #{$color-primary-500}) 68%,
+      var(--rdk-primary, #{$color-primary-500}) 68%,
       transparent
     );
   }
 
   .ant-switch.ant-switch-checked:hover:not(.ant-switch-disabled) {
-    background: var(--dt-primary, #{$color-primary-500});
-    border-color: var(--dt-primary, #{$color-primary-500});
+    background: var(--rdk-primary, #{$color-primary-500});
+    border-color: var(--rdk-primary, #{$color-primary-500});
     filter: brightness(0.96);
   }
 }
@@ -62,11 +62,11 @@
   font-size: 14px;
   font-weight: 600;
   line-height: 1;
-  color: var(--dt-light-text-primary, #{$color-text-primary});
+  color: var(--rdk-light-text-primary, #{$color-text-primary});
 }
 
 .ui-switch-field--checked .ui-switch-field__label {
-  color: var(--dt-primary, #{$color-primary-600});
+  color: var(--rdk-primary, #{$color-primary-600});
 }
 
 html.dark,
@@ -75,46 +75,46 @@ html.dark,
     .ant-switch {
       background: color-mix(
         in srgb,
-        var(--dt-primary, #{$color-primary-400}) 30%,
+        var(--rdk-primary, #{$color-primary-400}) 30%,
         transparent
       );
       border-color: color-mix(
         in srgb,
-        var(--dt-primary, #{$color-primary-400}) 60%,
+        var(--rdk-primary, #{$color-primary-400}) 60%,
         transparent
       );
     }
 
     .ant-switch.ant-switch-checked {
-      background: var(--dt-primary, #{$color-primary-400});
-      border-color: var(--dt-primary, #{$color-primary-400});
+      background: var(--rdk-primary, #{$color-primary-400});
+      border-color: var(--rdk-primary, #{$color-primary-400});
     }
 
     .ant-switch:hover:not(.ant-switch-disabled) {
       background: color-mix(
         in srgb,
-        var(--dt-primary, #{$color-primary-400}) 40%,
+        var(--rdk-primary, #{$color-primary-400}) 40%,
         transparent
       );
       border-color: color-mix(
         in srgb,
-        var(--dt-primary, #{$color-primary-400}) 72%,
+        var(--rdk-primary, #{$color-primary-400}) 72%,
         transparent
       );
     }
 
     .ant-switch.ant-switch-checked:hover:not(.ant-switch-disabled) {
-      background: var(--dt-primary, #{$color-primary-400});
-      border-color: var(--dt-primary, #{$color-primary-400});
+      background: var(--rdk-primary, #{$color-primary-400});
+      border-color: var(--rdk-primary, #{$color-primary-400});
       filter: brightness(1.06);
     }
   }
 
   .ui-switch-field__label {
-    color: var(--dt-dark-text-primary, #{$color-text-primary-dark});
+    color: var(--rdk-dark-text-primary, #{$color-text-primary-dark});
   }
 
   .ui-switch-field--checked .ui-switch-field__label {
-    color: var(--dt-primary, #{$color-primary-300});
+    color: var(--rdk-primary, #{$color-primary-300});
   }
 }

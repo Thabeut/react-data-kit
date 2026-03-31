@@ -6,7 +6,7 @@
   gap: 16px;
   border-radius: 8px;
   padding: 16px;
-  background: var(--dt-light-surface-bg, #{$color-bg-primary});
+  background: var(--rdk-light-surface-bg, #{$color-bg-primary});
 }
 
 .dynamic-form__header {
@@ -15,20 +15,20 @@
   gap: 6px;
   padding-bottom: 16px;
   border-bottom: 1px solid
-    var(--dt-light-surface-border, #{$color-border-surface});
+    var(--rdk-light-surface-border, #{$color-border-surface});
 }
 
 .dynamic-form__title {
   font-size: 18px;
   font-weight: 500;
   line-height: 24px;
-  color: var(--dt-light-text-primary, #{$color-text-primary});
+  color: var(--rdk-light-text-primary, #{$color-text-primary});
 }
 
 .dynamic-form__description {
   font-size: 13px;
   line-height: 18px;
-  color: var(--dt-light-text-secondary, #{$color-text-secondary});
+  color: var(--rdk-light-text-secondary, #{$color-text-secondary});
 }
 
 .dynamic-form__fields {
@@ -55,7 +55,7 @@
   font-size: 14px;
   font-weight: 500;
   line-height: 20px;
-  color: var(--dt-light-text-primary, #{$color-text-primary});
+  color: var(--rdk-light-text-primary, #{$color-text-primary});
 }
 
 .dynamic-form__required {
@@ -68,7 +68,7 @@
   justify-content: flex-end;
   gap: 8px;
   padding-top: 12px;
-  border-top: 1px solid var(--dt-light-surface-border, #{$color-border-surface});
+  border-top: 1px solid var(--rdk-light-surface-border, #{$color-border-surface});
 }
 
 .dynamic-form-modal .ant-modal-body {
@@ -76,7 +76,7 @@
 }
 
 .dynamic-form-modal .ant-modal-content {
-  background: var(--dt-light-surface-bg, #{$color-bg-primary});
+  background: var(--rdk-light-surface-bg, #{$color-bg-primary});
   border-radius: 16px !important;
 }
 
@@ -94,7 +94,7 @@
 }
 
 .dynamic-form-drawer .ant-drawer-content {
-  background: var(--dt-light-surface-bg, #{$surface-bg});
+  background: var(--rdk-light-surface-bg, #{$surface-bg});
 }
 
 .dynamic-form-drawer__inner {
@@ -127,21 +127,21 @@
 html.dark,
 :root[data-theme="dark"] {
   .dynamic-form {
-    background: var(--dt-dark-surface-bg);
+    background: var(--rdk-dark-surface-bg);
   }
 
   .dynamic-form__header,
   .dynamic-form__actions {
-    border-color: var(--dt-dark-surface-border, #{$surface-border-dark});
+    border-color: var(--rdk-dark-surface-border, #{$surface-border-dark});
   }
 
   .dynamic-form__title,
   .dynamic-form__label-text {
-    color: var(--dt-dark-text-primary, #{$color-text-primary-dark});
+    color: var(--rdk-dark-text-primary, #{$color-text-primary-dark});
   }
 
   .dynamic-form__description {
-    color: var(--dt-dark-text-secondary, #{$color-text-secondary-dark});
+    color: var(--rdk-dark-text-secondary, #{$color-text-secondary-dark});
   }
 
   .dynamic-form__required {
@@ -149,10 +149,10 @@ html.dark,
   }
 
   .dynamic-form-modal .ant-modal-content {
-    background: var(--dt-dark-surface-bg);
+    background: var(--rdk-dark-surface-bg);
   }
 
   .dynamic-form-drawer .ant-drawer-content {
-    background: var(--dt-dark-surface-bg, #{$surface-bg-dark});
+    background: var(--rdk-dark-surface-bg, #{$surface-bg-dark});
   }
 }

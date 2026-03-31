@@ -8,14 +8,14 @@
 
 .ui-string-array-field__composer {
   position: relative;
-  border: 1px solid var(--dt-primary, #{$color-primary-500});
-  background: var(--dt-light-surface-bg, #{$color-bg-primary});
+  border: 1px solid var(--rdk-primary, #{$color-primary-500});
+  background: var(--rdk-light-surface-bg, #{$color-bg-primary});
   border-radius: 8px;
   padding: 10px;
   box-shadow: 0 0 0 2px
     color-mix(
       in srgb,
-      var(--dt-primary, #{$color-primary-500}) 20%,
+      var(--rdk-primary, #{$color-primary-500}) 20%,
       transparent
     );
 }
@@ -44,9 +44,9 @@
   gap: 6px;
   max-width: 100%;
   border-radius: 999px;
-  border: 1px solid var(--dt-light-surface-border, #{$color-border-surface});
-  background: var(--dt-light-surface-bg, #{$color-bg-primary});
-  color: var(--dt-light-text-primary, #{$color-text-primary});
+  border: 1px solid var(--rdk-light-surface-border, #{$color-border-surface});
+  background: var(--rdk-light-surface-bg, #{$color-bg-primary});
+  color: var(--rdk-light-text-primary, #{$color-text-primary});
   padding: 6px 10px;
 }
 
@@ -70,9 +70,9 @@
 
 .ui-string-array-field__add {
   border-radius: 999px;
-  border: 1px dashed var(--dt-light-surface-border, #{$color-border-surface});
-  background: var(--dt-light-surface-bg, #{$color-bg-secondary});
-  color: var(--dt-light-text-primary, #{$color-text-primary});
+  border: 1px dashed var(--rdk-light-surface-border, #{$color-border-surface});
+  background: var(--rdk-light-surface-bg, #{$color-bg-secondary});
+  color: var(--rdk-light-text-primary, #{$color-text-primary});
   padding: 6px 10px;
   display: inline-flex;
   align-items: center;
@@ -84,18 +84,18 @@
 html.dark,
 :root[data-theme="dark"] {
   .ui-string-array-field__composer {
-    background: var(--dt-dark-surface-bg, #{$color-bg-primary-dark});
+    background: var(--rdk-dark-surface-bg, #{$color-bg-primary-dark});
   }
 
   .ui-string-array-field__pill {
-    border-color: var(--dt-dark-surface-border, #{$surface-border-dark});
-    background: var(--dt-dark-surface-bg, #{$color-bg-primary-dark});
-    color: var(--dt-dark-text-primary, #{$color-text-primary-dark});
+    border-color: var(--rdk-dark-surface-border, #{$surface-border-dark});
+    background: var(--rdk-dark-surface-bg, #{$color-bg-primary-dark});
+    color: var(--rdk-dark-text-primary, #{$color-text-primary-dark});
   }
 
   .ui-string-array-field__add {
-    border-color: var(--dt-dark-surface-border, #{$surface-border-dark});
-    background: var(--dt-dark-surface-bg, #{$color-bg-secondary-dark});
-    color: var(--dt-dark-text-primary, #{$color-text-primary-dark});
+    border-color: var(--rdk-dark-surface-border, #{$surface-border-dark});
+    background: var(--rdk-dark-surface-bg, #{$color-bg-secondary-dark});
+    color: var(--rdk-dark-text-primary, #{$color-text-primary-dark});
   }
 }

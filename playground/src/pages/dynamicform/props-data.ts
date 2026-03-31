@@ -85,7 +85,7 @@ export const dynamicFormPropRows: PropDocRow[] = [
     type: "{ primaryColor?, lightMode?, darkMode? }",
     required: "no",
     description:
-      "Override primary + light/dark surface/border/text colors via CSS variables (same `--dt-*` vars as DataTable).",
+      "Override primary + light/dark surface/border/text colors via CSS variables (same `--rdk-*` vars as DataTable).",
   },
   {
     key: "modalWidth",

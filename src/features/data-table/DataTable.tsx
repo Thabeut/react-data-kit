@@ -86,25 +86,25 @@ export function DataTable<T extends { [key: string]: unknown }>(
     if (!customColors || typeof document === "undefined") return;
     const root = document.documentElement;
     const vars: Record<string, string | undefined> = {
-      "--dt-primary": customColors.primaryColor,
-      "--dt-light-surface-bg": customColors.lightMode?.surfaceBg,
-      "--dt-light-popover-bg": customColors.lightMode?.popoverBg,
-      "--dt-light-popover-option-hover":
+      "--rdk-primary": customColors.primaryColor,
+      "--rdk-light-surface-bg": customColors.lightMode?.surfaceBg,
+      "--rdk-light-popover-bg": customColors.lightMode?.popoverBg,
+      "--rdk-light-popover-option-hover":
         customColors.lightMode?.popoverOptionHoverBg,
-      "--dt-light-surface-border": customColors.lightMode?.surfaceBorder,
-      "--dt-light-text-primary": customColors.lightMode?.textPrimary,
-      "--dt-light-row-hover": customColors.lightMode?.rowHoverBg,
-      "--dt-light-row-selected": customColors.lightMode?.rowSelectedBg,
-      "--dt-light-group-row": customColors.lightMode?.groupRowBg,
-      "--dt-dark-surface-bg": customColors.darkMode?.surfaceBg,
-      "--dt-dark-popover-bg": customColors.darkMode?.popoverBg,
-      "--dt-dark-popover-option-hover":
+      "--rdk-light-surface-border": customColors.lightMode?.surfaceBorder,
+      "--rdk-light-text-primary": customColors.lightMode?.textPrimary,
+      "--rdk-light-row-hover": customColors.lightMode?.rowHoverBg,
+      "--rdk-light-row-selected": customColors.lightMode?.rowSelectedBg,
+      "--rdk-light-group-row": customColors.lightMode?.groupRowBg,
+      "--rdk-dark-surface-bg": customColors.darkMode?.surfaceBg,
+      "--rdk-dark-popover-bg": customColors.darkMode?.popoverBg,
+      "--rdk-dark-popover-option-hover":
         customColors.darkMode?.popoverOptionHoverBg,
-      "--dt-dark-surface-border": customColors.darkMode?.surfaceBorder,
-      "--dt-dark-text-primary": customColors.darkMode?.textPrimary,
-      "--dt-dark-row-hover": customColors.darkMode?.rowHoverBg,
-      "--dt-dark-row-selected": customColors.darkMode?.rowSelectedBg,
-      "--dt-dark-group-row": customColors.darkMode?.groupRowBg,
+      "--rdk-dark-surface-border": customColors.darkMode?.surfaceBorder,
+      "--rdk-dark-text-primary": customColors.darkMode?.textPrimary,
+      "--rdk-dark-row-hover": customColors.darkMode?.rowHoverBg,
+      "--rdk-dark-row-selected": customColors.darkMode?.rowSelectedBg,
+      "--rdk-dark-group-row": customColors.darkMode?.groupRowBg,
     };
 
     const previous = new Map<string, string>();

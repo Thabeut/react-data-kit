@@ -6,13 +6,13 @@
 
 .ui-upload-field.ant-upload-wrapper .ant-upload-drag {
   border-radius: 8px;
-  border: 1px dashed var(--dt-light-surface-border, #{$color-border-surface});
-  background: var(--dt-light-surface-bg, #{$color-bg-primary});
+  border: 1px dashed var(--rdk-light-surface-border, #{$color-border-surface});
+  background: var(--rdk-light-surface-bg, #{$color-bg-primary});
   transition: all 0.3s ease;
 }
 
 .ui-upload-field.ant-upload-wrapper .ant-upload-drag:hover {
-  border-color: var(--dt-primary, #{$color-primary-400}) !important;
+  border-color: var(--rdk-primary, #{$color-primary-400}) !important;
 }
 
 .ui-upload-field__inner {
@@ -27,7 +27,7 @@
 
 .ui-upload-field__icon {
   flex-shrink: 0;
-  color: var(--dt-light-text-secondary, #{$color-text-secondary});
+  color: var(--rdk-light-text-secondary, #{$color-text-secondary});
 }
 
 .ui-upload-field__text {
@@ -40,31 +40,31 @@
   font-size: 14px;
   font-weight: 500;
   line-height: 20px;
-  color: var(--dt-light-text-primary, #{$color-text-primary});
+  color: var(--rdk-light-text-primary, #{$color-text-primary});
 }
 
 .ui-upload-field__description {
   font-size: 12px;
   line-height: 16px;
-  color: var(--dt-light-text-secondary, #{$color-text-secondary});
+  color: var(--rdk-light-text-secondary, #{$color-text-secondary});
 }
 
 html.dark,
 :root[data-theme="dark"] {
   .ui-upload-field.ant-upload-wrapper .ant-upload-drag {
-    border-color: var(--dt-dark-surface-border, #{$surface-border-dark});
-    background: var(--dt-dark-surface-bg, #{$surface-bg-dark});
+    border-color: var(--rdk-dark-surface-border, #{$surface-border-dark});
+    background: var(--rdk-dark-surface-bg, #{$surface-bg-dark});
   }
 
   .ui-upload-field__icon {
-    color: var(--dt-dark-text-secondary, #{$color-text-secondary-dark});
+    color: var(--rdk-dark-text-secondary, #{$color-text-secondary-dark});
   }
 
   .ui-upload-field__title {
-    color: var(--dt-dark-text-primary, #{$color-text-primary-dark});
+    color: var(--rdk-dark-text-primary, #{$color-text-primary-dark});
   }
 
   .ui-upload-field__description {
-    color: var(--dt-dark-text-secondary, #{$color-text-secondary-dark});
+    color: var(--rdk-dark-text-secondary, #{$color-text-secondary-dark});
   }
 }

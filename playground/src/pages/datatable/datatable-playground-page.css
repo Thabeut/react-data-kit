@@ -1,17 +1,17 @@
 .dt-playground {
-  --dt-playground-border: rgba(0, 0, 0, 0.08);
-  --dt-playground-muted: rgba(0, 0, 0, 0.55);
-  --dt-playground-surface: rgba(0, 0, 0, 0.02);
-  --dt-playground-sticky-top: 1rem;
-  --dt-playground-sticky-bg: var(--docs-bg, #fafafa);
+  --rdk-playground-border: rgba(0, 0, 0, 0.08);
+  --rdk-playground-muted: rgba(0, 0, 0, 0.55);
+  --rdk-playground-surface: rgba(0, 0, 0, 0.02);
+  --rdk-playground-sticky-top: 1rem;
+  --rdk-playground-sticky-bg: var(--docs-bg, #fafafa);
   width: 100%;
 }
 
 html.dark .dt-playground {
-  --dt-playground-border: rgba(255, 255, 255, 0.12);
-  --dt-playground-muted: rgba(255, 255, 255, 0.55);
-  --dt-playground-surface: rgba(255, 255, 255, 0.04);
-  --dt-playground-sticky-bg: var(--docs-bg, #18181b);
+  --rdk-playground-border: rgba(255, 255, 255, 0.12);
+  --rdk-playground-muted: rgba(255, 255, 255, 0.55);
+  --rdk-playground-surface: rgba(255, 255, 255, 0.04);
+  --rdk-playground-sticky-bg: var(--docs-bg, #18181b);
 }
 
 .dt-playground__grid {
@@ -35,21 +35,21 @@ html.dark .dt-playground {
   min-width: 0;
   width: 100%;
   position: sticky;
-  top: var(--dt-playground-sticky-top);
+  top: var(--rdk-playground-sticky-top);
   align-self: flex-start;
   z-index: 1;
-  max-height: calc(100vh - var(--dt-playground-sticky-top) - 1rem);
+  max-height: calc(100vh - var(--rdk-playground-sticky-top) - 1rem);
   overflow-y: auto;
   overflow-x: hidden;
   padding-bottom: 4px;
   box-sizing: border-box;
-  background: var(--dt-playground-sticky-bg);
+  background: var(--rdk-playground-sticky-bg);
   border-radius: 12px;
 }
 
 .dt-playground__panel .ant-card {
   border-radius: 12px;
-  box-shadow: 0 1px 2px var(--dt-playground-border);
+  box-shadow: 0 1px 2px var(--rdk-playground-border);
 }
 
 .dt-playground__panel-head {
@@ -57,7 +57,7 @@ html.dark .dt-playground {
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--dt-playground-muted);
+  color: var(--rdk-playground-muted);
   margin: 0 0 12px;
 }
 
@@ -87,8 +87,8 @@ html.dark .dt-playground {
   gap: 12px;
   padding: 8px 10px;
   border-radius: 8px;
-  background: var(--dt-playground-surface);
-  border: 1px solid var(--dt-playground-border);
+  background: var(--rdk-playground-surface);
+  border: 1px solid var(--rdk-playground-border);
 }
 
 .dt-playground__switch-item span {
@@ -100,7 +100,7 @@ html.dark .dt-playground {
 .dt-playground__preview .ant-card {
   width: 100%;
   border-radius: 12px;
-  box-shadow: 0 1px 2px var(--dt-playground-border);
+  box-shadow: 0 1px 2px var(--rdk-playground-border);
 }
 
 .dt-playground__preview-inner {
@@ -115,8 +115,8 @@ html.dark .dt-playground {
   margin-bottom: 16px;
   padding: 12px 14px;
   border-radius: 8px;
-  background: var(--dt-playground-surface);
-  border: 1px solid var(--dt-playground-border);
+  background: var(--rdk-playground-surface);
+  border: 1px solid var(--rdk-playground-border);
   font-size: 13px;
 }
 
@@ -124,8 +124,8 @@ html.dark .dt-playground {
   font-size: 12px;
   padding: 2px 6px;
   border-radius: 4px;
-  background: var(--dt-playground-surface);
-  border: 1px solid var(--dt-playground-border);
+  background: var(--rdk-playground-surface);
+  border: 1px solid var(--rdk-playground-border);
 }
 
 .dt-playground__toolbar-btns {

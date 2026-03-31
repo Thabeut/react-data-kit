@@ -4,14 +4,14 @@
   min-height: 36px;
   font-size: 14px;
   line-height: 20px;
-  color: var(--dt-light-text-primary, #{$surface-text});
+  color: var(--rdk-light-text-primary, #{$surface-text});
 
   .ant-select-selector {
     min-height: 36px;
     padding: 3px 8px;
     border-radius: 6px;
-    border-color: var(--dt-light-surface-border, #{$color-border-surface}) !important;
-    background-color: var(--dt-light-surface-bg, #{$color-bg-primary}) !important;
+    border-color: var(--rdk-light-surface-border, #{$color-border-surface}) !important;
+    background-color: var(--rdk-light-surface-bg, #{$color-bg-primary}) !important;
     transition: all 0.15s ease-out;
   }
 
@@ -22,81 +22,81 @@
   }
 
   .ant-select-selection-placeholder {
-    color: var(--dt-light-text-secondary, #{$color-text-muted});
+    color: var(--rdk-light-text-secondary, #{$color-text-muted});
   }
 
   &:hover .ant-select-selector {
-    border-color: var(--dt-primary, #{$color-primary-400}) !important;
+    border-color: var(--rdk-primary, #{$color-primary-400}) !important;
     box-shadow:
       0 0 0 1px
-      color-mix(in srgb, var(--dt-primary, #{$color-primary-400}) 25%, transparent) !important;
+      color-mix(in srgb, var(--rdk-primary, #{$color-primary-400}) 25%, transparent) !important;
   }
 
   &.ant-select-focused .ant-select-selector {
-    border-color: var(--dt-primary, #{$color-primary-500}) !important;
+    border-color: var(--rdk-primary, #{$color-primary-500}) !important;
     box-shadow:
       0 0 0 2px
-      color-mix(in srgb, var(--dt-primary, #{$color-primary-500}) 30%, transparent) !important;
+      color-mix(in srgb, var(--rdk-primary, #{$color-primary-500}) 30%, transparent) !important;
   }
 }
 
 html.dark,
 :root[data-theme="dark"] {
   .ui-select.ant-select {
-    color: var(--dt-dark-text-primary, #{$surface-text-dark});
+    color: var(--rdk-dark-text-primary, #{$surface-text-dark});
 
     .ant-select-selector {
-      border-color: var(--dt-dark-surface-border, #{$surface-border-dark}) !important;
-      background-color: var(--dt-dark-surface-bg, #{$surface-bg-dark}) !important;
+      border-color: var(--rdk-dark-surface-border, #{$surface-border-dark}) !important;
+      background-color: var(--rdk-dark-surface-bg, #{$surface-bg-dark}) !important;
     }
 
     .ant-select-selection-placeholder {
-      color: var(--dt-dark-text-secondary, #{$color-text-muted-dark});
+      color: var(--rdk-dark-text-secondary, #{$color-text-muted-dark});
     }
 
     &:hover .ant-select-selector {
-      border-color: var(--dt-primary, #{$color-primary-400}) !important;
+      border-color: var(--rdk-primary, #{$color-primary-400}) !important;
       box-shadow:
         0 0 0 1px
-        color-mix(in srgb, var(--dt-primary, #{$color-primary-400}) 25%, transparent) !important;
+        color-mix(in srgb, var(--rdk-primary, #{$color-primary-400}) 25%, transparent) !important;
     }
 
     &.ant-select-focused .ant-select-selector {
-      border-color: var(--dt-primary, #{$color-primary-300}) !important;
+      border-color: var(--rdk-primary, #{$color-primary-300}) !important;
       box-shadow:
         0 0 0 2px
-        color-mix(in srgb, var(--dt-primary, #{$color-primary-300}) 35%, transparent) !important;
+        color-mix(in srgb, var(--rdk-primary, #{$color-primary-300}) 35%, transparent) !important;
     }
   }
 }
 
 .ui-select-dropdown.ant-select-dropdown {
-  background: var(--dt-light-popover-bg, #{$color-bg-primary});
-  border: 1px solid var(--dt-light-surface-border, #{$color-border-surface});
+  background: var(--rdk-light-popover-bg, #{$color-bg-primary});
+  border: 1px solid var(--rdk-light-surface-border, #{$color-border-surface});
 }
 
 .ui-select-dropdown .ant-select-item {
-  color: var(--dt-light-text-primary, #{$surface-text});
+  color: var(--rdk-light-text-primary, #{$surface-text});
 }
 
 .ui-select-dropdown .ant-select-item-option-active:not(.ant-select-item-option-disabled) {
-  background: var(--dt-light-popover-option-hover, #{$surface-active});
+  background: var(--rdk-light-popover-option-hover, #{$surface-active});
 }
 
 .ui-select-dropdown .ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
-  background: var(--dt-light-popover-option-hover, #{$surface-active});
-  color: var(--dt-light-text-primary, #{$surface-text});
+  background: var(--rdk-light-popover-option-hover, #{$surface-active});
+  color: var(--rdk-light-text-primary, #{$surface-text});
 }
 
 html.dark .ui-select-dropdown.ant-select-dropdown,
 :root[data-theme="dark"] .ui-select-dropdown.ant-select-dropdown {
-  background: var(--dt-dark-popover-bg, #{$surface-bg-dark});
-  border-color: var(--dt-dark-surface-border, #{$surface-border-dark});
+  background: var(--rdk-dark-popover-bg, #{$surface-bg-dark});
+  border-color: var(--rdk-dark-surface-border, #{$surface-border-dark});
 }
 
 html.dark .ui-select-dropdown .ant-select-item,
 :root[data-theme="dark"] .ui-select-dropdown .ant-select-item {
-  color: var(--dt-dark-text-primary, #{$surface-text-dark});
+  color: var(--rdk-dark-text-primary, #{$surface-text-dark});
 }
 
 html.dark
@@ -105,7 +105,7 @@ html.dark
 :root[data-theme="dark"]
   .ui-select-dropdown
   .ant-select-item-option-active:not(.ant-select-item-option-disabled) {
-  background: var(--dt-dark-popover-option-hover, #{$color-secondary-800});
+  background: var(--rdk-dark-popover-option-hover, #{$color-secondary-800});
 }
 
 html.dark
@@ -114,6 +114,6 @@ html.dark
 :root[data-theme="dark"]
   .ui-select-dropdown
   .ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
-  background: var(--dt-dark-popover-option-hover, #{$color-secondary-800});
-  color: var(--dt-dark-text-primary, #{$surface-text-dark});
+  background: var(--rdk-dark-popover-option-hover, #{$color-secondary-800});
+  color: var(--rdk-dark-text-primary, #{$surface-text-dark});
 }

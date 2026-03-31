@@ -53,8 +53,8 @@
   align-items: center;
   padding: 6px 12px;
   gap: 8px;
-  background: var(--dt-light-surface-bg);
-  border: 1px dashed var(--dt-light-surface-border) !important;
+  background: var(--rdk-light-surface-bg);
+  border: 1px dashed var(--rdk-light-surface-border) !important;
   border-radius: 6px;
 }
 
@@ -71,17 +71,17 @@
   font-size: 12px;
   line-height: 16px;
   letter-spacing: -0.006em;
-  color: var(--dt-light-text-primary);
+  color: var(--rdk-light-text-primary);
 }
 
 .datatable-filter-chip-active {
   border-style: solid;
-  border-color: var(--dt-primary) !important;
+  border-color: var(--rdk-primary) !important;
 }
 
 .datatable-filter-chip-active .datatable-filter-chip-icon,
 .datatable-filter-chip-active .datatable-filter-chip-label {
-  color: var(--dt-primary);
+  color: var(--rdk-primary);
 }
 
 .datatable-filters-right {
@@ -106,8 +106,8 @@
   gap: 8px;
   width: 32px;
   height: 32px;
-  background: var(--dt-light-surface-bg);
-  border: 1px solid var(--dt-light-surface-border);
+  background: var(--rdk-light-surface-bg);
+  border: 1px solid var(--rdk-light-surface-border);
   border-radius: 6px;
 }
 
@@ -115,9 +115,9 @@
   .datatable-toggle-columns-button.ui-btn.ant-btn.ant-btn-default:hover:not(
     :disabled
   ) {
-  border-color: var(--dt-primary) !important;
-  color: var(--dt-primary) !important;
-  background: color-mix(in srgb, var(--dt-primary) 8%, transparent) !important;
+  border-color: var(--rdk-primary) !important;
+  color: var(--rdk-primary) !important;
+  background: color-mix(in srgb, var(--rdk-primary) 8%, transparent) !important;
 }
 
 .datatable-table-wrapper {
@@ -175,8 +175,8 @@
 .datatable-table .ant-table-container {
   border-radius: 8px;
   overflow: hidden;
-  border: 1px solid var(--dt-light-surface-border);
-  background: var(--dt-light-surface-bg);
+  border: 1px solid var(--rdk-light-surface-border);
+  background: var(--rdk-light-surface-bg);
 }
 
 .datatable-table .ant-table-container table {
@@ -188,8 +188,8 @@
 .datatable-table .ant-table-thead > tr > th {
   height: 48px;
   padding: 0 16px;
-  border-bottom: 1px solid var(--dt-light-surface-border);
-  background: var(--dt-light-surface-bg);
+  border-bottom: 1px solid var(--rdk-light-surface-border);
+  background: var(--rdk-light-surface-bg);
 }
 
 .datatable-th-wrap {
@@ -211,20 +211,20 @@
   border: none;
   border-radius: 4px;
   background: transparent;
-  color: var(--dt-light-text-secondary);
+  color: var(--rdk-light-text-secondary);
   cursor: pointer;
 }
 
 .datatable-sort-trigger:hover {
   background: color-mix(
     in srgb,
-    var(--dt-light-surface-border) 28%,
+    var(--rdk-light-surface-border) 28%,
     transparent
   );
 }
 
 .datatable-sort-trigger--active {
-  color: var(--dt-primary);
+  color: var(--rdk-primary);
 }
 
 .datatable-col-resize {
@@ -243,14 +243,14 @@
   font-size: 13px;
   line-height: 20px;
   font-weight: 400;
-  color: var(--dt-light-text-primary);
+  color: var(--rdk-light-text-primary);
 }
 
 .datatable-table .ant-table-tbody > tr > td {
   height: 65px;
   padding: 0 16px;
-  background: var(--dt-light-surface-bg);
-  border-bottom: 1px solid var(--dt-light-surface-border);
+  background: var(--rdk-light-surface-bg);
+  border-bottom: 1px solid var(--rdk-light-surface-border);
 }
 
 .datatable-table .ant-table-tbody > tr:last-child > td {
@@ -268,14 +268,14 @@
 }
 
 .datatable-table .ant-table-tbody > tr:not(.datatable-group-row):hover > td {
-  background: var(--dt-light-row-hover) !important;
+  background: var(--rdk-light-row-hover) !important;
 }
 
 .datatable-table
   .ant-table-tbody
   > tr.ant-table-row-selected:not(.datatable-group-row)
   > td {
-  background: var(--dt-light-row-selected) !important;
+  background: var(--rdk-light-row-selected) !important;
 }
 
 .datatable-selection-checkbox-group {
@@ -283,9 +283,9 @@
 }
 
 .datatable-group-cell {
-  background: var(--dt-light-group-row) !important;
+  background: var(--rdk-light-group-row) !important;
   height: 45px !important;
-  border-bottom: 1px solid var(--dt-light-surface-border) !important;
+  border-bottom: 1px solid var(--rdk-light-surface-border) !important;
 }
 
 .datatable-actions-cell {
@@ -360,7 +360,7 @@
 }
 
 .datatable-table .ant-table-tbody > tr.datatable-group-row:hover > td {
-  background: var(--dt-light-group-row) !important;
+  background: var(--rdk-light-group-row) !important;
 }
 
 .datatable-group-label {
@@ -374,13 +374,13 @@
 .datatable-group-label-icon {
   width: 16px;
   height: 16px;
-  color: var(--dt-light-text-secondary);
+  color: var(--rdk-light-text-secondary);
 }
 
 .datatable-group-label-text {
   font-size: 14px;
   line-height: 20px;
-  color: var(--dt-light-text-secondary);
+  color: var(--rdk-light-text-secondary);
 }
 
 .datatable-footer {
@@ -401,7 +401,7 @@
   min-width: 0;
   font-size: 14px;
   line-height: 20px;
-  color: var(--dt-light-text-secondary);
+  color: var(--rdk-light-text-secondary);
 }
 
 .datatable-footer-right {
@@ -435,7 +435,7 @@
 .datatable-footer-rows-per-page-label {
   font-size: 14px;
   line-height: 20px;
-  color: var(--dt-light-text-primary);
+  color: var(--rdk-light-text-primary);
 }
 
 .datatable-page-size-select {
@@ -444,14 +444,14 @@
 
 .datatable-page-size-select .ant-select-selector {
   border-radius: 6px !important;
-  border-color: var(--dt-light-surface-border) !important;
+  border-color: var(--rdk-light-surface-border) !important;
   box-shadow: none !important;
 }
 
 .datatable-footer-page-info {
   font-size: 14px;
   line-height: 20px;
-  color: var(--dt-light-text-primary);
+  color: var(--rdk-light-text-primary);
 }
 
 .datatable-footer-nav {
@@ -468,8 +468,8 @@
 html.dark,
 :root[data-theme="dark"] {
   .datatable-table .ant-table-container {
-    border-color: var(--dt-dark-surface-border);
-    background: var(--dt-dark-surface-bg);
+    border-color: var(--rdk-dark-surface-border);
+    background: var(--rdk-dark-surface-bg);
   }
 
   .datatable-table .ant-table-container table {
@@ -478,90 +478,90 @@ html.dark,
   }
 
   .datatable-th {
-    color: var(--dt-dark-text-primary);
+    color: var(--rdk-dark-text-primary);
   }
 
   .datatable-sort-trigger {
-    color: var(--dt-dark-text-secondary);
+    color: var(--rdk-dark-text-secondary);
   }
 
   .datatable-sort-trigger:hover {
     background: color-mix(
       in srgb,
-      var(--dt-dark-surface-border) 28%,
+      var(--rdk-dark-surface-border) 28%,
       transparent
     );
   }
 
   .datatable-table .ant-table-thead > tr > th {
-    background: var(--dt-dark-surface-bg);
-    border-bottom: 1px solid var(--dt-dark-surface-border);
-    color: var(--dt-dark-text-primary);
+    background: var(--rdk-dark-surface-bg);
+    border-bottom: 1px solid var(--rdk-dark-surface-border);
+    color: var(--rdk-dark-text-primary);
   }
 
   .datatable-table .ant-table-tbody > tr > td {
-    background: var(--dt-dark-surface-bg);
-    border-bottom: 1px solid var(--dt-dark-surface-border);
-    color: var(--dt-dark-text-primary);
+    background: var(--rdk-dark-surface-bg);
+    border-bottom: 1px solid var(--rdk-dark-surface-border);
+    color: var(--rdk-dark-text-primary);
   }
 
   .datatable-table .ant-table-tbody > tr:not(.datatable-group-row):hover > td {
-    background: var(--dt-dark-row-hover) !important;
+    background: var(--rdk-dark-row-hover) !important;
   }
 
   .datatable-table
     .ant-table-tbody
     > tr.ant-table-row-selected:not(.datatable-group-row)
     > td {
-    background: var(--dt-dark-row-selected) !important;
+    background: var(--rdk-dark-row-selected) !important;
   }
 
   .datatable-group-cell {
-    background: var(--dt-dark-group-row) !important;
-    border-bottom: 1px solid var(--dt-dark-surface-border) !important;
+    background: var(--rdk-dark-group-row) !important;
+    border-bottom: 1px solid var(--rdk-dark-surface-border) !important;
   }
 
   .datatable-table .ant-table-tbody > tr.datatable-group-row:hover > td {
-    background: var(--dt-dark-group-row) !important;
+    background: var(--rdk-dark-group-row) !important;
   }
 
   .datatable-footer-left {
-    color: var(--dt-dark-text-secondary);
+    color: var(--rdk-dark-text-secondary);
   }
 
   .datatable-footer-rows-per-page-label,
   .datatable-footer-page-info {
-    color: var(--dt-dark-text-primary);
+    color: var(--rdk-dark-text-primary);
   }
 
   .datatable-page-size-select .ant-select-selector {
-    border-color: var(--dt-dark-surface-border) !important;
-    background: var(--dt-dark-surface-bg) !important;
-    color: var(--dt-dark-text-primary) !important;
+    border-color: var(--rdk-dark-surface-border) !important;
+    background: var(--rdk-dark-surface-bg) !important;
+    color: var(--rdk-dark-text-primary) !important;
   }
 
   .datatable-filter-chip {
-    background: var(--dt-dark-surface-bg);
-    border-color: var(--dt-dark-surface-border) !important;
+    background: var(--rdk-dark-surface-bg);
+    border-color: var(--rdk-dark-surface-border) !important;
   }
 
   .datatable-filter-chip-label {
-    color: var(--dt-dark-text-primary);
+    color: var(--rdk-dark-text-primary);
   }
 
   .datatable-group-label-text {
-    color: var(--dt-dark-text-secondary);
+    color: var(--rdk-dark-text-secondary);
   }
 
   .datatable-group-label-icon {
-    color: var(--dt-dark-text-secondary);
+    color: var(--rdk-dark-text-secondary);
   }
 
   .datatable-bookmark-button,
   .datatable-bookmark-all-button,
   .datatable-refresh-button {
     svg {
-      color: var(--dt-dark-text-secondary);
+      color: var(--rdk-dark-text-secondary);
     }
   }
 

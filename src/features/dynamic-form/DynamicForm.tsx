@@ -186,21 +186,21 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
     if (!customColors || typeof document === "undefined") return;
     const root = document.documentElement;
     const vars: Record<string, string | undefined> = {
-      "--dt-primary": customColors.primaryColor,
-      "--dt-light-surface-bg": customColors.lightMode?.surfaceBg,
-      "--dt-light-popover-bg": customColors.lightMode?.popoverBg,
-      "--dt-light-popover-option-hover":
+      "--rdk-primary": customColors.primaryColor,
+      "--rdk-light-surface-bg": customColors.lightMode?.surfaceBg,
+      "--rdk-light-popover-bg": customColors.lightMode?.popoverBg,
+      "--rdk-light-popover-option-hover":
         customColors.lightMode?.popoverOptionHoverBg,
-      "--dt-light-surface-border": customColors.lightMode?.surfaceBorder,
-      "--dt-light-text-primary": customColors.lightMode?.textPrimary,
-      "--dt-light-text-secondary": customColors.lightMode?.textSecondary,
-      "--dt-dark-surface-bg": customColors.darkMode?.surfaceBg,
-      "--dt-dark-popover-bg": customColors.darkMode?.popoverBg,
-      "--dt-dark-popover-option-hover":
+      "--rdk-light-surface-border": customColors.lightMode?.surfaceBorder,
+      "--rdk-light-text-primary": customColors.lightMode?.textPrimary,
+      "--rdk-light-text-secondary": customColors.lightMode?.textSecondary,
+      "--rdk-dark-surface-bg": customColors.darkMode?.surfaceBg,
+      "--rdk-dark-popover-bg": customColors.darkMode?.popoverBg,
+      "--rdk-dark-popover-option-hover":
         customColors.darkMode?.popoverOptionHoverBg,
-      "--dt-dark-surface-border": customColors.darkMode?.surfaceBorder,
-      "--dt-dark-text-primary": customColors.darkMode?.textPrimary,
-      "--dt-dark-text-secondary": customColors.darkMode?.textSecondary,
+      "--rdk-dark-surface-border": customColors.darkMode?.surfaceBorder,
+      "--rdk-dark-text-primary": customColors.darkMode?.textPrimary,
+      "--rdk-dark-text-secondary": customColors.darkMode?.textSecondary,
     };
 
     const previous = new Map<string, string>();

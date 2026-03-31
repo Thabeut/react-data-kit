@@ -37,7 +37,7 @@
   transition: background 0.15s ease;
 
   &:hover {
-    background: var(--dt-light-popover-option-hover);
+    background: var(--rdk-light-popover-option-hover);
   }
 }
 
@@ -48,6 +48,6 @@ html.dark,
   }
 
   .datatable-multi-filter-item:hover {
-    background: var(--dt-dark-popover-option-hover);
+    background: var(--rdk-dark-popover-option-hover);
   }
 }

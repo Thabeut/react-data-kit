@@ -28,7 +28,7 @@
   cursor: pointer;
 
   &:hover {
-    color: var(--dt-primary, #{$color-primary-600});
+    color: var(--rdk-primary, #{$color-primary-600});
   }
 }
 
@@ -58,7 +58,7 @@
   transition: background 0.15s ease;
 
   &:hover {
-    background: var(--dt-light-popover-option-hover);
+    background: var(--rdk-light-popover-option-hover);
   }
 }
 
@@ -70,14 +70,14 @@ html.dark,
   }
 
   .datatable-date-filter-preset-btn:hover {
-    background: var(--dt-dark-popover-option-hover);
+    background: var(--rdk-dark-popover-option-hover);
   }
 }
 
 .datatable-date-picker-dropdown {
   .ant-picker-panel-container {
-    background: var(--dt-light-popover-bg, #ffffff) !important;
-    border: 1px solid var(--dt-light-surface-border, #e5e7eb) !important;
+    background: var(--rdk-light-popover-bg, #ffffff) !important;
+    border: 1px solid var(--rdk-light-surface-border, #e5e7eb) !important;
     box-shadow:
       0 10px 15px -3px rgba(0, 0, 0, 0.08),
       0 4px 6px -4px rgba(0, 0, 0, 0.06) !important;
@@ -85,45 +85,45 @@ html.dark,
 
   .ant-picker-panel {
     background: transparent !important;
-    border-color: var(--dt-light-surface-border, #e5e7eb) !important;
+    border-color: var(--rdk-light-surface-border, #e5e7eb) !important;
   }
 
   .ant-picker-panel:not(:last-child) {
-    border-inline-end: 1px solid var(--dt-light-surface-border, #e5e7eb) !important;
+    border-inline-end: 1px solid var(--rdk-light-surface-border, #e5e7eb) !important;
   }
 
   .ant-picker-header,
   .ant-picker-header button,
   .ant-picker-header-view > button {
-    color: var(--dt-light-text-primary, #{$color-text-primary}) !important;
+    color: var(--rdk-light-text-primary, #{$color-text-primary}) !important;
   }
 
   .ant-picker-header button:hover {
-    color: var(--dt-primary, #{$color-primary-600}) !important;
+    color: var(--rdk-primary, #{$color-primary-600}) !important;
   }
 
   .ant-picker-content th {
-    color: var(--dt-light-text-secondary, #{$color-text-secondary}) !important;
+    color: var(--rdk-light-text-secondary, #{$color-text-secondary}) !important;
   }
 
   .ant-picker-cell-in-view .ant-picker-cell-inner {
-    color: var(--dt-light-text-primary, #{$color-text-primary}) !important;
+    color: var(--rdk-light-text-primary, #{$color-text-primary}) !important;
   }
 
   .ant-picker-cell:not(.ant-picker-cell-in-view) .ant-picker-cell-inner {
-    color: var(--dt-light-text-secondary, #{$color-text-secondary}) !important;
+    color: var(--rdk-light-text-secondary, #{$color-text-secondary}) !important;
   }
 
   .ant-picker-footer {
-    border-top-color: var(--dt-light-surface-border, #e5e7eb) !important;
+    border-top-color: var(--rdk-light-surface-border, #e5e7eb) !important;
   }
 
   .ant-picker-cell-selected .ant-picker-cell-inner,
   .ant-picker-cell-range-start .ant-picker-cell-inner,
   .ant-picker-cell-range-end .ant-picker-cell-inner {
     color: #fff !important;
-    background: var(--dt-primary, #{$color-primary-500}) !important;
-    border-color: var(--dt-primary, #{$color-primary-500}) !important;
+    background: var(--rdk-primary, #{$color-primary-500}) !important;
+    border-color: var(--rdk-primary, #{$color-primary-500}) !important;
   }
 
   .ant-picker-cell-in-view.ant-picker-cell-in-range::before,
@@ -131,41 +131,41 @@ html.dark,
   .ant-picker-cell-range-end:not(.ant-picker-cell-range-end-single)::before {
     background: color-mix(
       in srgb,
-      var(--dt-primary, #{$color-primary-500}) 16%,
+      var(--rdk-primary, #{$color-primary-500}) 16%,
       transparent
     ) !important;
   }
 
   .ant-picker-cell-today .ant-picker-cell-inner::before {
-    border-color: var(--dt-primary, #{$color-primary-500}) !important;
+    border-color: var(--rdk-primary, #{$color-primary-500}) !important;
   }
 
   .ant-picker-now-btn {
-    color: var(--dt-primary, #{$color-primary-500}) !important;
+    color: var(--rdk-primary, #{$color-primary-500}) !important;
   }
 
   .ant-picker-now-btn:hover {
     color: color-mix(
       in srgb,
-      var(--dt-primary, #{$color-primary-500}) 85%,
+      var(--rdk-primary, #{$color-primary-500}) 85%,
       black
     ) !important;
   }
 
   .ant-picker-ok .ant-btn-primary {
-    background: var(--dt-primary, #{$color-primary-500}) !important;
-    border-color: var(--dt-primary, #{$color-primary-500}) !important;
+    background: var(--rdk-primary, #{$color-primary-500}) !important;
+    border-color: var(--rdk-primary, #{$color-primary-500}) !important;
   }
 
   .ant-picker-ok .ant-btn-primary:hover {
     background: color-mix(
       in srgb,
-      var(--dt-primary, #{$color-primary-500}) 85%,
+      var(--rdk-primary, #{$color-primary-500}) 85%,
       black
     ) !important;
     border-color: color-mix(
       in srgb,
-      var(--dt-primary, #{$color-primary-500}) 85%,
+      var(--rdk-primary, #{$color-primary-500}) 85%,
       black
     ) !important;
   }
@@ -174,20 +174,20 @@ html.dark,
 html.dark .datatable-date-picker-dropdown,
 :root[data-theme="dark"] .datatable-date-picker-dropdown {
   .ant-picker-panel-container {
-    background: var(--dt-dark-popover-bg, #{$surface-bg-dark}) !important;
-    border-color: var(--dt-dark-surface-border, #{$surface-border-dark}) !important;
+    background: var(--rdk-dark-popover-bg, #{$surface-bg-dark}) !important;
+    border-color: var(--rdk-dark-surface-border, #{$surface-border-dark}) !important;
     box-shadow:
       0 12px 40px rgba(0, 0, 0, 0.55),
       0 0 0 1px rgba(255, 255, 255, 0.06) !important;
   }
 
   .ant-picker-panel {
-    border-color: var(--dt-dark-surface-border, #{$surface-border-dark}) !important;
+    border-color: var(--rdk-dark-surface-border, #{$surface-border-dark}) !important;
   }
 
   .ant-picker-panel:not(:last-child) {
     border-inline-end-color: var(
-      --dt-dark-surface-border,
+      --rdk-dark-surface-border,
       #{$surface-border-dark}
     ) !important;
   }
@@ -195,23 +195,23 @@ html.dark .datatable-date-picker-dropdown,
   .ant-picker-header,
   .ant-picker-header button,
   .ant-picker-header-view > button {
-    color: var(--dt-dark-text-primary, #{$color-text-primary-dark}) !important;
+    color: var(--rdk-dark-text-primary, #{$color-text-primary-dark}) !important;
   }
 
   .ant-picker-header button:hover {
-    color: var(--dt-primary, #{$color-primary-400}) !important;
+    color: var(--rdk-primary, #{$color-primary-400}) !important;
   }
 
   .ant-picker-content th {
-    color: var(--dt-dark-text-secondary, #{$color-text-secondary-dark}) !important;
+    color: var(--rdk-dark-text-secondary, #{$color-text-secondary-dark}) !important;
   }
 
   .ant-picker-cell-in-view .ant-picker-cell-inner {
-    color: var(--dt-dark-text-primary, #{$color-text-primary-dark}) !important;
+    color: var(--rdk-dark-text-primary, #{$color-text-primary-dark}) !important;
   }
 
   .ant-picker-cell:not(.ant-picker-cell-in-view) .ant-picker-cell-inner {
-    color: var(--dt-dark-text-secondary, #{$color-text-secondary-dark}) !important;
+    color: var(--rdk-dark-text-secondary, #{$color-text-secondary-dark}) !important;
     opacity: 0.5;
   }
 
@@ -220,20 +220,20 @@ html.dark .datatable-date-picker-dropdown,
     ):not(.ant-picker-cell-range-end):not(.ant-picker-cell-disabled)
     .ant-picker-cell-inner {
     background: var(
-      --dt-dark-popover-option-hover,
+      --rdk-dark-popover-option-hover,
       #{$color-bg-secondary-dark}
     ) !important;
   }
 
   .ant-picker-footer {
     border-top-color: var(
-      --dt-dark-surface-border,
+      --rdk-dark-surface-border,
       #{$surface-border-dark}
     ) !important;
   }
 
   .ant-picker-ranges {
-    color: var(--dt-dark-text-secondary, #{$color-text-secondary-dark});
+    color: var(--rdk-dark-text-secondary, #{$color-text-secondary-dark});
   }
 
   .ant-picker-cell-in-view.ant-picker-cell-in-range::before,
@@ -241,15 +241,15 @@ html.dark .datatable-date-picker-dropdown,
   .ant-picker-cell-range-end:not(.ant-picker-cell-range-end-single)::before {
     background: color-mix(
       in srgb,
-      var(--dt-primary, #{$color-primary-500}) 32%,
-      var(--dt-dark-popover-bg, #{$surface-bg-dark})
+      var(--rdk-primary, #{$color-primary-500}) 32%,
+      var(--rdk-dark-popover-bg, #{$surface-bg-dark})
     ) !important;
   }
 
   .ant-picker-now-btn:hover {
     color: color-mix(
       in srgb,
-      var(--dt-primary, #{$color-primary-400}) 82%,
+      var(--rdk-primary, #{$color-primary-400}) 82%,
       white
     ) !important;
   }
@@ -257,12 +257,12 @@ html.dark .datatable-date-picker-dropdown,
   .ant-picker-ok .ant-btn-primary:hover {
     background: color-mix(
       in srgb,
-      var(--dt-primary, #{$color-primary-500}) 88%,
+      var(--rdk-primary, #{$color-primary-500}) 88%,
       white
     ) !important;
     border-color: color-mix(
       in srgb,
-      var(--dt-primary, #{$color-primary-500}) 88%,
+      var(--rdk-primary, #{$color-primary-500}) 88%,
       white
     ) !important;
   }
@@ -276,48 +276,48 @@ html.dark .datatable-date-filter-custom .ui-date-picker-range.ant-picker,
 :root[data-theme="dark"]
   .datatable-date-filter-custom
   .ui-date-picker-range.ant-picker {
-  background: var(--dt-dark-surface-bg, #{$color-bg-primary-dark}) !important;
-  border-color: var(--dt-dark-surface-border, #{$surface-border-dark}) !important;
+  background: var(--rdk-dark-surface-bg, #{$color-bg-primary-dark}) !important;
+  border-color: var(--rdk-dark-surface-border, #{$surface-border-dark}) !important;
 
   .ant-picker-input > input {
-    color: var(--dt-dark-text-primary, #{$color-text-primary-dark}) !important;
+    color: var(--rdk-dark-text-primary, #{$color-text-primary-dark}) !important;
   }
 
   .ant-picker-input > input::placeholder {
-    color: var(--dt-dark-text-secondary, #{$color-text-secondary-dark}) !important;
+    color: var(--rdk-dark-text-secondary, #{$color-text-secondary-dark}) !important;
   }
 
   .ant-picker-range-separator,
   .ant-picker-suffix {
-    color: var(--dt-dark-text-secondary, #{$color-text-secondary-dark}) !important;
+    color: var(--rdk-dark-text-secondary, #{$color-text-secondary-dark}) !important;
   }
 
   &:hover {
-    border-color: var(--dt-primary, #{$color-primary-400}) !important;
+    border-color: var(--rdk-primary, #{$color-primary-400}) !important;
   }
 
   &.ant-picker-focused {
-    border-color: var(--dt-primary, #{$color-primary-500}) !important;
+    border-color: var(--rdk-primary, #{$color-primary-500}) !important;
     box-shadow: 0 0 0 2px
       color-mix(
         in srgb,
-        var(--dt-primary, #{$color-primary-500}) 35%,
+        var(--rdk-primary, #{$color-primary-500}) 35%,
         transparent
       ) !important;
   }
 }
 
 .ui-date-picker-range.ant-picker-outlined:hover {
-  border-color: var(--dt-primary, #{$color-primary-400}) !important;
+  border-color: var(--rdk-primary, #{$color-primary-400}) !important;
 }
 
 .ui-date-picker-range.ant-picker-outlined:focus,
 .ui-date-picker-range.ant-picker-outlined:focus-within {
-  border-color: var(--dt-primary, #{$color-primary-500}) !important;
+  border-color: var(--rdk-primary, #{$color-primary-500}) !important;
   box-shadow: 0 0 0 2px
     color-mix(
       in srgb,
-      var(--dt-primary, #{$color-primary-500}) 20%,
+      var(--rdk-primary, #{$color-primary-500}) 20%,
       transparent
     ) !important;
 }
