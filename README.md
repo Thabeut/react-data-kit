@@ -4,8 +4,8 @@
 
 [![npm version](https://img.shields.io/npm/v/@thabeut/react-data-kit)](https://www.npmjs.com/package/@thabeut/react-data-kit)
 [![npm downloads](https://img.shields.io/npm/dm/@thabeut/react-data-kit)](https://www.npmjs.com/package/@thabeut/react-data-kit)
-[![GitHub stars](https://img.shields.io/github/stars/<your-org>/<your-repo>?style=social)](https://github.com/<your-org>/<your-repo>)
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/<your-org>/<your-repo>/blob/main/LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/Thabeut/react-data-kit?style=social)](https://github.com/Thabeut/react-data-kit)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Thabeut/react-data-kit/blob/main/LICENSE)
 
 TypeScript-first React components for data-heavy UIs: DataTable, QueryTable, DynamicForm, CrudManager, and Infinite Scroll adapters for RTK Query and React Query.
 
@@ -41,13 +41,13 @@ Make sure your app provides the required peers:
 ## Playground / Docs Site
 
 - Local playground: run `npm run playground:dev`
-- Deploy URL placeholder: `<https://<your-playground-domain>>`
+- Deployed playground/docs: `https://react-data-kit.vercel.app/`
 
 ## Links
 
-- GitHub repository: `<https://github.com/<your-org>/<your-repo>>`
+- GitHub repository: `https://github.com/Thabeut/react-data-kit`
 - NPM package: `<https://www.npmjs.com/package/@thabeut/react-data-kit>`
-- Hosted docs/playground: `<https://<your-playground-domain>>`
+- Hosted docs/playground: `https://react-data-kit.vercel.app/`
 
 ## License
 
