@@ -7,7 +7,11 @@ import {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { Alert, Image, Tag } from "antd";
-import { DataTable, type InternalRow } from "@thabeut/react-data-kit";
+import {
+  DataTable,
+  DataTableFilterTypeEnum,
+  type InternalRow,
+} from "@thabeut/react-data-kit";
 import type { DataTableSortState } from "@thabeut/react-data-kit";
 import { DemoPageShell } from "../../components/DemoPageShell";
 import { ExamplePreviewCodeFlip } from "../../components/ExamplePreviewCodeFlip";
@@ -82,7 +86,7 @@ function buildProductsUrl(opts: {
 const code = [
   `import { useEffect, useLayoutEffect, useMemo, useState } from "react";`,
   `import { Image, Tag } from "antd";`,
-  `import { DataTable } from "@thabeut/react-data-kit";`,
+  `import { DataTable, DataTableFilterTypeEnum } from "@thabeut/react-data-kit";`,
   `import type { DataTableSortState, DataTableColumnInfo, DataTableFilterConfig } from "@thabeut/react-data-kit";`,
   ``,
   `const BASE = "https://dummyjson.com/products";`,
@@ -208,7 +212,7 @@ const code = [
   `    {`,
   `      id: "category",`,
   `      label: "Category",`,
-  `      type: "multi",`,
+  `      type: DataTableFilterTypeEnum.Multi,`,
   `      options: categoryOptions,`,
   `    },`,
   `  ];`,
@@ -438,7 +442,7 @@ export function DataTableServerPage() {
               {
                 id: "category",
                 label: t("dtFilterCategory"),
-                type: "multi",
+                type: DataTableFilterTypeEnum.Multi,
                 options: categoryOptions,
               },
             ]}

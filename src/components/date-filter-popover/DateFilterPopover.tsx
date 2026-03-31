@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 import { Icon } from "@iconify/react";
 import { useTranslation } from "react-i18next";
 import { datatableIconNames } from "../../constants/datatable-icons";
+import { RDK_I18N_DEFAULT_TEXT } from "../../constants/rdk-i18n-keys";
 import type { IDateFilterOption } from "../../types/data-table";
 import { Button } from "../button";
 import { PopoverEmpty } from "../popover-empty";
@@ -114,7 +115,7 @@ export function DateFilterPopover({
             height={16}
             style={{ flexShrink: 0 }}
           />
-          {t("back")}
+          {t("back", { defaultValue: RDK_I18N_DEFAULT_TEXT.back })}
         </Button>
         <DatePicker.RangePicker
           className="ui-date-picker-range"

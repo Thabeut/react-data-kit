@@ -3,6 +3,7 @@ import { Alert, Button, Space, Tag, Typography, Divider } from "antd";
 import { useSearchParams } from "react-router-dom";
 import {
   QueryTable,
+  DataTableFilterTypeEnum,
   parseTableState,
   serializeTableState,
   type QueryTableProps,
@@ -143,7 +144,7 @@ export function ProductsQueryTableDemo({ useQuery, tagType }: DemoProps) {
       {
         id: "category",
         label: "Category",
-        type: "multi" as const,
+        type: DataTableFilterTypeEnum.Single,
         options: categoryOptions,
         searchPlaceholder: "Search categories",
       },

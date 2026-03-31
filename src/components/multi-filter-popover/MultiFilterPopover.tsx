@@ -12,6 +12,7 @@ export interface MultiFilterPopoverProps {
   options: IMultiFilterOption[];
   value?: (string | number)[];
   onChange: (value: (string | number)[]) => void;
+  single?: boolean;
   searchPlaceholder?: string;
   renderFilterOption?: (option: IMultiFilterOption) => ReactNode;
 }
@@ -20,6 +21,7 @@ export function MultiFilterPopover({
   options,
   value = [],
   onChange,
+  single = false,
   searchPlaceholder,
   renderFilterOption,
 }: MultiFilterPopoverProps) {
@@ -41,9 +43,13 @@ export function MultiFilterPopover({
   }, [options, search]);
 
   const handleToggle = (optValue: string | number) => {
-    const next = selectedSet.has(String(optValue))
-      ? value.filter((v) => String(v) !== String(optValue))
-      : [...value, optValue];
+    const next = single
+      ? selectedSet.has(String(optValue))
+        ? []
+        : [optValue]
+      : selectedSet.has(String(optValue))
+        ? value.filter((v) => String(v) !== String(optValue))
+        : [...value, optValue];
     onChange(next);
   };
 

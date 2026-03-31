@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 
 export function QueryTableReactQueryPage() {
   const { t } = useTranslation();
-  const code = String.raw`import { QueryTable, parseTableState, serializeTableState } from "@thabeut/react-data-kit";
+  const code = String.raw`import { QueryTable, DataTableFilterTypeEnum, parseTableState, serializeTableState } from "@thabeut/react-data-kit";
 import { useSearchParams } from "react-router-dom";
 import { useProductsReactQuery } from "./services/productsReact";
 
@@ -32,7 +32,7 @@ const filters: DataTableFilterConfig[] = [
   {
     id: "category",
     label: "Category",
-    type: "multi",
+    type: DataTableFilterTypeEnum.Multi,
     options: [
       { value: "clothes", label: "clothes" },
       { value: "electronics", label: "electronics" },

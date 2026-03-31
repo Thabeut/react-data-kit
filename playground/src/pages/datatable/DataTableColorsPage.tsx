@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Button, Input, Space, Tag, Typography } from "antd";
 import { useTranslation } from "react-i18next";
-import { DataTable } from "@thabeut/react-data-kit";
+import { DataTable, DataTableFilterTypeEnum } from "@thabeut/react-data-kit";
 import type { DataTableCustomColors } from "@thabeut/react-data-kit";
 import { DemoPageShell } from "../../components/DemoPageShell";
 import { ExamplePreviewCodeFlip } from "../../components/ExamplePreviewCodeFlip";
@@ -100,6 +100,7 @@ export function DataTableColorsPage() {
 import { Tag } from "antd";
 import {
   DataTable,
+  DataTableFilterTypeEnum,
   type DataTableCustomColors,
   type DataTableFilterConfig,
   type DataTableColumnInfo,
@@ -147,19 +148,19 @@ const filters: DataTableFilterConfig[] = [
   {
     id: "status",
     label: "Status",
-    type: "multi",
+    type: DataTableFilterTypeEnum.Multi,
     options: statusOptions,
   },
   {
     id: "category",
     label: "Category",
-    type: "multi",
+    type: DataTableFilterTypeEnum.Multi,
     options: categoryOptions,
   },
   {
     id: "updatedAt",
     label: "Updated",
-    type: "date",
+    type: DataTableFilterTypeEnum.Date,
     dateOptions,
   },
 ];
@@ -471,7 +472,7 @@ export function DataTableColorsExample() {
                 {
                   id: "status",
                   label: t("dtFilterStatus"),
-                  type: "multi",
+                  type: DataTableFilterTypeEnum.Multi,
                   options: [
                     { value: "Active", label: "Active" },
                     { value: "Away", label: "Away" },
@@ -481,7 +482,7 @@ export function DataTableColorsExample() {
                 {
                   id: "category",
                   label: t("dtFilterCategory"),
-                  type: "multi",
+                  type: DataTableFilterTypeEnum.Multi,
                   options: [
                     { value: "Core", label: "Core" },
                     { value: "Billing", label: "Billing" },
@@ -491,7 +492,7 @@ export function DataTableColorsExample() {
                 {
                   id: "updatedAt",
                   label: t("dtFilterPeriod"),
-                  type: "date",
+                  type: DataTableFilterTypeEnum.Date,
                   dateOptions: [
                     { value: "today", label: t("dtDateToday") },
                     { value: "last_7_days", label: t("dtDateLast7") },

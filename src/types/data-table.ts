@@ -3,6 +3,13 @@ import type { ColumnType, TableProps } from "antd/es/table";
 
 export type DataTableKey = string | number;
 export type DataTableSortOrder = "ascend" | "descend";
+export const DataTableFilterTypeEnum = {
+  Date: "date",
+  Multi: "multi",
+  Single: "single",
+} as const;
+export type DataTableFilterType =
+  (typeof DataTableFilterTypeEnum)[keyof typeof DataTableFilterTypeEnum];
 
 export interface DataTableSortState {
   columnId: string;
@@ -40,7 +47,7 @@ export interface DataTableFilterConfig {
   id: string;
   label: string;
 
-  type?: "date" | "multi";
+  type?: DataTableFilterType;
   dateOptions?: IDateFilterOption[];
   options?: IMultiFilterOption[];
   optionsQuery?: IOptionsQueryConfig;

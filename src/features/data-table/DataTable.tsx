@@ -34,6 +34,7 @@ import {
   loadColumnWidths,
   saveColumnWidths,
 } from "../../utils/data-table-column-widths";
+import { RDK_I18N_DEFAULT_TEXT } from "../../constants/rdk-i18n-keys";
 import "./data-table.scss";
 
 export function DataTable<T extends { [key: string]: unknown }>(
@@ -245,14 +246,19 @@ export function DataTable<T extends { [key: string]: unknown }>(
       );
     }
 
-    if (type === "multi") {
-      const arr = Array.isArray(value) ? value : [];
+    if (type === "multi" || type === "single") {
+      const arr = Array.isArray(value)
+        ? value
+        : value != null
+          ? [value as string | number]
+          : [];
       if (filter.optionsQuery) {
         return (
           <MultiFilterWithQuery
             optionsQuery={filter.optionsQuery}
             value={arr as (string | number)[]}
             onChange={(next) => setFilterValue(filter.id, next)}
+            single={type === "single"}
             searchPlaceholder={filter.searchPlaceholder}
             renderFilterOption={filter.renderFilterOption}
           />
@@ -264,6 +270,7 @@ export function DataTable<T extends { [key: string]: unknown }>(
             options={filter.options}
             value={arr as (string | number)[]}
             onChange={(next) => setFilterValue(filter.id, next)}
+            single={type === "single"}
             searchPlaceholder={filter.searchPlaceholder}
             renderFilterOption={filter.renderFilterOption}
           />
@@ -364,7 +371,11 @@ export function DataTable<T extends { [key: string]: unknown }>(
           continue;
         }
 
-        const selected = Array.isArray(value) ? value : [];
+        const selected = Array.isArray(value)
+          ? value
+          : value != null
+            ? [value as string | number]
+            : [];
         if (!selected.length) continue;
         rows = rows.filter((row) =>
           selected.includes(row[filter.id as keyof T] as string | number),
@@ -597,7 +608,9 @@ export function DataTable<T extends { [key: string]: unknown }>(
                   "datatable-bookmark-button",
                   isBookmarked && "datatable-bookmark-button-active",
                 )}
-                aria-label={t("bookmark")}
+                aria-label={t("bookmark", {
+                  defaultValue: RDK_I18N_DEFAULT_TEXT.bookmark,
+                })}
               >
                 <Icon
                   icon={
@@ -641,7 +654,9 @@ export function DataTable<T extends { [key: string]: unknown }>(
                 "datatable-bookmark-all-button",
                 scopeAllBookmarked && "datatable-bookmark-all-button-active",
               )}
-              aria-label={t("bookmarkAll")}
+              aria-label={t("bookmarkAll", {
+                defaultValue: RDK_I18N_DEFAULT_TEXT.bookmarkAll,
+              })}
             >
               <Icon
                 icon={
@@ -660,7 +675,9 @@ export function DataTable<T extends { [key: string]: unknown }>(
               type="button"
               onClick={handleRefresh}
               className="datatable-refresh-button"
-              aria-label={t("refresh")}
+              aria-label={t("refresh", {
+                defaultValue: RDK_I18N_DEFAULT_TEXT.refresh,
+              })}
             >
               <Icon
                 icon={datatableIconNames.RefreshCw}
@@ -729,9 +746,11 @@ export function DataTable<T extends { [key: string]: unknown }>(
   const totalSelected =
     selectedRowKeys.length === 0
       ? t("datatableSelectedRowsNone", {
+          defaultValue: RDK_I18N_DEFAULT_TEXT.datatableSelectedRowsNone,
           total: totalItemsForFooter,
         })
       : t("datatableSelectedRowsSome", {
+          defaultValue: RDK_I18N_DEFAULT_TEXT.datatableSelectedRowsSome,
           selected: selectedRowKeys.length,
           total: totalItemsForFooter,
         });
@@ -772,7 +791,12 @@ export function DataTable<T extends { [key: string]: unknown }>(
         useInternalSearch={useInternalSearch}
         setSearchInternal={setSearchInternal}
         onSearch={onSearch}
-        inputPlaceholder={searchPlaceholder ?? t("searchByName")}
+        inputPlaceholder={
+          searchPlaceholder ??
+          t("searchByName", {
+            defaultValue: RDK_I18N_DEFAULT_TEXT.searchByName,
+          })
+        }
         renderToolbarLeft={renderToolbarLeft}
         filters={filters}
         renderFilterContent={renderFilterContent}
@@ -786,7 +810,9 @@ export function DataTable<T extends { [key: string]: unknown }>(
         columnsInfo={columnsInfo}
         visibleColumnIds={visibleColumnIds}
         handleColumnToggle={handleColumnToggle}
-        toggleColumnsTitle={t("toggleColumns")}
+        toggleColumnsTitle={t("toggleColumns", {
+          defaultValue: RDK_I18N_DEFAULT_TEXT.toggleColumns,
+        })}
       />
 
       <div
@@ -809,11 +835,14 @@ export function DataTable<T extends { [key: string]: unknown }>(
         <DataTableFooter
           showSelectionSummary={!disableSelectionAndBookmark}
           totalSelectedLabel={totalSelected}
-          rowsPerPageLabel={t("rowsPerPage")}
+          rowsPerPageLabel={t("rowsPerPage", {
+            defaultValue: RDK_I18N_DEFAULT_TEXT.rowsPerPage,
+          })}
           pageSize={pageSize}
           pageSizeOptions={pagination.pageSizeOptions}
           onPageSizeChange={handlePageSizeChange}
           pageInfoLabel={t("datatablePageOf", {
+            defaultValue: RDK_I18N_DEFAULT_TEXT.datatablePageOf,
             page: currentPage,
             totalPages,
           })}

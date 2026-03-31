@@ -33,7 +33,6 @@
   border-radius: 10px;
   border: 1px solid var(--docs-border);
   object-fit: cover;
-  background: #fff;
 }
 
 .docs-sidebar__logo-link {
@@ -365,7 +364,6 @@
   max-width: 320px;
   border-radius: 12px;
   border: 1px solid var(--docs-border);
-  background: #fff;
 }
 
 .docs-home-hero__title.ant-typography {

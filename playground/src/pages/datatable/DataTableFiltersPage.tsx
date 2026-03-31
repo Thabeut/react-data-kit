@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { DataTable } from "@thabeut/react-data-kit";
+import { DataTable, DataTableFilterTypeEnum } from "@thabeut/react-data-kit";
 import { DemoPageShell } from "../../components/DemoPageShell";
 import { ExamplePreviewCodeFlip } from "../../components/ExamplePreviewCodeFlip";
 import {
@@ -13,6 +13,7 @@ export function DataTableFiltersPage() {
   const { t } = useTranslation();
   const code = String.raw`import {
   DataTable,
+  DataTableFilterTypeEnum,
   type DataTableColumnInfo,
   type DataTableFilterConfig,
   type IMultiFilterOption,
@@ -52,15 +53,15 @@ const filters: DataTableFilterConfig[] = [
   {
     id: "status",
     label: "Status",
-    type: "multi",
+    type: DataTableFilterTypeEnum.Multi,
     options: statusOptions,
     searchPlaceholder: "Search",
   },
-  { id: "category", label: "Category", type: "multi", options: categoryOptions },
+  { id: "category", label: "Category", type: DataTableFilterTypeEnum.Multi, options: categoryOptions },
   {
     id: "updatedAt",
     label: "Updated",
-    type: "date",
+    type: DataTableFilterTypeEnum.Date,
     dateOptions,
   },
 ];
@@ -108,20 +109,20 @@ export function DataTableFiltersExample() {
               {
                 id: "status",
                 label: t("dtFilterStatus"),
-                type: "multi",
+                type: DataTableFilterTypeEnum.Single,
                 options: statusOptions,
                 searchPlaceholder: t("searchByName"),
               },
               {
                 id: "category",
                 label: t("dtFilterCategory"),
-                type: "multi",
+                type: DataTableFilterTypeEnum.Multi,
                 options: categoryOptions,
               },
               {
                 id: "updatedAt",
                 label: t("dtFilterPeriod"),
-                type: "date",
+                type: DataTableFilterTypeEnum.Date,
                 dateOptions: [
                   { value: "today", label: t("dtDateToday") },
                   { value: "yesterday", label: t("dtDateYesterday") },

@@ -130,6 +130,12 @@ function mapFilterValueForDataTable(
     return { date_from: range.from, date_to: range.to };
   }
 
+  if (type === "single") {
+    if (Array.isArray(raw)) return raw[0] != null ? String(raw[0]) : undefined;
+    if (typeof raw === "string") return raw;
+    return undefined;
+  }
+
   // multi
   if (Array.isArray(raw)) return raw.map(String);
   if (typeof raw === "string") return [raw];
@@ -164,6 +170,12 @@ function mapFilterValueForQuery(
     }
 
     return { date_from: range.from, date_to: range.to };
+  }
+
+  if (type === "single") {
+    if (Array.isArray(raw)) return raw[0] != null ? String(raw[0]) : undefined;
+    if (typeof raw === "string") return raw;
+    return undefined;
   }
 
   // multi
@@ -375,6 +387,14 @@ export function QueryTable<TItem extends { [key: string]: unknown }, TRaw>(
           }
         } else {
           delete nextFilters[filterId];
+        }
+      } else if (type === "single") {
+        const nextValues = Array.isArray(value) ? value.map(String) : [];
+        const first = nextValues[0];
+        if (!first) {
+          delete nextFilters[filterId];
+        } else {
+          nextFilters[filterId] = first;
         }
       } else {
         const nextValues = Array.isArray(value) ? value.map(String) : [];

@@ -4,12 +4,10 @@ import { useTranslation } from "react-i18next";
 import { Popover } from "antd";
 import { Icon } from "@iconify/react";
 import { datatableIconNames } from "../../constants/datatable-icons";
+import { RDK_I18N_DEFAULT_TEXT } from "../../constants/rdk-i18n-keys";
 import { Button } from "../button";
 import { DeleteModal } from "../delete-modal";
-import type {
-  ActionItem,
-  DeleteModalConfig,
-} from "../../types/data-table";
+import type { ActionItem, DeleteModalConfig } from "../../types/data-table";
 
 export interface ActionsPopoverProps<T = unknown> {
   record: T;
@@ -51,7 +49,9 @@ export function ActionsPopover<T extends { [key: string]: unknown }>({
   if (onPreview) {
     actions.push({
       key: "preview",
-      label: t("actionPreview"),
+      label: t("actionPreview", {
+        defaultValue: RDK_I18N_DEFAULT_TEXT.actionPreview,
+      }),
       icon: datatableIconNames.Eye,
       onClick: (r) => onPreview!(r),
     });
@@ -60,7 +60,9 @@ export function ActionsPopover<T extends { [key: string]: unknown }>({
   if (onEdit) {
     actions.push({
       key: "edit",
-      label: t("actionEdit"),
+      label: t("actionEdit", {
+        defaultValue: RDK_I18N_DEFAULT_TEXT.actionEdit,
+      }),
       icon: datatableIconNames.Edit,
       onClick: (r) => onEdit!(r),
     });
@@ -69,7 +71,9 @@ export function ActionsPopover<T extends { [key: string]: unknown }>({
   if (onDelete) {
     actions.push({
       key: "delete",
-      label: t("actionDelete"),
+      label: t("actionDelete", {
+        defaultValue: RDK_I18N_DEFAULT_TEXT.actionDelete,
+      }),
       icon: datatableIconNames.Trash2,
       onClick: handleDeleteClick,
       danger: true,
@@ -127,7 +131,9 @@ export function ActionsPopover<T extends { [key: string]: unknown }>({
           unstyled
           type="button"
           className="ui-actions-popover__trigger"
-          aria-label={t("actions")}
+          aria-label={t("actions", {
+            defaultValue: RDK_I18N_DEFAULT_TEXT.actions,
+          })}
           onClick={(e) => {
             e.stopPropagation();
           }}

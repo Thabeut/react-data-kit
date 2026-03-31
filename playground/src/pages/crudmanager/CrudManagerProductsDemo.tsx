@@ -10,6 +10,7 @@ import {
 import { useTranslation } from "react-i18next";
 import {
   CrudManager,
+  DataTableFilterTypeEnum,
   DynamicFieldTypeEnum,
   parseTableState,
   serializeTableState,
@@ -144,7 +145,7 @@ export function CrudManagerProductsDemo({
       {
         id: "category",
         label: t("crudManagerFilterCategory", { defaultValue: "Category" }),
-        type: "multi" as const,
+        type: DataTableFilterTypeEnum.Single,
         options: categoryOptions,
         searchPlaceholder: t("crudManagerSearchCategories", {
           defaultValue: "Search categories",

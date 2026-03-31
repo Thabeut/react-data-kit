@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
+import { RDK_I18N_DEFAULT_TEXT } from "../../constants/rdk-i18n-keys";
 import { Loader } from "../loader";
 import type { IOptionsQueryConfig, IMultiFilterOption } from "../../types/data-table";
 import { MultiFilterPopover } from "../multi-filter-popover";
@@ -8,6 +9,7 @@ export interface MultiFilterWithQueryProps {
   optionsQuery: IOptionsQueryConfig;
   value?: (string | number)[];
   onChange: (value: (string | number)[]) => void;
+  single?: boolean;
   searchPlaceholder?: string;
   renderFilterOption?: (option: IMultiFilterOption) => ReactNode;
 }
@@ -16,6 +18,7 @@ export function MultiFilterWithQuery({
   optionsQuery,
   value = [],
   onChange,
+  single = false,
   searchPlaceholder,
   renderFilterOption,
 }: MultiFilterWithQueryProps) {
@@ -53,7 +56,9 @@ export function MultiFilterWithQuery({
           lineHeight: "20px",
         }}
       >
-        {t("noOptionsAvailable")}
+        {t("noOptionsAvailable", {
+          defaultValue: RDK_I18N_DEFAULT_TEXT.noOptionsAvailable,
+        })}
       </div>
     );
   }
@@ -63,6 +68,7 @@ export function MultiFilterWithQuery({
       options={options}
       value={value}
       onChange={onChange}
+      single={single}
       searchPlaceholder={searchPlaceholder}
       renderFilterOption={renderFilterOption}
     />

@@ -9,6 +9,7 @@ export function QueryTableRtkQueryPage() {
   const { t } = useTranslation();
   const code = String.raw`import {
   QueryTable,
+  DataTableFilterTypeEnum,
   parseTableState,
   serializeTableState,
 } from "@thabeut/react-data-kit";
@@ -37,7 +38,7 @@ const filters: DataTableFilterConfig[] = [
   {
     id: "category",
     label: "Category",
-    type: "multi",
+    type: DataTableFilterTypeEnum.Multi,
     options: [
       { value: "clothes", label: "clothes" },
       { value: "electronics", label: "electronics" },

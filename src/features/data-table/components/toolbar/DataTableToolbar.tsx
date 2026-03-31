@@ -80,7 +80,7 @@ export function DataTableToolbar<T extends { [key: string]: unknown }>(
         {filters?.map((filter) => {
           const hasPopover =
             (filter.type === "date" && filter.dateOptions) ||
-            (filter.type === "multi" &&
+            ((filter.type === "multi" || filter.type === "single") &&
               (filter.options ?? filter.optionsQuery));
           const isActive = hasPopover
             ? isFilterActive(filter)
