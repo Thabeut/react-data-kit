@@ -63,7 +63,13 @@ export function DocsLayout({
             >
               <Icon icon={ICONS.github} width={18} height={18} />
             </a>
-            <a className="docs-topbar__link" href="#" aria-label="npm">
+            <a
+              className="docs-topbar__link"
+              href="https://www.npmjs.com/package/@thabeut/react-data-kit"
+              aria-label="npm"
+              target="_blank"
+              rel="noreferrer"
+            >
               <Icon icon={ICONS.npm} width={18} height={18} />
             </a>
           </div>
