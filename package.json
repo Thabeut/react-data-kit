@@ -2,6 +2,18 @@
   "name": "@thabeut/react-data-kit",
   "version": "0.1.1",
   "description": "React data kit: datatable, query table, dynamic forms, CRUD, infinite scroll — TypeScript, Ant Design, React Hook Form",
+  "keywords": [
+    "react",
+    "typescript",
+    "antd",
+    "data-table",
+    "query-table",
+    "dynamic-form",
+    "crud",
+    "infinite-scroll",
+    "react-hook-form",
+    "ui-components"
+  ],
   "license": "MIT",
   "author": "Thabet Khiari",
   "repository": {
@@ -26,7 +38,9 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
   "sideEffects": [
     "**/*.css"
