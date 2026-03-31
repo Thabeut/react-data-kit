@@ -9,23 +9,12 @@ export type SelectProps<T = unknown> = AntSelectProps<T> & {
 };
 
 function SelectInner<T>(props: SelectProps<T>) {
-  const { className, popupClassName, classNames, ...rest } = props;
-  const mergedClassNames = {
-    ...classNames,
-    popup: {
-      ...classNames?.popup,
-      root: clsx(
-        "rdk-theme-scope ui-select-dropdown",
-        popupClassName,
-        classNames?.popup?.root,
-      ),
-    },
-  };
+  const { className, popupClassName, ...rest } = props;
   return (
     <AntSelect<T>
       {...rest}
       className={clsx("ui-select", className)}
-      classNames={mergedClassNames}
+      popupClassName={clsx("rdk-theme-scope ui-select-dropdown", popupClassName)}
     />
   );
 }
