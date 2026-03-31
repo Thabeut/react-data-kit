@@ -41,13 +41,13 @@ Make sure your app provides the required peers:
 ## Playground / Docs Site
 
 - Local playground: run `npm run playground:dev`
-- Deployed playground/docs: `https://react-data-kit.vercel.app/`
+- Deployed playground/docs: [https://react-data-kit.vercel.app/](https://react-data-kit.vercel.app/)
 
 ## Links
 
-- GitHub repository: `https://github.com/Thabeut/react-data-kit`
-- NPM package: `<https://www.npmjs.com/package/@thabeut/react-data-kit>`
-- Hosted docs/playground: `https://react-data-kit.vercel.app/`
+- GitHub repository: [https://github.com/Thabeut/react-data-kit](https://github.com/Thabeut/react-data-kit)
+- NPM package: [https://www.npmjs.com/package/@thabeut/react-data-kit](https://www.npmjs.com/package/@thabeut/react-data-kit)
+- Hosted docs/playground: [https://react-data-kit.vercel.app/](https://react-data-kit.vercel.app/)
 
 ## License
 
