@@ -1,6 +1,6 @@
 {
   "name": "@thabeut/react-data-kit",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "React data kit: datatable, query table, dynamic forms, CRUD, infinite scroll — TypeScript, Ant Design, React Hook Form",
   "keywords": [
     "react",
