@@ -6,7 +6,9 @@ export default defineConfig({
   format: ["cjs", "esm"],
   dts: true,
   splitting: false,
-  sourcemap: true,
+  // Source maps add ~700KB to the published tarball; set SOURCEMAP=true when you need them locally.
+  sourcemap: process.env.SOURCEMAP === "true",
+  minify: true,
   clean: true,
   treeshake: true,
   esbuildPlugins: [sassPlugin()],

@@ -38,7 +38,7 @@ export function DeleteModal({
       width={400}
       closable
       centered
-      destroyOnHidden
+      destroyOnClose
       className="ui-delete-modal"
       maskStyle={{ background: "transparent" }}
       onCancel={(e) => {

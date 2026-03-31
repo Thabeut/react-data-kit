@@ -3,6 +3,7 @@
 ![React Data Kit logo](https://res.cloudinary.com/df4jaqtep/image/upload/v1774968119/qd0ab0ey07jylsktzka6.png)
 
 [![npm version](https://img.shields.io/npm/v/@thabeut/react-data-kit)](https://www.npmjs.com/package/@thabeut/react-data-kit)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5+-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![npm downloads](https://img.shields.io/npm/dm/@thabeut/react-data-kit)](https://www.npmjs.com/package/@thabeut/react-data-kit)
 [![GitHub stars](https://img.shields.io/github/stars/Thabeut/react-data-kit?style=social)](https://github.com/Thabeut/react-data-kit)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Thabeut/react-data-kit/blob/main/LICENSE)

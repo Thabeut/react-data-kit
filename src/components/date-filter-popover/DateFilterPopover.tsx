@@ -119,7 +119,7 @@ export function DateFilterPopover({
         </Button>
         <DatePicker.RangePicker
           className="ui-date-picker-range"
-          classNames={{ popup: { root: "datatable-date-picker-dropdown" } }}
+          popupClassName="datatable-date-picker-dropdown"
           style={{ width: "100%" }}
           value={value ? [dayjs(value.date_from), dayjs(value.date_to)] : null}
           onChange={handleRangeChange}
