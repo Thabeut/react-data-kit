@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { Icon } from "@iconify/react";
 import clsx from "clsx";
+import { ICONS } from "../constants/icons";
 import "./example-preview-code-flip.css";
 
 type ExamplePreviewCodeFlipProps = {
@@ -59,9 +60,9 @@ export function ExamplePreviewCodeFlip({
             className={`dt-example-flip__copy${copied ? " dt-example-flip__copy--copied" : ""}`}
             icon={
               copied ? (
-                <Icon icon="lucide:check" width={16} height={16} aria-hidden />
+                <Icon icon={ICONS.check} width={16} height={16} aria-hidden />
               ) : (
-                <Icon icon="lucide:copy" width={16} height={16} aria-hidden />
+                <Icon icon={ICONS.copy} width={16} height={16} aria-hidden />
               )
             }
             disabled={!snippet}

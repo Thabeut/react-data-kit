@@ -52,7 +52,10 @@ import {
   CrudManagerBasicPage,
   CrudManagerModalPage,
 } from "./pages/crudmanager";
+import { HomePage } from "./pages/home";
+import { ContributingGuidePage } from "./pages/contributing/ContributingGuidePage";
 import { makeProductsRtkStore } from "./pages/querytable/adapters/useProductsRtkQuery";
+import { ICONS } from "./constants/icons";
 import "antd/dist/reset.css";
 
 const LANGUAGE_OPTIONS: { value: string; label: string }[] = [
@@ -107,6 +110,11 @@ function AppShell() {
   const navGroups: DocsNavGroup[] = useMemo(
     () => [
       {
+        id: "contributing",
+        label: t("docsNavContributing"),
+        children: [{ to: "/contributing", label: t("docsNavContributing") }],
+      },
+      {
         id: "datatable",
         label: t("docsNavDataTable"),
         children: [
@@ -117,8 +125,8 @@ function AppShell() {
           { to: "/datatable/colors", label: t("dtNavColors") },
           { to: "/datatable/filters", label: t("dtNavFilters") },
           { to: "/datatable/sort", label: t("dtNavSort") },
-          { to: "/datatable/server", label: t("dtNavServer") },
           { to: "/datatable/users-demo", label: t("dtNavUsersDemo") },
+          { to: "/datatable/server", label: t("dtNavServer") },
         ],
       },
       {
@@ -180,7 +188,7 @@ function AppShell() {
             value: "light",
             label: (
               <span title={t("themeLight")}>
-                <Icon icon="lucide:sun" width={18} height={18} aria-hidden />
+                <Icon icon={ICONS.sun} width={18} height={18} aria-hidden />
               </span>
             ),
           },
@@ -188,7 +196,7 @@ function AppShell() {
             value: "dark",
             label: (
               <span title={t("themeDark")}>
-                <Icon icon="lucide:moon" width={18} height={18} aria-hidden />
+                <Icon icon={ICONS.moon} width={18} height={18} aria-hidden />
               </span>
             ),
           },
@@ -239,10 +247,8 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<AppShell />}>
-          <Route
-            index
-            element={<Navigate to="/datatable/overview" replace />}
-          />
+          <Route index element={<HomePage />} />
+          <Route path="contributing" element={<ContributingGuidePage />} />
           <Route path="datatable/overview" element={<DataTableIntroPage />} />
           <Route path="datatable/basic" element={<DataTableBasicPage />} />
           <Route path="datatable/groups" element={<DataTableGroupsPage />} />

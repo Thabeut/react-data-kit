@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Almarai:wght@400;700&display=swap");
+
 :root[data-theme="light"],
 :root:not([data-theme]) {
   --docs-bg: #f1f5f9;
@@ -32,6 +34,10 @@
     sans-serif;
   line-height: 1.5;
   font-weight: 400;
+}
+
+html[lang="ar"] * {
+  font-family: "Almarai", sans-serif !important;
 }
 
 * {

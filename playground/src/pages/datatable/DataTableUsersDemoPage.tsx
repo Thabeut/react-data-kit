@@ -9,6 +9,7 @@ import { Icon } from "@iconify/react";
 import { DataTable, type InternalRow } from "@thabeut/react-data-kit";
 import { DemoPageShell } from "../../components/DemoPageShell";
 import { ExamplePreviewCodeFlip } from "../../components/ExamplePreviewCodeFlip";
+import { ICONS } from "../../constants/icons";
 import {
   userDemoAvatarUrl,
   userDemoRows,
@@ -85,7 +86,7 @@ export function DataTableUsersDemoPage() {
         width: 160,
         render: (value: unknown) => (
           <span className="users-demo-location">
-            <Icon icon="lucide:map-pin" width={16} height={16} aria-hidden />
+            <Icon icon={ICONS.mapPin} width={16} height={16} aria-hidden />
             {String(value)}
           </span>
         ),
@@ -146,6 +147,7 @@ import { Icon } from "@iconify/react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { DataTable, type InternalRow, type DataTableColumnInfo } from "@thabeut/react-data-kit";
+import { ICONS } from "../../constants/icons";
 
 dayjs.extend(relativeTime);
 
@@ -198,7 +200,7 @@ const columnsInfo: DataTableColumnInfo<UserDemoRow>[] = [
     dataIndex: "location",
     render: (value) => (
       <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
-        <Icon icon="lucide:map-pin" width={16} height={16} />
+        <Icon icon={ICONS.mapPin} width={16} height={16} />
         {String(value)}
       </span>
     ),
