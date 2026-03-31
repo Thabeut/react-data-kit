@@ -1,13 +1,31 @@
 import { useTranslation } from "react-i18next";
 import { DataTable, DataTableFilterTypeEnum } from "@thabeut/react-data-kit";
+import type { IOptionsQueryConfig } from "@thabeut/react-data-kit";
+import { useProductCategoriesOptionsInfiniteRtkQuery } from "../querytable/adapters/useProductsRtkQuery";
+import type { PublicOptionsListResponse } from "../querytable/adapters/useProductsRtkQuery";
 import { DemoPageShell } from "../../components/DemoPageShell";
 import { ExamplePreviewCodeFlip } from "../../components/ExamplePreviewCodeFlip";
-import {
-  categoryOptions,
-  filterDemoRows,
-  statusOptions,
-  type FilterDemoRow,
-} from "../../data";
+import { filterDemoRows, statusOptions, type FilterDemoRow } from "../../data";
+
+type CategoryInfiniteData = PublicOptionsListResponse;
+
+const categoryInfiniteQueryConfig: IOptionsQueryConfig<
+  CategoryInfiniteData,
+  { type: string }
+> = {
+  tag: { type: "category-infinite" },
+  useQuery: useProductCategoriesOptionsInfiniteRtkQuery,
+  formatOptions: (data) => {
+    const items = (data?.items ?? []).map((item) => ({
+      value: item.id,
+      label: item.label,
+    }));
+    const total = data?.total ?? 0;
+    const skip = data?.skip ?? 0;
+    const limit = data?.limit ?? 15;
+    return { items, hasMore: skip + limit < total };
+  },
+};
 
 export function DataTableFiltersPage() {
   const { t } = useTranslation();
@@ -117,7 +135,8 @@ export function DataTableFiltersExample() {
                 id: "category",
                 label: t("dtFilterCategory"),
                 type: DataTableFilterTypeEnum.Multi,
-                options: categoryOptions,
+                optionsQuery: categoryInfiniteQueryConfig,
+                searchPlaceholder: t("searchByName"),
               },
               {
                 id: "updatedAt",

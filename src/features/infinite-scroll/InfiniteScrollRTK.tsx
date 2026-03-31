@@ -52,10 +52,7 @@ export function InfiniteScrollRTK<TItem, TRaw>({
 }: InfiniteScrollRTKProps<TItem, TRaw>) {
   const [page, setPage] = useState(1);
 
-  const queryArgs = useMemo(
-    () => buildQueryArgs(page),
-    [buildQueryArgs, page],
-  );
+  const queryArgs = useMemo(() => buildQueryArgs(page), [buildQueryArgs, page]);
 
   const { data, isLoading, isFetching } = useQuery(queryArgs, {
     skip: !enabled,
@@ -93,4 +90,3 @@ export function InfiniteScrollRTK<TItem, TRaw>({
     />
   );
 }
-

@@ -25,6 +25,39 @@ type FormValues = {
 
 const fields: DynamicFormField[] = [
   {
+    type: DynamicFieldTypeEnum.Select,
+    name: "country",
+    label: "Country",
+    fieldProps: {
+      options: [
+        { value: "us", label: "United States" },
+        { value: "fr", label: "France" },
+      ],
+    },
+    fieldSchema: yup.string().required("Country is required"),
+  },
+  {
+    type: DynamicFieldTypeEnum.AsyncSelect,
+    name: "cityId",
+    label: "City",
+    dependsOn: { field: "country", effect: "show", resetOnHide: true },
+    queryDependsOn: {
+      fields: "country",
+      buildParams: ({ values, state, baseParams }) => ({
+        ...baseParams,
+        query: { ...(baseParams as any)?.query, country: values.country, page: state.page, search: state.search },
+      }),
+    },
+    fieldSchema: yup.string().required("City is required"),
+    fieldProps: {
+      useQuery: useCityOptionsQuery,
+      buildParams: ({ page, search }) => ({ query: { page, search } }),
+      formatData: (data) => ({ items: data?.items ?? [], hasMore: false }),
+      getOptionLabel: (item) => item.label,
+      getOptionValue: (item) => item.id,
+    } as any,
+  },
+  {
     type: DynamicFieldTypeEnum.Avatar,
     name: "avatar",
     label: "Avatar",
@@ -75,7 +108,7 @@ export function Page() {
   return (
     <DemoPageShell
       title={t("dfDefaultViewTitle")}
-      description={t("dfDefaultViewDescription")}
+      description={`${t("dfDefaultViewDescription")} Includes dependency examples: show/hide, disable, and async query params sourced from other fields.`}
       setup={t("dfDefaultViewSetup")}
     >
       <ExamplePreviewCodeFlip

@@ -4,5 +4,8 @@ export type {
   DynamicFormField,
   DynamicFieldType,
   DynamicFormCustomColors,
+  DynamicFormDependencyRule,
+  DynamicFormQueryDependency,
+  DynamicAsyncSelectField,
 } from "./DynamicForm";
-export { DynamicFieldTypeEnum } from "./DynamicForm";
+export { DynamicFieldTypeEnum, defineAsyncSelectField } from "./DynamicForm";

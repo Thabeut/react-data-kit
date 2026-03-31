@@ -35,12 +35,19 @@ export interface IMultiFilterOption {
 }
 
 export interface IOptionsQueryConfig<TData = unknown, TTag = unknown> {
-  useQuery: (arg: { tag: TTag }) => {
+  useQuery: (arg: {
+    tag: TTag;
+    query: { page?: number; search?: string; [key: string]: unknown };
+  }) => {
     data?: TData;
     isLoading?: boolean;
+    isFetching?: boolean;
   };
   tag: TTag;
-  formatOptions: (data: TData | undefined) => IMultiFilterOption[];
+  formatOptions: (data: TData | undefined) => {
+    items: IMultiFilterOption[];
+    hasMore: boolean;
+  };
 }
 
 export interface DataTableFilterConfig {
@@ -50,7 +57,7 @@ export interface DataTableFilterConfig {
   type?: DataTableFilterType;
   dateOptions?: IDateFilterOption[];
   options?: IMultiFilterOption[];
-  optionsQuery?: IOptionsQueryConfig;
+  optionsQuery?: IOptionsQueryConfig<any, any>;
   searchPlaceholder?: string;
   renderFilterOption?: (option: IMultiFilterOption) => ReactNode;
 }

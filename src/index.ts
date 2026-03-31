@@ -52,8 +52,11 @@ export type {
   DynamicFormField,
   DynamicFieldType,
   DynamicFormCustomColors,
+  DynamicFormDependencyRule,
+  DynamicFormQueryDependency,
+  DynamicAsyncSelectField,
 } from "./features/dynamic-form";
-export { DynamicFieldTypeEnum } from "./features/dynamic-form";
+export { DynamicFieldTypeEnum, defineAsyncSelectField } from "./features/dynamic-form";
 export type { CrudManagerProps } from "./features/crud-manager";
 
 export {

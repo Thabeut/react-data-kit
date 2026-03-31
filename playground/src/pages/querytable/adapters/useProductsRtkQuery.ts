@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const BASE = "https://dummyjson.com/products";
+const PRODUCTS_BASE_PATH = "/products";
 
 export type DummyJsonProduct = {
   id: number;
@@ -44,7 +44,65 @@ type DummyJsonCategory = {
   name: string;
 };
 
-function buildProductsUrl(args: ProductsQueryArgs): string {
+export type PublicOptionsQueryPayload = {
+  tag: { type: string };
+  query: {
+    page?: number;
+    search?: string;
+    country?: string;
+  };
+};
+
+export type PublicOptionItem = {
+  id: string;
+  label: string;
+};
+
+export type PublicOptionsListResponse = {
+  items: PublicOptionItem[];
+  total: number;
+  skip: number;
+  limit: number;
+};
+
+type CountriesNowCityResponse = {
+  error: boolean;
+  msg: string;
+  data: string[];
+};
+
+function paginateOptions(args: {
+  source: PublicOptionItem[];
+  page: number;
+  limit: number;
+  search: string;
+}): PublicOptionsListResponse {
+  const { source, page, limit, search } = args;
+  const skip = (page - 1) * limit;
+  const normalizedSearch = search.trim().toLowerCase();
+  const filtered = normalizedSearch
+    ? source.filter((item) =>
+        item.label.toLowerCase().includes(normalizedSearch),
+      )
+    : source;
+  return {
+    items: filtered.slice(skip, skip + limit),
+    total: filtered.length,
+    skip,
+    limit,
+  };
+}
+
+function mergeOptionItems(
+  current: PublicOptionItem[],
+  incoming: PublicOptionItem[],
+): PublicOptionItem[] {
+  return Array.from(
+    new Map([...current, ...incoming].map((item) => [item.id, item])).values(),
+  );
+}
+
+function buildProductsPath(args: ProductsQueryArgs): string {
   const page = Number(args.page ?? 1) || 1;
   const pageSize = Number(args.limit ?? 10) || 10;
   const skip = (page - 1) * pageSize;
@@ -75,14 +133,14 @@ function buildProductsUrl(args: ProductsQueryArgs): string {
   if (q) {
     params.set("q", q);
     if (categorySlug) params.set("category", categorySlug);
-    return `${BASE}/search?${params}`;
+    return `${PRODUCTS_BASE_PATH}/search?${params}`;
   }
 
   if (categorySlug) {
-    return `${BASE}/category/${encodeURIComponent(categorySlug)}?${params}`;
+    return `${PRODUCTS_BASE_PATH}/category/${encodeURIComponent(categorySlug)}?${params}`;
   }
 
-  return `${BASE}?${params}`;
+  return `${PRODUCTS_BASE_PATH}?${params}`;
 }
 
 type ProductsQueryPayload = {
@@ -92,31 +150,16 @@ type ProductsQueryPayload = {
 
 export const productsRtkApi = createApi({
   reducerPath: "querytableProductsRtk",
-  baseQuery: fakeBaseQuery(),
+  // Public API for realistic RTK Query examples.
+  baseQuery: fetchBaseQuery({ baseUrl: "https://dummyjson.com" }),
   tagTypes: ["products"],
   endpoints: (build) => ({
     list: build.query<DummyJsonListResponse, ProductsQueryPayload>({
-      async queryFn(payload) {
-        const url = buildProductsUrl(payload.query);
-        const res = await fetch(url);
-        if (!res.ok) {
-          throw new Error(`HTTP ${res.status}`);
-        }
-        const json = (await res.json()) as DummyJsonListResponse;
-        return { data: json };
-      },
+      query: (payload) => buildProductsPath(payload.query),
       providesTags: [{ type: "products", id: "LIST" }],
     }),
     listInfinite: build.query<DummyJsonListResponse, ProductsQueryPayload>({
-      async queryFn(payload) {
-        const url = buildProductsUrl(payload.query);
-        const res = await fetch(url);
-        if (!res.ok) {
-          throw new Error(`HTTP ${res.status}`);
-        }
-        const json = (await res.json()) as DummyJsonListResponse;
-        return { data: json };
-      },
+      query: (payload) => buildProductsPath(payload.query),
       serializeQueryArgs: ({ endpointName, queryArgs }) => {
         const { query, tag } = queryArgs;
         const normalizedQuery: Record<string, unknown> =
@@ -167,51 +210,270 @@ export const productsRtkApi = createApi({
       providesTags: [{ type: "products", id: "LIST" }],
     }),
     categories: build.query<DummyJsonCategory[], void>({
-      async queryFn() {
-        const res = await fetch(`${BASE}/categories`);
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const json = (await res.json()) as DummyJsonCategory[];
-        return { data: json };
+      query: () => `${PRODUCTS_BASE_PATH}/categories`,
+    }),
+    productCategoriesOptionsInfinite: build.query<
+      PublicOptionsListResponse,
+      PublicOptionsQueryPayload
+    >({
+      async queryFn(payload) {
+        const page = Number(payload.query.page ?? 1) || 1;
+        const limit = 15;
+        const search = String(payload.query.search ?? "");
+        const response = await fetch(
+          "https://dummyjson.com/products/categories",
+        );
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const json = (await response.json()) as
+          | string[]
+          | Array<{ slug?: string; name?: string }>;
+        const source = (Array.isArray(json) ? json : [])
+          .map((item) => {
+            if (typeof item === "string") {
+              return { id: item, label: item };
+            }
+            return {
+              id: item.slug ?? item.name ?? "",
+              label: item.name ?? item.slug ?? "",
+            };
+          })
+          .filter((item) => item.id && item.label);
+        return { data: paginateOptions({ source, page, limit, search }) };
+      },
+      serializeQueryArgs: ({ endpointName, queryArgs }) => {
+        const normalized = { ...(queryArgs.query ?? {}) };
+        delete normalized.page;
+        return `${endpointName}-${queryArgs.tag.type}-${JSON.stringify(normalized)}`;
+      },
+      merge(currentCache, incoming, { arg }) {
+        const page = Number(arg.query.page ?? 1) || 1;
+        if (page <= 1) {
+          Object.assign(currentCache, incoming);
+          return;
+        }
+        currentCache.items = mergeOptionItems(
+          currentCache.items ?? [],
+          incoming.items ?? [],
+        );
+        currentCache.total = incoming.total;
+        currentCache.skip = incoming.skip;
+        currentCache.limit = incoming.limit;
+      },
+      forceRefetch({ currentArg, previousArg }) {
+        if (!currentArg || !previousArg) return true;
+        const currentPage = Number(currentArg.query.page ?? 1) || 1;
+        const previousPage = Number(previousArg.query.page ?? 1) || 1;
+        if (currentPage !== previousPage) return true;
+        const clean = (query: PublicOptionsQueryPayload["query"]) => {
+          const { page, ...rest } = query;
+          return rest;
+        };
+        return (
+          JSON.stringify(clean(currentArg.query)) !==
+          JSON.stringify(clean(previousArg.query))
+        );
+      },
+    }),
+    countriesOptions: build.query<
+      PublicOptionsListResponse,
+      PublicOptionsQueryPayload
+    >({
+      async queryFn(payload) {
+        const page = Number(payload.query.page ?? 1) || 1;
+        const limit = 10;
+        const search = String(payload.query.search ?? "");
+        const response = await fetch(
+          "https://restcountries.com/v3.1/all?fields=name,cca2",
+        );
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const json = (await response.json()) as Array<{
+          name?: { common?: string };
+          cca2?: string;
+        }>;
+        const source = json
+          .map((item) => ({
+            id: item.cca2 ?? item.name?.common ?? "",
+            label: item.name?.common ?? "",
+          }))
+          .filter((item) => item.id && item.label)
+          .sort((a, b) => a.label.localeCompare(b.label));
+        return { data: paginateOptions({ source, page, limit, search }) };
+      },
+    }),
+    countriesOptionsInfinite: build.query<
+      PublicOptionsListResponse,
+      PublicOptionsQueryPayload
+    >({
+      async queryFn(payload) {
+        const page = Number(payload.query.page ?? 1) || 1;
+        const limit = 10;
+        const search = String(payload.query.search ?? "");
+        const response = await fetch(
+          "https://restcountries.com/v3.1/all?fields=name,cca2",
+        );
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const json = (await response.json()) as Array<{
+          name?: { common?: string };
+          cca2?: string;
+        }>;
+        const source = json
+          .map((item) => ({
+            id: item.cca2 ?? item.name?.common ?? "",
+            label: item.name?.common ?? "",
+          }))
+          .filter((item) => item.id && item.label)
+          .sort((a, b) => a.label.localeCompare(b.label));
+        return { data: paginateOptions({ source, page, limit, search }) };
+      },
+      serializeQueryArgs: ({ endpointName, queryArgs }) => {
+        const normalized = { ...(queryArgs.query ?? {}) };
+        delete normalized.page;
+        return `${endpointName}-${queryArgs.tag.type}-${JSON.stringify(normalized)}`;
+      },
+      merge(currentCache, incoming, { arg }) {
+        const page = Number(arg.query.page ?? 1) || 1;
+        if (page <= 1) {
+          Object.assign(currentCache, incoming);
+          return;
+        }
+        currentCache.items = mergeOptionItems(
+          currentCache.items ?? [],
+          incoming.items ?? [],
+        );
+        currentCache.total = incoming.total;
+        currentCache.skip = incoming.skip;
+        currentCache.limit = incoming.limit;
+      },
+      forceRefetch({ currentArg, previousArg }) {
+        if (!currentArg || !previousArg) return true;
+        const currentPage = Number(currentArg.query.page ?? 1) || 1;
+        const previousPage = Number(previousArg.query.page ?? 1) || 1;
+        if (currentPage !== previousPage) return true;
+        const clean = (query: PublicOptionsQueryPayload["query"]) => {
+          const { page, ...rest } = query;
+          return rest;
+        };
+        return (
+          JSON.stringify(clean(currentArg.query)) !==
+          JSON.stringify(clean(previousArg.query))
+        );
+      },
+    }),
+    citiesByCountryOptions: build.query<
+      PublicOptionsListResponse,
+      PublicOptionsQueryPayload
+    >({
+      async queryFn(payload) {
+        const country = String(payload.query.country ?? "").trim();
+        if (!country) {
+          return { data: { items: [], total: 0, skip: 0, limit: 10 } };
+        }
+        const page = Number(payload.query.page ?? 1) || 1;
+        const limit = 10;
+        const search = String(payload.query.search ?? "");
+        const response = await fetch(
+          "https://countriesnow.space/api/v0.1/countries/cities",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ country }),
+          },
+        );
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const json = (await response.json()) as CountriesNowCityResponse;
+        const source = (json.data ?? []).map((cityName) => ({
+          id: cityName,
+          label: cityName,
+        }));
+        return { data: paginateOptions({ source, page, limit, search }) };
+      },
+    }),
+    citiesByCountryOptionsInfinite: build.query<
+      PublicOptionsListResponse,
+      PublicOptionsQueryPayload
+    >({
+      async queryFn(payload) {
+        const country = String(payload.query.country ?? "").trim();
+        if (!country) {
+          return { data: { items: [], total: 0, skip: 0, limit: 10 } };
+        }
+        const page = Number(payload.query.page ?? 1) || 1;
+        const limit = 10;
+        const search = String(payload.query.search ?? "");
+        const response = await fetch(
+          "https://countriesnow.space/api/v0.1/countries/cities",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ country }),
+          },
+        );
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const json = (await response.json()) as CountriesNowCityResponse;
+        const source = (json.data ?? []).map((cityName) => ({
+          id: cityName,
+          label: cityName,
+        }));
+        return { data: paginateOptions({ source, page, limit, search }) };
+      },
+      serializeQueryArgs: ({ endpointName, queryArgs }) => {
+        const normalized = { ...(queryArgs.query ?? {}) };
+        delete normalized.page;
+        return `${endpointName}-${queryArgs.tag.type}-${JSON.stringify(normalized)}`;
+      },
+      merge(currentCache, incoming, { arg }) {
+        const page = Number(arg.query.page ?? 1) || 1;
+        if (page <= 1) {
+          Object.assign(currentCache, incoming);
+          return;
+        }
+        currentCache.items = mergeOptionItems(
+          currentCache.items ?? [],
+          incoming.items ?? [],
+        );
+        currentCache.total = incoming.total;
+        currentCache.skip = incoming.skip;
+        currentCache.limit = incoming.limit;
+      },
+      forceRefetch({ currentArg, previousArg }) {
+        if (!currentArg || !previousArg) return true;
+        const currentPage = Number(currentArg.query.page ?? 1) || 1;
+        const previousPage = Number(previousArg.query.page ?? 1) || 1;
+        if (currentPage !== previousPage) return true;
+        const clean = (query: PublicOptionsQueryPayload["query"]) => {
+          const { page, ...rest } = query;
+          return rest;
+        };
+        return (
+          JSON.stringify(clean(currentArg.query)) !==
+          JSON.stringify(clean(previousArg.query))
+        );
       },
     }),
     addProduct: build.mutation<DummyJsonProduct, ProductMutationPayload>({
-      async queryFn(payload) {
-        const res = await fetch(`${BASE}/add`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const json = (await res.json()) as DummyJsonProduct;
-        return { data: json };
-      },
+      query: (payload) => ({
+        url: `${PRODUCTS_BASE_PATH}/add`,
+        method: "POST",
+        body: payload,
+      }),
       invalidatesTags: [{ type: "products", id: "LIST" }],
     }),
     updateProduct: build.mutation<
       DummyJsonProduct,
       { id: number; data: ProductMutationPayload }
     >({
-      async queryFn(payload) {
-        const res = await fetch(`${BASE}/${payload.id}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload.data),
-        });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const json = (await res.json()) as DummyJsonProduct;
-        return { data: json };
-      },
+      query: (payload) => ({
+        url: `${PRODUCTS_BASE_PATH}/${payload.id}`,
+        method: "PUT",
+        body: payload.data,
+      }),
       invalidatesTags: [{ type: "products", id: "LIST" }],
     }),
     deleteProduct: build.mutation<DummyJsonDeleteResponse, { id: number }>({
-      async queryFn(payload) {
-        const res = await fetch(`${BASE}/${payload.id}`, {
-          method: "DELETE",
-        });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const json = (await res.json()) as DummyJsonDeleteResponse;
-        return { data: json };
-      },
+      query: (payload) => ({
+        url: `${PRODUCTS_BASE_PATH}/${payload.id}`,
+        method: "DELETE",
+      }),
       invalidatesTags: [{ type: "products", id: "LIST" }],
     }),
   }),
@@ -231,6 +493,13 @@ export const {
   useListQuery: useProductsRtkQuery,
   useListInfiniteQuery: useInfiniteProductsRtkQuery,
   useCategoriesQuery: useProductsCategoriesQuery,
+  useProductCategoriesOptionsInfiniteQuery:
+    useProductCategoriesOptionsInfiniteRtkQuery,
+  useCountriesOptionsQuery: useCountriesOptionsRtkQuery,
+  useCountriesOptionsInfiniteQuery: useCountriesOptionsInfiniteRtkQuery,
+  useCitiesByCountryOptionsQuery: useCitiesByCountryOptionsRtkQuery,
+  useCitiesByCountryOptionsInfiniteQuery:
+    useCitiesByCountryOptionsInfiniteRtkQuery,
   useAddProductMutation: useProductsCreateMutation,
   useUpdateProductMutation: useProductsUpdateMutation,
   useDeleteProductMutation: useProductsDeleteMutation,

@@ -51,6 +51,22 @@ export const dynamicFormPropRows: PropDocRow[] = [
       "Array of field configs. Each item maps to a rendered form control and can include `fieldSchema` for validation.",
   },
   {
+    key: "fields_depends_on",
+    prop: "fields[].dependsOn",
+    type: "DynamicFormDependencyRule | DynamicFormDependencyRule[]",
+    required: "no",
+    description:
+      "Field dependency rules. Use `effect: \"show\"` to hide/show or `effect: \"disable\"` to disable when condition is not met. Supports custom `when(values)` predicates.",
+  },
+  {
+    key: "fields_query_depends_on",
+    prop: "fields[].queryDependsOn (asyncSelect only)",
+    type: "DynamicFormQueryDependency",
+    required: "no",
+    description:
+      "Map other field values into async query params via `buildParams`, and optionally reset dependent value when watched fields change.",
+  },
+  {
     key: "defaultValues",
     prop: "defaultValues",
     type: "TValues",

@@ -1,10 +1,11 @@
 import "./dynamic-form.scss";
 import type { CSSProperties, ReactNode } from "react";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { Drawer, Modal } from "antd";
 import {
   Controller,
   useForm,
+  useWatch,
   type DefaultValues,
   type Path,
   type UseFormReturn,
@@ -78,7 +79,25 @@ type BaseDynamicFormField = {
   required?: boolean;
   className?: string;
   fieldSchema?: yup.Schema<any>;
+  dependsOn?: DynamicFormDependencyRule | DynamicFormDependencyRule[];
 };
+
+export interface DynamicFormDependencyRule {
+  field: string | string[];
+  effect?: "show" | "disable";
+  when?: (values: Record<string, unknown>) => boolean;
+  resetOnHide?: boolean;
+}
+
+export interface DynamicFormQueryDependency {
+  fields: string | string[];
+  buildParams: (args: {
+    values: Record<string, unknown>;
+    state: { page: number; search: string };
+    baseParams: unknown;
+  }) => unknown;
+  resetOnChange?: boolean;
+}
 
 type InputFieldProps = Omit<InputProps, "value" | "onChange">;
 type SelectFieldProps = Omit<SelectProps<string>, "value" | "onChange">;
@@ -109,6 +128,7 @@ export type DynamicFormField =
   | (BaseDynamicFormField & {
       type: "asyncSelect";
       fieldProps: AsyncSelectFieldProps;
+      queryDependsOn?: DynamicFormQueryDependency;
     })
   | (BaseDynamicFormField & {
       type: "upload";
@@ -134,6 +154,36 @@ export type DynamicFormField =
       type: "custom";
       render: (form: UseFormReturn<Record<string, unknown>>) => ReactNode;
     });
+
+export type DynamicAsyncSelectField<TItem, TData, TArgs = unknown> = Omit<
+  Extract<DynamicFormField, { type: "asyncSelect" }>,
+  "fieldProps"
+> & {
+  fieldProps: Omit<
+    AsyncSelectFieldProps,
+    | "useQuery"
+    | "buildParams"
+    | "formatData"
+    | "getOptionValue"
+    | "getOptionLabel"
+  > & {
+    useQuery: (args: TArgs) => {
+      data?: TData;
+      isLoading: boolean;
+      isFetching?: boolean;
+    };
+    buildParams: (state: { page: number; search: string }) => TArgs;
+    formatData: (data: TData | undefined) => { items: TItem[]; hasMore: boolean };
+    getOptionValue: (item: TItem) => string;
+    getOptionLabel: (item: TItem) => string;
+  };
+};
+
+export function defineAsyncSelectField<TItem, TData, TArgs = unknown>(
+  field: DynamicAsyncSelectField<TItem, TData, TArgs>,
+): DynamicFormField {
+  return field as DynamicFormField;
+}
 
 export interface DynamicFormProps<TValues extends Record<string, unknown>> {
   variant?: "default" | "modal" | "drawer";
@@ -260,7 +310,11 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
     control,
     formState: { errors, isSubmitting },
     reset,
+    setValue,
   } = form;
+  const watchedValues = useWatch({ control }) as Record<string, unknown>;
+  const asyncDependencySignatureRef = useRef<Record<string, string>>({});
+  const hiddenFieldStateRef = useRef<Record<string, boolean>>({});
 
   useEffect(() => {
     if (variant === "default") return;
@@ -293,7 +347,94 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
     onClose?.();
   };
 
+  const dependencyStateByField = useMemo(() => {
+    const values = watchedValues ?? {};
+    const state: Record<
+      string,
+      { hidden: boolean; disabled: boolean; resetOnHide: boolean }
+    > = {};
+
+    const evaluateRule = (rule: DynamicFormDependencyRule): boolean => {
+      if (rule.when) return Boolean(rule.when(values));
+      const depFields = Array.isArray(rule.field) ? rule.field : [rule.field];
+      return depFields.every((fieldName) => {
+        const fieldValue = values[fieldName];
+        if (Array.isArray(fieldValue)) return fieldValue.length > 0;
+        return Boolean(fieldValue);
+      });
+    };
+
+    for (const field of fields) {
+      const rules = field.dependsOn
+        ? Array.isArray(field.dependsOn)
+          ? field.dependsOn
+          : [field.dependsOn]
+        : [];
+      let hidden = false;
+      let disabled = false;
+      let resetOnHide = false;
+
+      for (const rule of rules) {
+        const passes = evaluateRule(rule);
+        const effect = rule.effect ?? "show";
+        if (effect === "show" && !passes) {
+          hidden = true;
+          resetOnHide = resetOnHide || Boolean(rule.resetOnHide);
+        }
+        if (effect === "disable" && !passes) {
+          disabled = true;
+        }
+      }
+
+      state[field.name] = { hidden, disabled, resetOnHide };
+    }
+
+    return state;
+  }, [fields, watchedValues]);
+
+  useEffect(() => {
+    for (const field of fields) {
+      if (field.type !== "asyncSelect" || !field.queryDependsOn) continue;
+      const depFields = Array.isArray(field.queryDependsOn.fields)
+        ? field.queryDependsOn.fields
+        : [field.queryDependsOn.fields];
+      const signature = JSON.stringify(
+        depFields.map((name) => watchedValues?.[name]),
+      );
+      const previousSignature = asyncDependencySignatureRef.current[field.name];
+      if (
+        previousSignature !== undefined &&
+        previousSignature !== signature &&
+        field.queryDependsOn.resetOnChange !== false
+      ) {
+        setValue(field.name as Path<TValues>, undefined as never, {
+          shouldDirty: true,
+          shouldValidate: true,
+        });
+      }
+      asyncDependencySignatureRef.current[field.name] = signature;
+    }
+  }, [fields, setValue, watchedValues]);
+
+  useEffect(() => {
+    for (const field of fields) {
+      const dependencyState = dependencyStateByField[field.name];
+      const isHidden = Boolean(dependencyState?.hidden);
+      const wasHidden = Boolean(hiddenFieldStateRef.current[field.name]);
+      if (isHidden && !wasHidden && dependencyState?.resetOnHide) {
+        setValue(field.name as Path<TValues>, undefined as never, {
+          shouldDirty: true,
+          shouldValidate: true,
+        });
+      }
+      hiddenFieldStateRef.current[field.name] = isHidden;
+    }
+  }, [dependencyStateByField, fields, setValue]);
+
   const fieldNodes = fields.map((fieldConfig) => {
+    const dependencyState = dependencyStateByField[fieldConfig.name];
+    if (dependencyState?.hidden) return null;
+    const isDependencyDisabled = Boolean(dependencyState?.disabled);
     const fieldError = errors[fieldConfig.name as keyof typeof errors];
     const errorMessage =
       typeof (fieldError as any)?.message === "string"
@@ -333,6 +474,9 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
                 <Select<string>
                   {...selectProps}
                   className={clsx("w-full", selectProps?.className)}
+                  disabled={
+                    Boolean(selectProps?.disabled) || isDependencyDisabled
+                  }
                   value={field.value as string | undefined}
                   onChange={field.onChange}
                   placeholder={
@@ -350,6 +494,9 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
                 <TextArea
                   {...textAreaProps}
                   className={clsx(textAreaProps?.className)}
+                  disabled={
+                    Boolean(textAreaProps?.disabled) || isDependencyDisabled
+                  }
                   value={(field.value as string | undefined) ?? ""}
                   onChange={field.onChange as never}
                   placeholder={
@@ -364,6 +511,22 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
               return (
                 <AsyncSelect<unknown, unknown>
                   {...asyncProps}
+                  placeholder={
+                    asyncProps?.placeholder ?? fieldConfig.placeholder
+                  }
+                  disabled={
+                    Boolean((asyncProps as { disabled?: boolean })?.disabled) ||
+                    isDependencyDisabled
+                  }
+                  buildParams={(state) => {
+                    const baseParams = asyncProps.buildParams(state);
+                    if (!fieldConfig.queryDependsOn) return baseParams;
+                    return fieldConfig.queryDependsOn.buildParams({
+                      values: watchedValues ?? {},
+                      state,
+                      baseParams,
+                    });
+                  }}
                   value={field.value as string | undefined}
                   onChange={field.onChange}
                 />
@@ -377,6 +540,9 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
               return (
                 <UploadField
                   {...uploadProps}
+                  disabled={
+                    Boolean(uploadProps?.disabled) || isDependencyDisabled
+                  }
                   value={(field.value as UploadFieldValue | undefined) ?? []}
                   onChange={field.onChange as never}
                 />
@@ -390,6 +556,9 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
               return (
                 <AvatarUpload
                   {...avatarProps}
+                  disabled={
+                    Boolean(avatarProps?.disabled) || isDependencyDisabled
+                  }
                   value={(field.value as AvatarUploadValue | undefined) ?? []}
                   onChange={field.onChange as never}
                 />
@@ -403,6 +572,9 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
               return (
                 <ColorPicker
                   {...colorProps}
+                  disabled={
+                    Boolean(colorProps?.disabled) || isDependencyDisabled
+                  }
                   value={(field.value as string | undefined) ?? ""}
                   onChange={field.onChange}
                 />
@@ -416,6 +588,9 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
               return (
                 <StringArrayField
                   {...stringArrayProps}
+                  disabled={
+                    Boolean(stringArrayProps?.disabled) || isDependencyDisabled
+                  }
                   value={(field.value as string[] | undefined) ?? []}
                   onChange={field.onChange}
                   placeholder={
@@ -432,6 +607,9 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
               return (
                 <SwitchField
                   {...switchFieldProps}
+                  disabled={
+                    Boolean(switchFieldProps?.disabled) || isDependencyDisabled
+                  }
                   value={Boolean(field.value)}
                   onChange={field.onChange}
                 />
@@ -445,6 +623,7 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
               <Input
                 {...inputProps}
                 className={clsx(inputProps?.className)}
+                disabled={Boolean(inputProps?.disabled) || isDependencyDisabled}
                 value={(field.value as string | undefined) ?? ""}
                 onChange={field.onChange}
                 placeholder={inputProps?.placeholder ?? fieldConfig.placeholder}

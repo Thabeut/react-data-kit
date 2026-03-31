@@ -1,14 +1,23 @@
 import { useMemo } from "react";
 import * as yup from "yup";
 import type { UploadFile } from "antd";
-import type { DynamicFormField } from "@thabeut/react-data-kit";
-import { useProductsReactQuery } from "../querytable/adapters/useProductsReactQuery";
-import type { DummyJsonListResponse } from "../querytable/adapters/useProductsRtkQuery";
+import {
+  defineAsyncSelectField,
+  type DynamicFormField,
+} from "@thabeut/react-data-kit";
+import {
+  useCountriesOptionsInfiniteRtkQuery,
+  useCitiesByCountryOptionsInfiniteRtkQuery,
+  useInfiniteProductsRtkQuery,
+  type DummyJsonListResponse,
+} from "../querytable/adapters/useProductsRtkQuery";
 
 export type FormValues = {
   name: string | undefined;
   bio: string | undefined;
   status: string | undefined;
+  country: string | undefined;
+  cityId: string | undefined;
   color: string | undefined;
   avatar: UploadFile[];
   tags: string[];
@@ -18,6 +27,53 @@ export type FormValues = {
 };
 
 type ProductOption = { id: number; title: string };
+type CountryOption = { id: string; label: string };
+type CityOption = { id: string; label: string };
+
+type CountriesQueryPayload = {
+  query: { page: number; search: string };
+};
+
+type CityQueryPayload = {
+  query: { page: number; search: string; country?: string };
+};
+
+function useCountriesOptionsQuery(payload: CountriesQueryPayload): {
+  data?: { items: CountryOption[]; total: number; skip: number; limit: number };
+  isLoading: boolean;
+  isFetching?: boolean;
+} {
+  const { data, isLoading, isFetching } = useCountriesOptionsInfiniteRtkQuery({
+    tag: { type: "dynamicform-countries" },
+    query: payload.query,
+  });
+  return { data, isLoading, isFetching };
+}
+
+function useCityOptionsQuery(payload: CityQueryPayload): {
+  data?: { items: CityOption[]; total: number; skip: number; limit: number };
+  isLoading: boolean;
+  isFetching?: boolean;
+} {
+  const { data, isLoading, isFetching } =
+    useCitiesByCountryOptionsInfiniteRtkQuery({
+    tag: { type: "dynamicform-cities" },
+    query: payload.query,
+  });
+  return { data, isLoading, isFetching };
+}
+
+function useProductsInfiniteQuery(payload: {
+  tag: { type: string };
+  query: { page: number; limit: number; search: string };
+}): {
+  data?: DummyJsonListResponse;
+  isLoading: boolean;
+  isFetching?: boolean;
+} {
+  const { data, isLoading, isFetching } = useInfiniteProductsRtkQuery(payload);
+  return { data, isLoading, isFetching };
+}
 
 export function useDynamicFormFields() {
   return useMemo<DynamicFormField[]>(
@@ -63,34 +119,119 @@ export function useDynamicFormFields() {
           ],
         },
       },
-      {
+      defineAsyncSelectField({
+        type: "asyncSelect",
+        name: "country",
+        label: "Country (public API)",
+        placeholder: "Search country",
+        fieldSchema: yup.string().required("Country is required"),
+        fieldProps: {
+          useQuery: useCountriesOptionsQuery,
+          buildParams: ({ page, search }) => ({
+            query: { page, search },
+          }),
+          formatData: (data) => {
+            const merged = data?.items ?? [];
+            const total = data?.total ?? 0;
+            const skip = data?.skip ?? 0;
+            const limit = data?.limit ?? 10;
+            return { items: merged, hasMore: skip + limit < total };
+          },
+          getOptionLabel: (item) => item.label,
+          getOptionValue: (item) => item.label,
+        },
+      }),
+      defineAsyncSelectField<
+        CityOption,
+        { items: CityOption[]; total: number; skip: number; limit: number },
+        CityQueryPayload
+      >({
+        type: "asyncSelect",
+        name: "cityId",
+        label: "City (depends on Country)",
+        dependsOn: {
+          field: "country",
+          effect: "disable",
+          resetOnHide: true,
+        },
+        queryDependsOn: {
+          fields: "country",
+          resetOnChange: true,
+          buildParams: ({ values, state, baseParams }) => {
+            const base =
+              typeof baseParams === "object" && baseParams ? baseParams : {};
+            const baseWithQuery = base as { query?: object };
+            return {
+              ...base,
+              query: {
+                ...(typeof baseWithQuery.query === "object" &&
+                baseWithQuery.query
+                  ? (baseWithQuery.query as object)
+                  : {}),
+                country: values.country,
+                page: state.page,
+                search: state.search,
+              },
+            };
+          },
+        },
+        fieldSchema: yup.string().required("City is required"),
+        fieldProps: {
+          useQuery: useCityOptionsQuery,
+          buildParams: ({ page, search }) => ({
+            query: { page, search },
+          }),
+          formatData: (data) => {
+            const merged = data?.items ?? [];
+            const total = data?.total ?? 0;
+            const skip = data?.skip ?? 0;
+            const limit = data?.limit ?? 10;
+            return { items: merged, hasMore: skip + limit < total };
+          },
+          getOptionLabel: (item) => item.label,
+          getOptionValue: (item) => item.id,
+          placeholder: "Pick country first, then search city",
+        },
+      }),
+      defineAsyncSelectField<
+        ProductOption,
+        DummyJsonListResponse,
+        {
+          tag: { type: string };
+          query: { page: number; limit: number; search: string };
+        }
+      >({
         type: "asyncSelect",
         name: "productId",
         label: "Product (async)",
+        dependsOn: {
+          field: "status",
+          effect: "disable",
+          when: (values) => values.status !== "archived",
+        },
         fieldSchema: yup.string().required("Product is required"),
         fieldProps: {
-          useQuery: useProductsReactQuery,
-          buildParams: ({ page, search }: any) => ({
+          useQuery: useProductsInfiniteQuery,
+          buildParams: ({ page, search }) => ({
             tag: { type: "dynamicform-products" },
             query: { page, limit: 10, search },
           }),
-          reformatData: (data: DummyJsonListResponse | undefined, previous: ProductOption[]) => {
-            const prev = Array.isArray(previous) ? previous : [];
-            const next = (data?.products ?? []).map((p) => ({ id: p.id, title: p.title }));
-            const merged = Array.from(
-              new Map([...prev, ...next].map((p) => [String(p.id), p])).values(),
-            );
+          formatData: (data) => {
+            const merged = (data?.products ?? []).map((p) => ({
+              id: p.id,
+              title: p.title,
+            }));
             const total = data?.total ?? 0;
             const skip = data?.skip ?? 0;
             const limit = data?.limit ?? 10;
             const hasMore = skip + limit < total;
             return { items: merged, hasMore };
           },
-          getOptionLabel: (item: ProductOption) => item.title,
-          getOptionValue: (item: ProductOption) => String(item.id),
+          getOptionLabel: (item) => item.title,
+          getOptionValue: (item) => String(item.id),
           placeholder: "Type to search products…",
-        } as any,
-      },
+        },
+      }),
       {
         type: "upload",
         name: "attachments",
