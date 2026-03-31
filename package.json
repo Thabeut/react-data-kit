@@ -11,8 +11,7 @@
     "dynamic-form",
     "crud",
     "infinite-scroll",
-    "react-hook-form",
-    "ui-components"
+    "react-hook-form"
   ],
   "license": "MIT",
   "author": "Thabet Khiari",
@@ -20,6 +19,7 @@
     "type": "git",
     "url": "https://github.com/thabeut/react-data-kit.git"
   },
+  "homepage": "https://react-data-kit.vercel.app/",
   "publishConfig": {
     "access": "public"
   },
