@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { ConfigProvider, Segmented, Select, theme as antdTheme } from "antd";
 import { Icon } from "@iconify/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Provider } from "react-redux";
 import {
   BrowserRouter,
   Navigate,
@@ -30,6 +31,12 @@ import {
   DataTableColorsPage,
 } from "./pages/datatable";
 import {
+  InfiniteScrollIntroPage,
+  InfiniteScrollPropsPage,
+  InfiniteScrollProductsDemoPage,
+  InfiniteScrollProductsReactQueryPage,
+} from "./pages/infinite-scroll";
+import {
   QueryTablePage,
   QueryTableRtkQueryPage,
   QueryTableReactQueryPage,
@@ -48,6 +55,7 @@ import {
   CrudManagerBasicPage,
   CrudManagerModalPage,
 } from "./pages/crudmanager";
+import { makeProductsRtkStore } from "./pages/querytable/adapters/useProductsRtkQuery";
 import "antd/dist/reset.css";
 
 const LANGUAGE_OPTIONS: { value: string; label: string }[] = [
@@ -81,6 +89,7 @@ function AppShell() {
       }),
     [],
   );
+  const productsStore = useMemo(() => makeProductsRtkStore(), []);
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", colorMode);
@@ -146,6 +155,22 @@ function AppShell() {
           { to: "/crudmanager/modal", label: "Modal" },
         ],
       },
+      {
+        id: "infinitescroll",
+        label: "Infinite scroll",
+        children: [
+          { to: "/infinite-scroll/overview", label: "Introduction" },
+          { to: "/infinite-scroll/props", label: "Props" },
+          {
+            to: "/infinite-scroll/rtk-query",
+            label: "RTK Query",
+          },
+          {
+            to: "/infinite-scroll/react-query",
+            label: "React Query",
+          },
+        ],
+      },
     ],
     [t],
   );
@@ -199,16 +224,18 @@ function AppShell() {
             : antdTheme.defaultAlgorithm,
       }}
     >
-      <QueryClientProvider client={queryClient}>
-        <DocsLayout
-          title={t("docsSiteTitle")}
-          packageName="@thabeut/react-data-kit"
-          navGroups={navGroups}
-          toolbar={toolbar}
-        >
-          <Outlet />
-        </DocsLayout>
-      </QueryClientProvider>
+      <Provider store={productsStore}>
+        <QueryClientProvider client={queryClient}>
+          <DocsLayout
+            title={t("docsSiteTitle")}
+            packageName="@thabeut/react-data-kit"
+            navGroups={navGroups}
+            toolbar={toolbar}
+          >
+            <Outlet />
+          </DocsLayout>
+        </QueryClientProvider>
+      </Provider>
     </ConfigProvider>
   );
 }
@@ -237,19 +264,53 @@ export default function App() {
           <Route path="datatable/server" element={<DataTableServerPage />} />
           <Route path="datatable/sort" element={<DataTableSortPage />} />
           <Route path="datatable/colors" element={<DataTableColorsPage />} />
+          <Route
+            path="infinite-scroll/overview"
+            element={<InfiniteScrollIntroPage />}
+          />
+          <Route
+            path="infinite-scroll/props"
+            element={<InfiniteScrollPropsPage />}
+          />
+          <Route
+            path="infinite-scroll/rtk-query"
+            element={<InfiniteScrollProductsDemoPage />}
+          />
+          <Route
+            path="infinite-scroll/react-query"
+            element={<InfiniteScrollProductsReactQueryPage />}
+          />
           <Route path="querytable/overview" element={<QueryTablePage />} />
-          <Route path="querytable/rtk-query" element={<QueryTableRtkQueryPage />} />
+          <Route
+            path="querytable/rtk-query"
+            element={<QueryTableRtkQueryPage />}
+          />
           <Route
             path="querytable/react-query"
             element={<QueryTableReactQueryPage />}
           />
-          <Route path="dynamicform/overview" element={<DynamicFormIntroPage />} />
+          <Route
+            path="dynamicform/overview"
+            element={<DynamicFormIntroPage />}
+          />
           <Route path="dynamicform/props" element={<DynamicFormPropsPage />} />
-          <Route path="dynamicform/default" element={<DynamicFormDefaultPage />} />
+          <Route
+            path="dynamicform/default"
+            element={<DynamicFormDefaultPage />}
+          />
           <Route path="dynamicform/modal" element={<DynamicFormModalPage />} />
-          <Route path="dynamicform/drawer" element={<DynamicFormDrawerPage />} />
-          <Route path="dynamicform/colors" element={<DynamicFormColorsPage />} />
-          <Route path="crudmanager/overview" element={<CrudManagerIntroPage />} />
+          <Route
+            path="dynamicform/drawer"
+            element={<DynamicFormDrawerPage />}
+          />
+          <Route
+            path="dynamicform/colors"
+            element={<DynamicFormColorsPage />}
+          />
+          <Route
+            path="crudmanager/overview"
+            element={<CrudManagerIntroPage />}
+          />
           <Route path="crudmanager/props" element={<CrudManagerPropsPage />} />
           <Route path="crudmanager/basic" element={<CrudManagerBasicPage />} />
           <Route path="crudmanager/modal" element={<CrudManagerModalPage />} />

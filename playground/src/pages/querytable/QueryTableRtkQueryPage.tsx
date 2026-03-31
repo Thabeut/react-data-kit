@@ -1,17 +1,10 @@
-import { useMemo } from "react";
-import { Provider } from "react-redux";
 import { Divider } from "antd";
 import { ExamplePreviewCodeFlip } from "../../components/ExamplePreviewCodeFlip";
 import { DemoPageShell } from "../../components/DemoPageShell";
 import { ProductsQueryTableDemo } from "./ProductsQueryTableDemo";
-import {
-  makeProductsRtkStore,
-  useProductsRtkQuery,
-} from "./adapters/useProductsRtkQuery";
+import { useProductsRtkQuery } from "./adapters/useProductsRtkQuery";
 
 export function QueryTableRtkQueryPage() {
-  const store = useMemo(() => makeProductsRtkStore(), []);
-
   const code = String.raw`import {
   QueryTable,
   parseTableState,
@@ -106,21 +99,19 @@ export function QueryTableRtkExample() {
       description="QueryTable stays framework-agnostic. You only inject a `{ tag, query } => useQuery(...)` adapter. URL state is handled by `parseTableState` + `serializeTableState`."
       setup="This page hides the RTK Query store/api setup. Only the adapter shape + URL persistence are shown."
     >
-      <Provider store={store}>
-        <ExamplePreviewCodeFlip
-          view={
-            <>
-              <ProductsQueryTableDemo
-                useQuery={useProductsRtkQuery}
-                tagType="products-rtk"
-              />
-              <Divider />
-            </>
-          }
-          code={code}
-          defaultShow="preview"
-        />
-      </Provider>
+      <ExamplePreviewCodeFlip
+        view={
+          <>
+            <ProductsQueryTableDemo
+              useQuery={useProductsRtkQuery}
+              tagType="products-rtk"
+            />
+            <Divider />
+          </>
+        }
+        code={code}
+        defaultShow="preview"
+      />
     </DemoPageShell>
   );
 }

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { Alert, Button, Space, Tag, Typography, Divider } from "antd";
 import { useSearchParams } from "react-router-dom";
 import {
@@ -12,6 +12,7 @@ import type {
   DummyJsonListResponse,
   DummyJsonProduct,
 } from "./adapters/useProductsRtkQuery";
+import { useProductsCategoriesQuery } from "./adapters/useProductsRtkQuery";
 
 const { Title, Paragraph } = Typography;
 
@@ -29,8 +30,6 @@ type DemoProps = {
   useQuery: ProductsQueryTableUseQuery;
   tagType: string;
 };
-
-const BASE = "https://dummyjson.com/products";
 
 function productToRow(p: DummyJsonProduct): ProductRow {
   return {
@@ -61,32 +60,19 @@ export function ProductsQueryTableDemo({ useQuery, tagType }: DemoProps) {
     [searchParams],
   );
 
-  const [categoryOptions, setCategoryOptions] = useState<
-    { value: string; label: string }[]
-  >([]);
-  const [loadError, setLoadError] = useState<string | null>(null);
+  const {
+    data: categories,
+    error: categoriesError,
+  } = useProductsCategoriesQuery();
 
-  useEffect(() => {
-    let mounted = true;
-    setLoadError(null);
-    void fetch(`${BASE}/categories`)
-      .then((r) => {
-        if (!r.ok) throw new Error(`HTTP ${r.status}`);
-        return r.json() as Promise<{ slug: string; name: string }[]>;
-      })
-      .then((cats) => {
-        if (!mounted) return;
-        setCategoryOptions(cats.map((c) => ({ value: c.slug, label: c.name })));
-      })
-      .catch((e: unknown) => {
-        if (!mounted) return;
-        setLoadError(e instanceof Error ? e.message : "Unknown error");
-        setCategoryOptions([]);
-      });
-    return () => {
-      mounted = false;
-    };
-  }, []);
+  const categoryOptions = useMemo(
+    () =>
+      (categories ?? []).map((c) => ({
+        value: c.slug,
+        label: c.name,
+      })),
+    [categories],
+  );
 
   const onTableStateChange = (next: ReturnType<typeof parseTableState>) => {
     const qs = serializeTableState(next);
@@ -191,12 +177,15 @@ export function ProductsQueryTableDemo({ useQuery, tagType }: DemoProps) {
         <Divider style={{ margin: 0 }} />
 
         <Space direction="vertical" style={{ width: "100%" }}>
-          {loadError ? (
+          {categoriesError ? (
             <Alert
               type="error"
               showIcon
               message="Could not load category filter options"
-              description={loadError}
+              description={
+                (categoriesError as { message?: string } | undefined)?.message ??
+                "Unknown error"
+              }
             />
           ) : null}
 

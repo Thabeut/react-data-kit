@@ -1,6 +1,12 @@
 import { useMemo } from "react";
-import { keepPreviousData, useQuery as useTanstackQuery } from "@tanstack/react-query";
-import type { ProductsQueryArgs, DummyJsonListResponse } from "./useProductsRtkQuery";
+import {
+  useQuery as useTanstackQuery,
+  useInfiniteQuery,
+} from "@tanstack/react-query";
+import type {
+  ProductsQueryArgs,
+  DummyJsonListResponse,
+} from "./useProductsRtkQuery";
 
 const BASE = "https://dummyjson.com/products";
 
@@ -12,7 +18,11 @@ function buildProductsUrl(args: ProductsQueryArgs): string {
   const sort = args.sort;
   const field = sort?.field;
   const sortBy =
-    field === "price" ? "price" : field === "categoryName" ? "category" : "title";
+    field === "price"
+      ? "price"
+      : field === "categoryName"
+        ? "category"
+        : "title";
   const order = sort?.direction === "desc" ? "desc" : "asc";
 
   const params = new URLSearchParams({
@@ -46,9 +56,7 @@ type ProductsQueryPayload = {
   query: ProductsQueryArgs;
 };
 
-export function useProductsReactQuery(
-  payload: ProductsQueryPayload,
-): {
+export function useProductsReactQuery(payload: ProductsQueryPayload): {
   data?: DummyJsonListResponse;
   isLoading: boolean;
   isFetching?: boolean;
@@ -56,23 +64,46 @@ export function useProductsReactQuery(
 } {
   const url = useMemo(() => buildProductsUrl(payload.query), [payload.query]);
 
-  const res = useTanstackQuery<DummyJsonListResponse, Error, DummyJsonListResponse>({
+  return useTanstackQuery<DummyJsonListResponse, Error, DummyJsonListResponse>({
     queryKey: ["querytable-products-react", payload.tag.type, url],
     queryFn: async () => {
       const r = await fetch(url);
       if (!r.ok) throw new Error(`HTTP ${r.status}`);
       return (await r.json()) as DummyJsonListResponse;
     },
-    placeholderData: keepPreviousData,
   });
-
-  return {
-    data: res.data,
-    isLoading: res.isLoading,
-    isFetching: res.isFetching,
-    refetch: () => {
-      void res.refetch();
-    },
-  };
 }
 
+type InfiniteProductsQueryArgs = Omit<ProductsQueryArgs, "page">;
+
+async function fetchProductsPage(params: {
+  pageParam?: number;
+  query: InfiniteProductsQueryArgs;
+}): Promise<DummyJsonListResponse> {
+  const { pageParam = 1, query } = params;
+  const url = buildProductsUrl({ ...query, page: pageParam });
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error(`HTTP ${res.status}`);
+  }
+  return (await res.json()) as DummyJsonListResponse;
+}
+
+export function useInfiniteProductsReactQuery(
+  query: InfiniteProductsQueryArgs,
+) {
+  return useInfiniteQuery<DummyJsonListResponse, Error>({
+    queryKey: ["products-infinite-react", query],
+    queryFn: ({ pageParam }) =>
+      fetchProductsPage({
+        pageParam: (pageParam as number | undefined) ?? 1,
+        query,
+      }),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage, _allPages) => {
+      const nextPage = lastPage.skip / lastPage.limit + 1;
+      const hasMore = lastPage.products.length > 0;
+      return hasMore ? nextPage : undefined;
+    },
+  });
+}

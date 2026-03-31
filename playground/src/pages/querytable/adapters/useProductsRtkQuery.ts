@@ -107,6 +107,65 @@ export const productsRtkApi = createApi({
       },
       providesTags: [{ type: "products", id: "LIST" }],
     }),
+    listInfinite: build.query<DummyJsonListResponse, ProductsQueryPayload>({
+      async queryFn(payload) {
+        const url = buildProductsUrl(payload.query);
+        const res = await fetch(url);
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status}`);
+        }
+        const json = (await res.json()) as DummyJsonListResponse;
+        return { data: json };
+      },
+      serializeQueryArgs: ({ endpointName, queryArgs }) => {
+        const { query, tag } = queryArgs;
+        const normalizedQuery: Record<string, unknown> =
+          query && typeof query === "object"
+            ? { ...(query as Record<string, unknown>) }
+            : {};
+        if ("page" in normalizedQuery) {
+          delete normalizedQuery.page;
+        }
+        const queryString = JSON.stringify(normalizedQuery);
+        const tagType = tag.type;
+        return `${endpointName}-${queryString}-${tagType}`;
+      },
+      merge(currentCache, incoming, { arg }) {
+        const page = Number(arg.query.page ?? 1) || 1;
+
+        if (page <= 1 || !Array.isArray(currentCache.products)) {
+          Object.assign(currentCache, incoming);
+          return;
+        }
+
+        currentCache.products = [
+          ...currentCache.products,
+          ...incoming.products,
+        ];
+        currentCache.total = incoming.total;
+        currentCache.skip = incoming.skip;
+        currentCache.limit = incoming.limit;
+      },
+      forceRefetch({ currentArg, previousArg }) {
+        if (!currentArg || !previousArg) return true;
+        const currentPage = Number(currentArg.query.page ?? 1) || 1;
+        const previousPage = Number(previousArg.query.page ?? 1) || 1;
+
+        if (currentPage !== previousPage) return true;
+
+        const clean = (q: ProductsQueryArgs | undefined) => {
+          if (!q) return {};
+          const { page, ...rest } = q;
+          return rest;
+        };
+
+        return (
+          JSON.stringify(clean(currentArg.query)) !==
+          JSON.stringify(clean(previousArg.query))
+        );
+      },
+      providesTags: [{ type: "products", id: "LIST" }],
+    }),
     categories: build.query<DummyJsonCategory[], void>({
       async queryFn() {
         const res = await fetch(`${BASE}/categories`);
@@ -168,28 +227,11 @@ export function makeProductsRtkStore() {
   });
 }
 
-export function useProductsRtkQuery(payload: ProductsQueryPayload): {
-  data?: DummyJsonListResponse;
-  isLoading: boolean;
-  isFetching?: boolean;
-  refetch: () => void;
-} {
-  // RTK Query provides the "useXyzQuery" hook.
-  const res = productsRtkApi.useListQuery(payload);
-
-  return {
-    data: res.data,
-    isLoading: res.isLoading,
-    isFetching: res.isFetching,
-    refetch: () => {
-      void res.refetch();
-    },
-  };
-}
-
-export const useProductsCategoriesQuery = productsRtkApi.useCategoriesQuery;
-export const useProductsCreateMutation = productsRtkApi.useAddProductMutation;
-export const useProductsUpdateMutation =
-  productsRtkApi.useUpdateProductMutation;
-export const useProductsDeleteMutation =
-  productsRtkApi.useDeleteProductMutation;
+export const {
+  useListQuery: useProductsRtkQuery,
+  useListInfiniteQuery: useInfiniteProductsRtkQuery,
+  useCategoriesQuery: useProductsCategoriesQuery,
+  useAddProductMutation: useProductsCreateMutation,
+  useUpdateProductMutation: useProductsUpdateMutation,
+  useDeleteProductMutation: useProductsDeleteMutation,
+} = productsRtkApi;

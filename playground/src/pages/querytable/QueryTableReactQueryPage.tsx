@@ -95,7 +95,7 @@ export function QueryTableReactExample() {
       <ExamplePreviewCodeFlip
         view={
           <ProductsQueryTableDemo
-            useQuery={useProductsReactQuery as never}
+            useQuery={useProductsReactQuery}
             tagType="products-react-query"
           />
         }
@@ -105,4 +105,3 @@ export function QueryTableReactExample() {
     </DemoPageShell>
   );
 }
-
