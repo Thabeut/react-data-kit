@@ -204,7 +204,7 @@ function AppShell() {
       />
       <Select<string>
         className="docs-language-select"
-        classNames={{ popup: { root: "docs-language-dropdown" } }}
+        popupClassName="docs-language-dropdown"
         aria-label={t("languageLabel")}
         style={{ width: 180 }}
         value={lang}
