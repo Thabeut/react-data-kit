@@ -105,6 +105,85 @@ const filters = [
 ];
 ```
 
+### Async filter options with `loadOptions`
+
+For `single` / `multi` filters, you can provide either:
+
+- `options`: static array (uses the classic static popover UI)
+- `loadOptions`: async loader (`initial + search + infinite scroll`)
+
+```tsx
+import type { LoadOptions, IMultiFilterOption } from "@thabeut/react-data-kit";
+
+const loadCategoryOptions: LoadOptions<IMultiFilterOption> = async ({
+  page = 1,
+  search = "",
+}) => {
+  const result = await myApi.getCategories({ page, search }); // your adapter
+  return {
+    options: result.items.map((item) => ({ value: item.id, label: item.label })),
+    hasMore: result.skip + result.limit < result.total,
+  };
+};
+
+const filters = [
+  {
+    id: "category",
+    label: "Category",
+    type: DataTableFilterTypeEnum.Multi,
+    loadOptions: loadCategoryOptions,
+    searchPlaceholder: "Search category",
+  },
+];
+```
+
+#### RTK Query adapter pattern (inside component)
+
+```tsx
+const dispatch = useDispatch<AppDispatch>();
+
+const loadCategoryOptions = useMemo<LoadOptions<IMultiFilterOption>>(
+  () => async ({ page = 1, search = "" }) => {
+    const data = await dispatch(
+      productsRtkApi.endpoints.productCategoriesOptionsInfinite.initiate(
+        { tag: { type: "category-infinite" }, query: { page, search } },
+        { subscribe: false },
+      ),
+    ).unwrap();
+
+    return {
+      options: data.items.map((item) => ({ value: item.id, label: item.label })),
+      hasMore: data.skip + data.limit < data.total,
+    };
+  },
+  [dispatch],
+);
+```
+
+#### React Query adapter pattern (inside component)
+
+```tsx
+const queryClient = useQueryClient();
+
+const loadCategoryOptions = useMemo<LoadOptions<IMultiFilterOption>>(
+  () => async ({ page = 1, search = "" }) => {
+    const data = await queryClient.fetchQuery({
+      queryKey: ["categories", { page, search }],
+      queryFn: () => api.getCategories({ page, search }),
+      staleTime: 30_000,
+    });
+
+    return {
+      options: data.items.map((item) => ({ value: item.id, label: item.label })),
+      hasMore: data.skip + data.limit < data.total,
+    };
+  },
+  [queryClient],
+);
+```
+
+Do not call `useQuery` hooks inside `loadOptions`; hooks must stay at component top level.
+
 ## 6) Grouping
 
 ```tsx

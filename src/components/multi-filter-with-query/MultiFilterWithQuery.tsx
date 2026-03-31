@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { useMemo, useState, type UIEvent } from "react";
+import { useMemo, type UIEvent } from "react";
 import { Checkbox } from "antd";
 import { Icon } from "@iconify/react";
 import { useTranslation } from "react-i18next";
@@ -9,13 +9,14 @@ import { Button } from "../button";
 import { Input } from "../input";
 import { Loader } from "../loader";
 import { PopoverEmpty } from "../popover-empty";
-import type {
-  IOptionsQueryConfig,
-  IMultiFilterOption,
-} from "../../types/data-table";
+import type { IMultiFilterOption } from "../../types/data-table";
+import { useAsyncOptions } from "../../hooks/useAsyncOptions";
+import type { LoadOptions } from "../../types/async-options";
 
 export interface MultiFilterWithQueryProps {
-  optionsQuery: IOptionsQueryConfig;
+  options?: IMultiFilterOption[];
+  loadOptions?: LoadOptions<IMultiFilterOption>;
+  pageSize?: number;
   value?: (string | number)[];
   onChange: (value: (string | number)[]) => void;
   single?: boolean;
@@ -24,7 +25,9 @@ export interface MultiFilterWithQueryProps {
 }
 
 export function MultiFilterWithQuery({
-  optionsQuery,
+  options: staticOptions,
+  loadOptions,
+  pageSize,
   value = [],
   onChange,
   single = false,
@@ -32,27 +35,29 @@ export function MultiFilterWithQuery({
   renderFilterOption,
 }: MultiFilterWithQueryProps) {
   const { t } = useTranslation();
-  const [search, setSearch] = useState("");
-  const [page, setPage] = useState(1);
-  const { useQuery, tag, formatOptions } = optionsQuery;
-  const queryArgs = useMemo(
-    () => ({ tag, query: { page, search } }),
-    [tag, page, search],
-  );
-  const { data, isLoading, isFetching } = useQuery(queryArgs);
-  const formatted = useMemo(() => formatOptions(data), [data, formatOptions]);
-  const items = formatted.items;
-  const hasMore = formatted.hasMore;
+  const isStaticMode = Array.isArray(staticOptions);
+  const asyncState = useAsyncOptions<IMultiFilterOption>({
+    loadOptions,
+    pageSize,
+    enabled: !isStaticMode,
+  });
+  const items = isStaticMode ? staticOptions : asyncState.options;
+  const visibleItems = useMemo(() => {
+    if (!isStaticMode) return items;
+    const needle = asyncState.search.trim().toLowerCase();
+    if (!needle) return items;
+    return items.filter((item) => item.label.toLowerCase().includes(needle));
+  }, [asyncState.search, isStaticMode, items]);
   const selectedSet = useMemo(
     () => new Set(value.map((v) => String(v))),
     [value],
   );
 
   const handleListScroll = (event: UIEvent<HTMLDivElement>) => {
-    if (!hasMore || isFetching) return;
+    if (!asyncState.hasMore || asyncState.isFetching) return;
     const target = event.currentTarget;
     if (target.scrollTop + target.clientHeight >= target.scrollHeight - 24) {
-      setPage((prev) => prev + 1);
+      asyncState.loadMore();
     }
   };
 
@@ -67,7 +72,7 @@ export function MultiFilterWithQuery({
     onChange(next);
   };
 
-  if (isLoading === true) {
+  if (!isStaticMode && asyncState.isLoading === true) {
     return (
       <div
         className="datatable-multi-filter"
@@ -85,7 +90,7 @@ export function MultiFilterWithQuery({
     );
   }
 
-  if (items.length === 0 && !isLoading) {
+  if (visibleItems.length === 0 && (isStaticMode || !asyncState.isLoading)) {
     return (
       <div
         className="datatable-multi-filter"
@@ -111,19 +116,20 @@ export function MultiFilterWithQuery({
           prefix={
             <Icon icon={datatableIconNames.Search} width={16} height={16} />
           }
-          value={search}
+          value={asyncState.search}
           onChange={(e) => {
-            setSearch(e.target.value);
-            setPage(1);
+            asyncState.setSearch(e.target.value);
           }}
           placeholder={searchPlaceholder}
         />
       ) : null}
       <div className="datatable-multi-filter-list" onScroll={handleListScroll}>
-        {items.length === 0 ? (
-          <PopoverEmpty variant={search.trim() ? "search" : "default"} />
+        {visibleItems.length === 0 ? (
+          <PopoverEmpty
+            variant={asyncState.search.trim() ? "search" : "default"}
+          />
         ) : (
-          items.map((option) => {
+          visibleItems.map((option) => {
             const isChecked = selectedSet.has(String(option.value));
             return (
               <Button

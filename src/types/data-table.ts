@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import type { ColumnType, TableProps } from "antd/es/table";
+import type { LoadOptions } from "./async-options";
 
 export type DataTableKey = string | number;
 export type DataTableSortOrder = "ascend" | "descend";
@@ -34,22 +35,6 @@ export interface IMultiFilterOption {
   [key: string]: unknown;
 }
 
-export interface IOptionsQueryConfig<TData = unknown, TTag = unknown> {
-  useQuery: (arg: {
-    tag: TTag;
-    query: { page?: number; search?: string; [key: string]: unknown };
-  }) => {
-    data?: TData;
-    isLoading?: boolean;
-    isFetching?: boolean;
-  };
-  tag: TTag;
-  formatOptions: (data: TData | undefined) => {
-    items: IMultiFilterOption[];
-    hasMore: boolean;
-  };
-}
-
 export interface DataTableFilterConfig {
   id: string;
   label: string;
@@ -57,7 +42,7 @@ export interface DataTableFilterConfig {
   type?: DataTableFilterType;
   dateOptions?: IDateFilterOption[];
   options?: IMultiFilterOption[];
-  optionsQuery?: IOptionsQueryConfig<any, any>;
+  loadOptions?: LoadOptions<IMultiFilterOption>;
   searchPlaceholder?: string;
   renderFilterOption?: (option: IMultiFilterOption) => ReactNode;
 }

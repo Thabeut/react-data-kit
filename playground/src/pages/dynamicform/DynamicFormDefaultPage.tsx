@@ -43,19 +43,17 @@ const fields: DynamicFormField[] = [
     dependsOn: { field: "country", effect: "show", resetOnHide: true },
     queryDependsOn: {
       fields: "country",
-      buildParams: ({ values, state, baseParams }) => ({
-        ...baseParams,
-        query: { ...(baseParams as any)?.query, country: values.country, page: state.page, search: state.search },
+      buildParams: ({ values, params }) => ({
+        ...params,
+        country: values.country,
       }),
     },
     fieldSchema: yup.string().required("City is required"),
     fieldProps: {
-      useQuery: useCityOptionsQuery,
-      buildParams: ({ page, search }) => ({ query: { page, search } }),
-      formatData: (data) => ({ items: data?.items ?? [], hasMore: false }),
+      loadOptions: loadCityOptions,
       getOptionLabel: (item) => item.label,
       getOptionValue: (item) => item.id,
-    } as any,
+    },
   },
   {
     type: DynamicFieldTypeEnum.Avatar,

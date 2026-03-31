@@ -22,6 +22,10 @@ import { TextArea } from "../../components/textarea";
 import type { TextAreaProps } from "../../components/textarea/TextArea";
 import { AsyncSelect } from "../../components/async-select";
 import type { AsyncSelectProps } from "../../components/async-select/AsyncSelect";
+import type {
+  AsyncOptionsParams,
+  LoadOptions,
+} from "../../types/async-options";
 import { UploadField } from "../../components/upload-field";
 import type {
   UploadFieldProps,
@@ -93,9 +97,8 @@ export interface DynamicFormQueryDependency {
   fields: string | string[];
   buildParams: (args: {
     values: Record<string, unknown>;
-    state: { page: number; search: string };
-    baseParams: unknown;
-  }) => unknown;
+    params: AsyncOptionsParams;
+  }) => AsyncOptionsParams;
   resetOnChange?: boolean;
 }
 
@@ -103,7 +106,7 @@ type InputFieldProps = Omit<InputProps, "value" | "onChange">;
 type SelectFieldProps = Omit<SelectProps<string>, "value" | "onChange">;
 type TextAreaFieldProps = Omit<TextAreaProps, "value" | "onChange">;
 type AsyncSelectFieldProps = Omit<
-  AsyncSelectProps<unknown, unknown>,
+  AsyncSelectProps<unknown>,
   "value" | "onChange"
 >;
 type UploadFieldOnlyProps = Omit<UploadFieldProps, "value" | "onChange">;
@@ -155,35 +158,21 @@ export type DynamicFormField =
       render: (form: UseFormReturn<Record<string, unknown>>) => ReactNode;
     });
 
-export type DynamicAsyncSelectField<TItem, TData, TArgs = unknown> = Omit<
+export type DynamicAsyncSelectField<TItem> = Omit<
   Extract<DynamicFormField, { type: "asyncSelect" }>,
   "fieldProps"
 > & {
   fieldProps: Omit<
     AsyncSelectFieldProps,
-    | "useQuery"
-    | "buildParams"
-    | "formatData"
     | "getOptionValue"
     | "getOptionLabel"
   > & {
-    useQuery: (args: TArgs) => {
-      data?: TData;
-      isLoading: boolean;
-      isFetching?: boolean;
-    };
-    buildParams: (state: { page: number; search: string }) => TArgs;
-    formatData: (data: TData | undefined) => { items: TItem[]; hasMore: boolean };
+    loadOptions?: LoadOptions<TItem>;
+    options?: TItem[];
     getOptionValue: (item: TItem) => string;
     getOptionLabel: (item: TItem) => string;
   };
 };
-
-export function defineAsyncSelectField<TItem, TData, TArgs = unknown>(
-  field: DynamicAsyncSelectField<TItem, TData, TArgs>,
-): DynamicFormField {
-  return field as DynamicFormField;
-}
 
 export interface DynamicFormProps<TValues extends Record<string, unknown>> {
   variant?: "default" | "modal" | "drawer";
@@ -508,9 +497,29 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
 
             if (fieldConfig.type === "asyncSelect") {
               const asyncProps = fieldConfig.fieldProps;
+              const queryDependencySignature = fieldConfig.queryDependsOn
+                ? (Array.isArray(fieldConfig.queryDependsOn.fields)
+                    ? fieldConfig.queryDependsOn.fields
+                    : [fieldConfig.queryDependsOn.fields]
+                  )
+                    .map((name) => watchedValues?.[name])
+                    .join("|")
+                : "";
+              const resolvedLoadOptions: LoadOptions<unknown> | undefined =
+                fieldConfig.queryDependsOn && asyncProps.loadOptions
+                  ? (params) =>
+                      asyncProps.loadOptions!(
+                        fieldConfig.queryDependsOn!.buildParams({
+                          values: watchedValues ?? {},
+                          params,
+                        }),
+                      )
+                  : asyncProps.loadOptions;
               return (
-                <AsyncSelect<unknown, unknown>
+                <AsyncSelect<unknown>
+                  key={`${fieldConfig.name}-${queryDependencySignature}`}
                   {...asyncProps}
+                  loadOptions={resolvedLoadOptions}
                   placeholder={
                     asyncProps?.placeholder ?? fieldConfig.placeholder
                   }
@@ -518,15 +527,6 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
                     Boolean((asyncProps as { disabled?: boolean })?.disabled) ||
                     isDependencyDisabled
                   }
-                  buildParams={(state) => {
-                    const baseParams = asyncProps.buildParams(state);
-                    if (!fieldConfig.queryDependsOn) return baseParams;
-                    return fieldConfig.queryDependsOn.buildParams({
-                      values: watchedValues ?? {},
-                      state,
-                      baseParams,
-                    });
-                  }}
                   value={field.value as string | undefined}
                   onChange={field.onChange}
                 />

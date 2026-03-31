@@ -9,6 +9,11 @@ export {
   InfiniteScrollRQ,
 } from "./features/infinite-scroll";
 export type {
+  AsyncOptionsParams,
+  AsyncOptionsResult,
+  LoadOptions,
+} from "./types/async-options";
+export type {
   DataTableProps,
   DataTableColumnInfo,
   DataTableKey,
@@ -26,7 +31,6 @@ export type {
   InternalGroupRow,
   IDateFilterOption,
   IMultiFilterOption,
-  IOptionsQueryConfig,
   ActionItem,
   DeleteModalConfig,
 } from "./types/data-table";
@@ -56,7 +60,7 @@ export type {
   DynamicFormQueryDependency,
   DynamicAsyncSelectField,
 } from "./features/dynamic-form";
-export { DynamicFieldTypeEnum, defineAsyncSelectField } from "./features/dynamic-form";
+export { DynamicFieldTypeEnum } from "./features/dynamic-form";
 export type { CrudManagerProps } from "./features/crud-manager";
 
 export {

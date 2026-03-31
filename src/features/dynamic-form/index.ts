@@ -8,4 +8,4 @@ export type {
   DynamicFormQueryDependency,
   DynamicAsyncSelectField,
 } from "./DynamicForm";
-export { DynamicFieldTypeEnum, defineAsyncSelectField } from "./DynamicForm";
+export { DynamicFieldTypeEnum } from "./DynamicForm";

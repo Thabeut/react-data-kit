@@ -1,15 +1,17 @@
 import { useMemo } from "react";
 import * as yup from "yup";
 import type { UploadFile } from "antd";
-import {
-  defineAsyncSelectField,
-  type DynamicFormField,
+import { useDispatch } from "react-redux";
+import type {
+  AsyncOptionsParams,
+  AsyncOptionsResult,
+  DynamicFormField,
+  LoadOptions,
 } from "@thabeut/react-data-kit";
 import {
-  useCountriesOptionsInfiniteRtkQuery,
-  useCitiesByCountryOptionsInfiniteRtkQuery,
-  useInfiniteProductsRtkQuery,
+  productsRtkApi,
   type DummyJsonListResponse,
+  type PublicOptionsListResponse,
 } from "../querytable/adapters/useProductsRtkQuery";
 
 export type FormValues = {
@@ -27,55 +29,97 @@ export type FormValues = {
 };
 
 type ProductOption = { id: number; title: string };
-type CountryOption = { id: string; label: string };
 type CityOption = { id: string; label: string };
 
-type CountriesQueryPayload = {
-  query: { page: number; search: string };
-};
-
-type CityQueryPayload = {
-  query: { page: number; search: string; country?: string };
-};
-
-function useCountriesOptionsQuery(payload: CountriesQueryPayload): {
-  data?: { items: CountryOption[]; total: number; skip: number; limit: number };
-  isLoading: boolean;
-  isFetching?: boolean;
-} {
-  const { data, isLoading, isFetching } = useCountriesOptionsInfiniteRtkQuery({
-    tag: { type: "dynamicform-countries" },
-    query: payload.query,
-  });
-  return { data, isLoading, isFetching };
-}
-
-function useCityOptionsQuery(payload: CityQueryPayload): {
-  data?: { items: CityOption[]; total: number; skip: number; limit: number };
-  isLoading: boolean;
-  isFetching?: boolean;
-} {
-  const { data, isLoading, isFetching } =
-    useCitiesByCountryOptionsInfiniteRtkQuery({
-    tag: { type: "dynamicform-cities" },
-    query: payload.query,
-  });
-  return { data, isLoading, isFetching };
-}
-
-function useProductsInfiniteQuery(payload: {
-  tag: { type: string };
-  query: { page: number; limit: number; search: string };
-}): {
-  data?: DummyJsonListResponse;
-  isLoading: boolean;
-  isFetching?: boolean;
-} {
-  const { data, isLoading, isFetching } = useInfiniteProductsRtkQuery(payload);
-  return { data, isLoading, isFetching };
-}
+type CountryOptionItem = { id: string; label: string };
 
 export function useDynamicFormFields() {
+  const dispatch = useDispatch<any>();
+  const loadCountryOptions: LoadOptions<CountryOptionItem> = useMemo(
+    () =>
+      async (
+        params: AsyncOptionsParams,
+      ): Promise<AsyncOptionsResult<CountryOptionItem>> => {
+        const page = params.page ?? 1;
+        const search = params.search ?? "";
+        const data = (await dispatch(
+          productsRtkApi.endpoints.countriesOptionsInfinite.initiate(
+            {
+              tag: { type: "dynamicform-countries" },
+              query: { page, search },
+            },
+            { subscribe: false },
+          ),
+        ).unwrap()) as PublicOptionsListResponse;
+        return {
+          options: (data.items ?? []).map((item) => ({
+            id: item.id,
+            label: item.label,
+          })),
+          hasMore: data.skip + data.limit < data.total,
+        };
+      },
+    [dispatch],
+  );
+  const loadCityOptions = useMemo(
+    () =>
+      async (
+        params: AsyncOptionsParams,
+      ): Promise<AsyncOptionsResult<CityOption>> => {
+        const page = params.page ?? 1;
+        const search = params.search ?? "";
+        const country =
+          typeof params.country === "string" ? params.country : undefined;
+        if (!country) {
+          return { options: [], hasMore: false };
+        }
+        const data = (await dispatch(
+          productsRtkApi.endpoints.citiesByCountryOptionsInfinite.initiate(
+            {
+              tag: { type: "dynamicform-cities" },
+              query: { page, search, country },
+            },
+            { subscribe: false },
+          ),
+        ).unwrap()) as PublicOptionsListResponse;
+        return {
+          options: (data.items ?? []).map((item) => ({
+            id: item.id,
+            label: item.label,
+          })),
+          hasMore: data.skip + data.limit < data.total,
+        };
+      },
+    [dispatch],
+  );
+  const loadProductOptions = useMemo(
+    () =>
+      async (
+        params: AsyncOptionsParams,
+      ): Promise<AsyncOptionsResult<ProductOption>> => {
+        const page = params.page ?? 1;
+        const search = params.search ?? "";
+        const pageSize = params.pageSize ?? 10;
+        const data = (await dispatch(
+          productsRtkApi.endpoints.listInfinite.initiate(
+            {
+              tag: { type: "dynamicform-products" },
+              query: { page, limit: pageSize, search },
+            },
+            { subscribe: false },
+          ),
+        ).unwrap()) as DummyJsonListResponse;
+        const items = (data.products ?? []).map((p) => ({
+          id: p.id,
+          title: p.title,
+        }));
+        return {
+          options: items,
+          hasMore: data.skip + data.limit < data.total,
+        };
+      },
+    [dispatch],
+  );
   return useMemo<DynamicFormField[]>(
     () => [
       {
@@ -119,33 +163,21 @@ export function useDynamicFormFields() {
           ],
         },
       },
-      defineAsyncSelectField({
+      {
         type: "asyncSelect",
         name: "country",
         label: "Country (public API)",
         placeholder: "Search country",
         fieldSchema: yup.string().required("Country is required"),
         fieldProps: {
-          useQuery: useCountriesOptionsQuery,
-          buildParams: ({ page, search }) => ({
-            query: { page, search },
-          }),
-          formatData: (data) => {
-            const merged = data?.items ?? [];
-            const total = data?.total ?? 0;
-            const skip = data?.skip ?? 0;
-            const limit = data?.limit ?? 10;
-            return { items: merged, hasMore: skip + limit < total };
-          },
-          getOptionLabel: (item) => item.label,
-          getOptionValue: (item) => item.label,
+          loadOptions: loadCountryOptions,
+          getOptionLabel: (item) =>
+            (item as { id: string; label: string }).label,
+          getOptionValue: (item) =>
+            (item as { id: string; label: string }).label,
         },
-      }),
-      defineAsyncSelectField<
-        CityOption,
-        { items: CityOption[]; total: number; skip: number; limit: number },
-        CityQueryPayload
-      >({
+      },
+      {
         type: "asyncSelect",
         name: "cityId",
         label: "City (depends on Country)",
@@ -157,50 +189,22 @@ export function useDynamicFormFields() {
         queryDependsOn: {
           fields: "country",
           resetOnChange: true,
-          buildParams: ({ values, state, baseParams }) => {
-            const base =
-              typeof baseParams === "object" && baseParams ? baseParams : {};
-            const baseWithQuery = base as { query?: object };
+          buildParams: ({ values, params }) => {
             return {
-              ...base,
-              query: {
-                ...(typeof baseWithQuery.query === "object" &&
-                baseWithQuery.query
-                  ? (baseWithQuery.query as object)
-                  : {}),
-                country: values.country,
-                page: state.page,
-                search: state.search,
-              },
+              ...params,
+              country: values.country,
             };
           },
         },
         fieldSchema: yup.string().required("City is required"),
         fieldProps: {
-          useQuery: useCityOptionsQuery,
-          buildParams: ({ page, search }) => ({
-            query: { page, search },
-          }),
-          formatData: (data) => {
-            const merged = data?.items ?? [];
-            const total = data?.total ?? 0;
-            const skip = data?.skip ?? 0;
-            const limit = data?.limit ?? 10;
-            return { items: merged, hasMore: skip + limit < total };
-          },
-          getOptionLabel: (item) => item.label,
-          getOptionValue: (item) => item.id,
+          loadOptions: loadCityOptions,
+          getOptionLabel: (item) => (item as CityOption).label,
+          getOptionValue: (item) => (item as CityOption).id,
           placeholder: "Pick country first, then search city",
         },
-      }),
-      defineAsyncSelectField<
-        ProductOption,
-        DummyJsonListResponse,
-        {
-          tag: { type: string };
-          query: { page: number; limit: number; search: string };
-        }
-      >({
+      },
+      {
         type: "asyncSelect",
         name: "productId",
         label: "Product (async)",
@@ -211,27 +215,12 @@ export function useDynamicFormFields() {
         },
         fieldSchema: yup.string().required("Product is required"),
         fieldProps: {
-          useQuery: useProductsInfiniteQuery,
-          buildParams: ({ page, search }) => ({
-            tag: { type: "dynamicform-products" },
-            query: { page, limit: 10, search },
-          }),
-          formatData: (data) => {
-            const merged = (data?.products ?? []).map((p) => ({
-              id: p.id,
-              title: p.title,
-            }));
-            const total = data?.total ?? 0;
-            const skip = data?.skip ?? 0;
-            const limit = data?.limit ?? 10;
-            const hasMore = skip + limit < total;
-            return { items: merged, hasMore };
-          },
-          getOptionLabel: (item) => item.title,
-          getOptionValue: (item) => String(item.id),
+          loadOptions: loadProductOptions,
+          getOptionLabel: (item) => (item as ProductOption).title,
+          getOptionValue: (item) => String((item as ProductOption).id),
           placeholder: "Type to search products…",
         },
-      }),
+      },
       {
         type: "upload",
         name: "attachments",
@@ -286,6 +275,6 @@ export function useDynamicFormFields() {
         ),
       },
     ],
-    [],
+    [loadCityOptions, loadCountryOptions, loadProductOptions],
   );
 }

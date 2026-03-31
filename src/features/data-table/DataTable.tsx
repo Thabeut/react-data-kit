@@ -260,10 +260,10 @@ export function DataTable<T extends { [key: string]: unknown }>(
         : value != null
           ? [value as string | number]
           : [];
-      if (filter.optionsQuery) {
+      if (filter.loadOptions) {
         return (
           <MultiFilterWithQuery
-            optionsQuery={filter.optionsQuery}
+            loadOptions={filter.loadOptions}
             value={arr as (string | number)[]}
             onChange={(next) => setFilterValue(filter.id, next)}
             single={type === "single"}

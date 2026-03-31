@@ -9,7 +9,6 @@ import "@thabeut/react-data-kit/style.css";
 import {
   DynamicForm,
   DynamicFieldTypeEnum,
-  defineAsyncSelectField,
   type DynamicFormField,
 } from "@thabeut/react-data-kit";
 import * as yup from "yup";
@@ -140,9 +139,35 @@ Use `dependsOn` on any field to control visibility or disabled state based on ot
 
 You can pass an array to combine rules (for example one `show` rule + one `disable` rule).
 
-## 11) Cross-field query params (`queryDependsOn`, asyncSelect)
+## 11) AsyncSelect with `loadOptions`
 
-Use `queryDependsOn` to feed values from other fields into async query params.
+`asyncSelect` is library-agnostic and accepts:
+
+- `options` for static mode
+- `loadOptions` for async mode (`initial + search + infinite scroll`)
+
+```tsx
+const countryField: DynamicFormField = {
+  type: DynamicFieldTypeEnum.AsyncSelect,
+  name: "country",
+  label: "Country",
+  fieldProps: {
+    loadOptions: async ({ page = 1, search = "" }) => {
+      const data = await api.getCountries({ page, search });
+      return {
+        options: data.items,
+        hasMore: data.skip + data.limit < data.total,
+      };
+    },
+    getOptionLabel: (item) => item.label,
+    getOptionValue: (item) => item.id,
+  },
+};
+```
+
+## 12) Cross-field async params (`queryDependsOn`)
+
+Use `queryDependsOn` to inject other form values into `loadOptions` params.
 
 ```tsx
 {
@@ -151,63 +176,66 @@ Use `queryDependsOn` to feed values from other fields into async query params.
   queryDependsOn: {
     fields: "country",
     resetOnChange: true,
-    buildParams: ({ values, state, baseParams }) => ({
-      ...baseParams,
-      query: {
-        ...(baseParams as any).query,
-        country: values.country,
-        page: state.page,
-        search: state.search,
-      },
+    buildParams: ({ values, params }) => ({
+      ...params,
+      country: values.country,
     }),
   },
   fieldProps: {
-    useQuery: useCitiesQuery,
-    buildParams: ({ page, search }) => ({ query: { page, search } }),
-    // ...
+    loadOptions: loadCityOptions,
+    getOptionLabel: (item) => item.label,
+    getOptionValue: (item) => item.id,
   },
 }
 ```
 
-- `fields`: watched fields that influence query params.
-- `buildParams`: returns final params for the async query hook.
-- `resetOnChange` (default true): clears current field value when dependency fields change.
+- `fields`: watched fields that affect request params.
+- `buildParams`: returns final params passed to your `loadOptions`.
+- `resetOnChange` (default true): clears field value when dependency fields change.
 
-## 12) Typed async field helper (`defineAsyncSelectField`)
-
-For strict typing (no `any` / `unknown` in app code), use `defineAsyncSelectField`:
+## 13) RTK Query adapter for `loadOptions`
 
 ```tsx
-const countryField = defineAsyncSelectField<CountryOption, PublicOptionsListResponse, CountriesQueryPayload>({
-  type: DynamicFieldTypeEnum.AsyncSelect,
-  name: "country",
-  label: "Country",
-  fieldProps: {
-    useQuery: useCountriesOptionsRtkQuery,
-    buildParams: ({ page, search }) => ({
-      tag: { type: "dynamicform-countries" },
-      query: { page, search },
-    }),
-    formatData: (data) => {
-      const items = data?.items ?? [];
-      return { items, hasMore: Boolean(data && data.skip + data.limit < data.total) };
-    },
-    getOptionLabel: (item) => item.label,
-    getOptionValue: (item) => item.id,
+const dispatch = useDispatch<AppDispatch>();
+
+const loadCountryOptions = useMemo(
+  () => async ({ page = 1, search = "" }) => {
+    const data = await dispatch(
+      productsRtkApi.endpoints.countriesOptionsInfinite.initiate(
+        { tag: { type: "dynamicform-countries" }, query: { page, search } },
+        { subscribe: false },
+      ),
+    ).unwrap();
+
+    return {
+      options: data.items.map((item) => ({ id: item.id, label: item.label })),
+      hasMore: data.skip + data.limit < data.total,
+    };
   },
-});
+  [dispatch],
+);
 ```
 
-Generic params map to:
+## 14) React Query adapter for `loadOptions`
 
-- `TItem` (`CountryOption` above): one option item shape used by `getOptionLabel` and `getOptionValue`.
-- `TData` (`PublicOptionsListResponse`): raw response shape returned by your query hook (`useQuery`).
-- `TArgs` (`CountriesQueryPayload`): argument shape accepted by your query hook and produced by `buildParams`.
+```tsx
+const queryClient = useQueryClient();
 
-Quick mental model:
+const loadCountryOptions = useMemo(
+  () => async ({ page = 1, search = "" }) => {
+    const data = await queryClient.fetchQuery({
+      queryKey: ["countries", { page, search }],
+      queryFn: () => api.getCountries({ page, search }),
+      staleTime: 30_000,
+    });
 
-- `useQuery(args: TArgs) -> { data?: TData }`
-- `formatData(data: TData) -> { items: TItem[]; hasMore: boolean }`
-- `getOptionLabel(item: TItem)` and `getOptionValue(item: TItem)`
+    return {
+      options: data.items,
+      hasMore: data.skip + data.limit < data.total,
+    };
+  },
+  [queryClient],
+);
+```
 
-Always pass explicit generics with `defineAsyncSelectField<TItem, TData, TArgs>(...)` to keep callback parameters strongly typed and avoid inference gaps in `formatData` / label-value callbacks.
+Do not call `useQuery` directly inside `loadOptions`; use imperative client APIs (`dispatch(...initiate)` or `queryClient.fetchQuery`) in the adapter.
