@@ -1,9 +1,11 @@
 import { DynamicForm } from "@thabeut/react-data-kit";
+import { useTranslation } from "react-i18next";
 import { DemoPageShell } from "../../components/DemoPageShell";
 import { ExamplePreviewCodeFlip } from "../../components/ExamplePreviewCodeFlip";
 import { useDynamicFormFields, type FormValues } from "./shared";
 
 export function DynamicFormDefaultPage() {
+  const { t } = useTranslation();
   const fields = useDynamicFormFields();
 
   const code = String.raw`import * as yup from "yup";
@@ -72,19 +74,19 @@ export function Page() {
 
   return (
     <DemoPageShell
-      title="Inline View"
-      description="Use the default variant when the form should live directly inside the page layout, without overlays."
-      setup="This example demonstrates a create-style inline form using field-level validation (`fieldSchema`) and enum-based field types."
+      title={t("dfDefaultViewTitle")}
+      description={t("dfDefaultViewDescription")}
+      setup={t("dfDefaultViewSetup")}
     >
       <ExamplePreviewCodeFlip
         view={
           <DynamicForm<FormValues>
             variant="default"
-            title="Create profile"
-            description="Inline form with avatar, tags, and status switch."
+            title={t("dfCreateProfileTitle")}
+            description={t("dfInlineFormDesc")}
             fields={fields}
-            submitLabel="Submit"
-            cancelLabel="Cancel"
+            submitLabel={t("dfSubmit")}
+            cancelLabel={t("cancel")}
             onSubmit={async (values) => {
               // eslint-disable-next-line no-alert
               alert(JSON.stringify(values, null, 2));

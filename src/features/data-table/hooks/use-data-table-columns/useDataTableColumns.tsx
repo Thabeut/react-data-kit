@@ -3,22 +3,20 @@ import { useMemo } from "react";
 import type { ColumnsType } from "antd/es/table";
 import { Icon } from "@iconify/react";
 import clsx from "clsx";
-import { datatableIconNames } from "../../constants/datatable-icons";
-import { ActionsPopover } from "../../components/actions-popover";
-import { ColumnResizeHandle } from "../../components/column-resize-handle";
+import { datatableIconNames } from "../../../../constants/datatable-icons";
+import { ActionsPopover } from "../../../../components/actions-popover";
+import { ColumnResizeHandle } from "../../../../components/column-resize-handle";
 import type {
   DataTableActionsConfig,
   DataTableColumnInfo,
   DataTableGroupConfig,
   DataTableSortState,
   InternalRow,
-} from "../../types/data-table";
-import { isGroupRow } from "../../utils/data-table";
-import { saveColumnWidths } from "../../utils/data-table-column-widths";
+} from "../../../../types/data-table";
+import { isGroupRow } from "../../../../utils/data-table";
+import { saveColumnWidths } from "../../../../utils/data-table-column-widths";
 
-export interface UseDataTableColumnsParams<
-  T extends { [key: string]: unknown },
-> {
+interface UseDataTableColumnsParams<T extends { [key: string]: unknown }> {
   columnsInfo: DataTableColumnInfo<T>[];
   visibleColumnIds: string[];
   groupConfig: DataTableGroupConfig<T> | undefined;

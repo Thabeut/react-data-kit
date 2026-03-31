@@ -1,61 +1,63 @@
-import { Divider, Space, Typography } from "antd";
+import type { ReactNode } from "react";
+import type { ColumnsType } from "antd/es/table";
+import { useTranslation } from "react-i18next";
+import { DocsIntroPage, type DocsIntroNextStep } from "../../components/DocsIntroPage";
 
-const { Title, Paragraph } = Typography;
+type PropRow = {
+  key: string;
+  prop: string;
+  required: string;
+  description: string;
+};
 
 export function InfiniteScrollIntroPage() {
+  const { t } = useTranslation();
+  const infiniteScrollPropRows: PropRow[] = [
+    { key: "heightClass", prop: "heightClass", required: t("docsRequired"), description: t("isPropHeightClassDesc") },
+    { key: "useQuery", prop: "useQuery", required: t("docsRequired"), description: t("isPropUseQueryDesc") },
+    { key: "buildQueryArgs", prop: "buildQueryArgs", required: t("docsRequired"), description: t("isPropBuildQueryArgsDesc") },
+    { key: "selectItems", prop: "selectItems", required: t("docsRequired"), description: t("isPropSelectItemsDesc") },
+    { key: "selectHasNext", prop: "selectHasNext", required: t("docsRequired"), description: t("isPropSelectHasNextDesc") },
+    { key: "getKey", prop: "getKey", required: t("docsRequired"), description: t("isPropGetKeyDesc") },
+    { key: "renderItem", prop: "renderItem", required: t("docsRequired"), description: t("isPropRenderItemDesc") },
+    { key: "enabled", prop: "enabled", required: t("docsOptional"), description: t("isPropEnabledDesc") },
+    { key: "emptyState", prop: "emptyState", required: t("docsOptional"), description: t("isPropEmptyStateDesc") },
+    { key: "className", prop: "className", required: t("docsOptional"), description: t("isPropClassNameDesc") },
+    { key: "thresholdPx", prop: "thresholdPx", required: t("docsOptional"), description: t("isPropThresholdPxDesc") },
+    { key: "resetKey", prop: "resetKey", required: t("docsOptional"), description: t("isPropResetKeyDesc") },
+    { key: "renderInitialLoader", prop: "renderInitialLoader", required: t("docsOptional"), description: t("isPropRenderInitialLoaderDesc") },
+    { key: "renderFetchingLoader", prop: "renderFetchingLoader", required: t("docsOptional"), description: t("isPropRenderFetchingLoaderDesc") },
+  ];
+  const columns: ColumnsType<PropRow> = [
+    { title: t("dtColProp"), dataIndex: "prop", key: "prop" },
+    { title: t("dtColRequired"), dataIndex: "required", key: "required", width: 120 },
+    { title: t("dtColDescription"), dataIndex: "description", key: "description" },
+  ];
+  const nextSteps: DocsIntroNextStep[] = [
+    { to: "/infinite-scroll/rtk-query", label: t("docsExampleRtkQuery"), color: "blue" },
+    {
+      to: "/infinite-scroll/react-query",
+      label: t("docsExampleReactQuery"),
+      color: "geekblue",
+    },
+  ];
+  const description: ReactNode =
+    "InfiniteScrollUI is a UI-only helper for list rendering and load-more states. Data fetching can be wired using RTK Query or React Query wrappers.";
+
   return (
-    <>
-      <Title level={2} style={{ marginTop: 0 }}>
-        Infinite scroll: UI + data wrappers
-      </Title>
-
-      <Paragraph type="secondary" style={{ maxWidth: 900 }}>
-        `InfiniteScrollUI` is a small, UI-only helper: a scroll container that
-        renders items, loading states, and an optional “load more” spinner.
-        Data fetching is handled separately by `InfiniteScrollRTK` (for RTK
-        Query) and `InfiniteScrollRQ` (for React Query).
-      </Paragraph>
-
-      <Divider />
-
-      <Space direction="vertical" size="middle" style={{ width: "100%" }}>
-        <Title level={4} style={{ marginBottom: 0 }}>
-          What the UI does
-        </Title>
-
-        <Paragraph style={{ maxWidth: 900 }}>
-          - Renders a vertical scroll container with your cards.
-          <br />
-          - Shows an initial loader while the first page is loading.
-          <br />
-          - Shows an empty state when there are no items.
-          <br />
-          - Calls an `onLoadMore` callback when the user reaches the bottom,
-          and renders a “load more” spinner while more items are being fetched.
-        </Paragraph>
-
-        <Divider />
-
-        <Title level={4} style={{ marginBottom: 0 }}>
-          How it fits with RTK Query and React Query
-        </Title>
-
-        <Paragraph type="secondary" style={{ maxWidth: 900 }}>
-          You stay in charge of the data layer. The UI layer (`InfiniteScrollUI`)
-          only knows about items and loading flags; data-aware wrappers connect
-          it to your queries:
-        </Paragraph>
-
-        <Paragraph style={{ maxWidth: 900 }}>
-          - `InfiniteScrollRTK` wires a page-based RTK Query endpoint into the
-          UI: it manages `page`, calls your endpoint, and passes{" "}
-          <code>{`{ items, hasNext, isLoading, isFetching }`}</code> down.
-          <br />
-          - `InfiniteScrollRQ` uses React Query’s <code>useInfiniteQuery</code>
-          and normalizes <code>data.pages</code> into a flat list of items plus
-          <code>hasNextPage</code>.
-        </Paragraph>
-      </Space>
-    </>
+    <DocsIntroPage<PropRow>
+      title={t("docsInfiniteScrollIntroTitle")}
+      description={description}
+      installTitle={t("dtInstallTitle")}
+      installSnippets={[
+        "npm install @thabeut/react-data-kit",
+        'import { InfiniteScrollRTK, InfiniteScrollRQ } from "@thabeut/react-data-kit";',
+      ]}
+      propsTitle={t("docsPropsTitle")}
+      propsIntro={t("isPropsIntro")}
+      propsTable={{ columns, rows: infiniteScrollPropRows }}
+      nextStepsTitle={t("docsNextSteps")}
+      nextSteps={nextSteps}
+    />
   );
 }

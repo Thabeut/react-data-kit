@@ -15,13 +15,13 @@ export function ProductCard({ product }: { product: ProductCardModel }) {
   return (
     <Card
       hoverable
-      style={{ width: "100%" }}
+      style={{ width: "320px" }}
       bodyStyle={{ padding: 14 }}
       cover={
         <img
           src={product.thumbnail}
           alt={product.title}
-          style={{ height: 180, objectFit: "cover" }}
+          style={{ height: 220, objectFit: "contain" }}
         />
       }
     >

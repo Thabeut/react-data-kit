@@ -1,79 +1,51 @@
-import { Divider, Table, Typography } from "antd";
 import { useMemo } from "react";
 import type { ColumnsType } from "antd/es/table";
+import { crudManagerPropRows } from "./props-data";
+import { useTranslation } from "react-i18next";
+import { DocsIntroPage, type DocsIntroNextStep } from "../../components/DocsIntroPage";
 
-const { Title, Paragraph } = Typography;
-
-type Row = {
+type PropRow = {
   key: string;
-  topic: string;
-  details: string;
+  prop: string;
+  type: string;
+  required: string;
+  description: string;
 };
 
-const rows: Row[] = [
-  {
-    key: "what",
-    topic: "What it is",
-    details:
-      "`CrudManager` composes `QueryTable` and `DynamicForm` into one component for add/edit flows.",
-  },
-  {
-    key: "why",
-    topic: "Why",
-    details:
-      "Centralize table + form wiring in one reusable feature while still passing through QueryTable and DynamicForm props.",
-  },
-  {
-    key: "workflow",
-    topic: "Workflow",
-    details:
-      "Toolbar Add opens create form, row Edit opens prefilled form, submit dispatches create/update callbacks.",
-  },
-  {
-    key: "surface",
-    topic: "Form surface",
-    details:
-      "Supports `drawer`, `modal`, and `default` variants. Drawer is the default.",
-  },
-];
-
 export function CrudManagerIntroPage() {
-  const columns: ColumnsType<Row> = useMemo(
+  const { t } = useTranslation();
+  const propColumns: ColumnsType<PropRow> = useMemo(
     () => [
-      { title: "Topic", dataIndex: "topic", key: "topic", width: 180 },
-      { title: "Details", dataIndex: "details", key: "details" },
+      { title: t("dtColProp"), dataIndex: "prop", key: "prop", width: 260 },
+      { title: t("dtColType"), dataIndex: "type", key: "type", width: 260 },
+      { title: t("dtColRequired"), dataIndex: "required", key: "required", width: 120 },
+      { title: t("dtColDescription"), dataIndex: "description", key: "description" },
     ],
-    [],
+    [t],
   );
+  const nextSteps: DocsIntroNextStep[] = [
+    {
+      to: "/crudmanager/basic",
+      label: t("docsExampleDrawerDefault"),
+      color: "blue",
+    },
+    { to: "/crudmanager/modal", label: t("docsExampleModal"), color: "geekblue" },
+  ];
 
   return (
-    <>
-      <Title level={2} style={{ marginTop: 0 }}>
-        CrudManager Overview
-      </Title>
-      <Paragraph type="secondary" style={{ maxWidth: 900 }}>
-        Query-driven CRUD feature built from `QueryTable` and `DynamicForm` with
-        add/edit orchestration and pass-through API flexibility.
-      </Paragraph>
-
-      <Title level={4} style={{ marginBottom: 0 }}>
-        Install
-      </Title>
-      <pre className="docs-install-snippet">
-        <code>{`npm install @thabeut/react-data-kit`}</code>
-      </pre>
-
-      <Divider />
-
-      <Table<Row>
-        className="docs-props-table"
-        rowKey="key"
-        size="small"
-        columns={columns}
-        dataSource={rows}
-        pagination={false}
-        scroll={{ x: true }}
-      />
-    </>
+    <DocsIntroPage<PropRow>
+      title={t("docsCrudManagerIntroTitle")}
+      description="Query-driven CRUD feature built from QueryTable and DynamicForm with add/edit orchestration and pass-through API flexibility."
+      installTitle={t("dtInstallTitle")}
+      installSnippets={[
+        "npm install @thabeut/react-data-kit",
+        'import { CrudManager } from "@thabeut/react-data-kit";',
+      ]}
+      propsTitle={t("docsPropsTitle")}
+      propsIntro="Core props for CrudManager including QueryTable and DynamicForm pass-throughs."
+      propsTable={{ columns: propColumns, rows: crudManagerPropRows }}
+      nextStepsTitle={t("docsNextSteps")}
+      nextSteps={nextSteps}
+    />
   );
 }

@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { Button, Space } from "antd";
+import { useTranslation } from "react-i18next";
 import { DynamicForm } from "@thabeut/react-data-kit";
 import { DemoPageShell } from "../../components/DemoPageShell";
 import { ExamplePreviewCodeFlip } from "../../components/ExamplePreviewCodeFlip";
 import { useDynamicFormFields, type FormValues } from "./shared";
 
 export function DynamicFormDrawerPage() {
+  const { t } = useTranslation();
   const fields = useDynamicFormFields();
   const [open, setOpen] = useState(false);
 
@@ -62,25 +64,25 @@ export function Page() {
 
   return (
     <DemoPageShell
-      title="Drawer View"
-      description="Use the drawer variant for side-panel workflows where users need page context while filling the form."
-      setup="Drawer works well for multi-field create/edit tasks and keeps actions visible while fields can scroll within viewport-safe height."
+      title={t("dfDrawerViewTitle")}
+      description={t("dfDrawerViewDescription")}
+      setup={t("dfDrawerViewSetup")}
     >
       <ExamplePreviewCodeFlip
         view={
           <>
             <Space wrap>
-              <Button onClick={() => setOpen(true)}>Open drawer</Button>
+              <Button onClick={() => setOpen(true)}>{t("dfOpenDrawer")}</Button>
             </Space>
             <DynamicForm<FormValues>
               variant="drawer"
               open={open}
               onClose={() => setOpen(false)}
-              title="Create project"
-              description="Side-panel form with textarea and color selection."
+              title={t("dfCreateProjectTitle")}
+              description={t("dfDrawerFormDesc")}
               fields={fields}
-              submitLabel="Submit"
-              cancelLabel="Cancel"
+              submitLabel={t("dfSubmit")}
+              cancelLabel={t("cancel")}
               onSubmit={async (values) => {
                 // eslint-disable-next-line no-alert
                 alert(JSON.stringify(values, null, 2));

@@ -1,4 +1,5 @@
 import { Empty, Skeleton, Space, Spin, Typography } from "antd";
+import { useTranslation } from "react-i18next";
 import { InfiniteScrollRQ } from "@thabeut/react-data-kit";
 import { ExamplePreviewCodeFlip } from "../../components/ExamplePreviewCodeFlip";
 import { DemoPageShell } from "../../components/DemoPageShell";
@@ -13,9 +14,9 @@ import {
 const { Title, Paragraph } = Typography;
 
 export function InfiniteScrollProductsReactQueryPage() {
-  const title = "Infinite products feed (React Query)";
-  const description =
-    "How to build an infinite products feed using React Query's useInfiniteQuery hook. This page focuses on the data side; you can plug it into InfiniteScrollList or any custom list.";
+  const { t } = useTranslation();
+  const title = t("isReactPageTitle");
+  const description = t("isReactPageDescription");
 
   const reactQuerySnippet = String.raw`import { InfiniteScrollRQ } from "@thabeut/react-data-kit";
 import { useInfiniteProductsReactQuery } from "./services/productsReact";
@@ -59,7 +60,7 @@ export function ProductsInfiniteScrollReactQuery() {
     <DemoPageShell
       title={title}
       description={description}
-      setup="This example shows a useInfiniteQuery-powered InfiniteScrollList. Users can paste the snippet into their app and plug in their own API."
+      setup={t("isReactPageSetup")}
     >
       <Space direction="vertical" size="large" style={{ width: "100%" }}>
         <ExamplePreviewCodeFlip
@@ -82,7 +83,7 @@ export function ProductsInfiniteScrollReactQuery() {
                 }
                 selectItemsFromPage={resultSelectors.selectItems}
                 getKey={(item) => String(item.id)}
-                emptyState={<Empty description="No products found" />}
+                emptyState={<Empty description={t("isNoProductsFound")} />}
                 renderItem={(item) => <ProductCard product={item} />}
                 renderInitialLoader={
                   <div style={{ padding: 12 }}>
@@ -101,7 +102,7 @@ export function ProductsInfiniteScrollReactQuery() {
                     <Space>
                       <Spin size="small" />
                       <Paragraph style={{ marginBottom: 0 }}>
-                        Loading more products...
+                        {t("isLoadingMoreProducts")}
                       </Paragraph>
                     </Space>
                   </div>
@@ -114,13 +115,10 @@ export function ProductsInfiniteScrollReactQuery() {
 
         <Space direction="vertical" size="middle" style={{ width: "100%" }}>
           <Title level={4} style={{ marginBottom: 0 }}>
-            How to make the React Query hook
+            {t("isReactHowToTitle")}
           </Title>
           <Paragraph type="secondary" style={{ maxWidth: 900 }}>
-            The core is <code>useInfiniteQuery</code> with a{" "}
-            <code>getNextPageParam</code> that reads <code>skip</code> and{" "}
-            <code>limit</code> from the API response. You can see the full
-            library implementation in <code>useProductsReactQuery.ts</code>.
+            {t("isReactHowToDesc")}
           </Paragraph>
         </Space>
       </Space>

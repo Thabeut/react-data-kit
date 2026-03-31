@@ -40,6 +40,7 @@ export function DeleteModal({
       centered
       destroyOnHidden
       className="ui-delete-modal"
+      maskStyle={{ background: "transparent" }}
       onCancel={(e) => {
         e.stopPropagation();
         e.preventDefault();

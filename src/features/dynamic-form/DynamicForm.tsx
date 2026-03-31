@@ -1,6 +1,6 @@
 import "./dynamic-form.scss";
 import type { CSSProperties, ReactNode } from "react";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo } from "react";
 import { Drawer, Modal } from "antd";
 import {
   Controller,
@@ -182,41 +182,40 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
     maxHeight,
   } = props;
 
-  const popupContainerRef = useRef<HTMLDivElement | null>(null);
-  const getPopupContainer = useMemo(
-    () => (triggerNode: HTMLElement) =>
-      popupContainerRef.current ?? triggerNode.parentElement ?? document.body,
-    [],
-  );
+  useEffect(() => {
+    if (!customColors || typeof document === "undefined") return;
+    const root = document.documentElement;
+    const vars: Record<string, string | undefined> = {
+      "--dt-primary": customColors.primaryColor,
+      "--dt-light-surface-bg": customColors.lightMode?.surfaceBg,
+      "--dt-light-popover-bg": customColors.lightMode?.popoverBg,
+      "--dt-light-popover-option-hover":
+        customColors.lightMode?.popoverOptionHoverBg,
+      "--dt-light-surface-border": customColors.lightMode?.surfaceBorder,
+      "--dt-light-text-primary": customColors.lightMode?.textPrimary,
+      "--dt-light-text-secondary": customColors.lightMode?.textSecondary,
+      "--dt-dark-surface-bg": customColors.darkMode?.surfaceBg,
+      "--dt-dark-popover-bg": customColors.darkMode?.popoverBg,
+      "--dt-dark-popover-option-hover":
+        customColors.darkMode?.popoverOptionHoverBg,
+      "--dt-dark-surface-border": customColors.darkMode?.surfaceBorder,
+      "--dt-dark-text-primary": customColors.darkMode?.textPrimary,
+      "--dt-dark-text-secondary": customColors.darkMode?.textSecondary,
+    };
 
-  const customColorVars = useMemo(() => {
-    if (!customColors) return undefined;
-    const style: CSSProperties = {};
-    const setVar = (name: string, value?: string) => {
+    const previous = new Map<string, string>();
+    Object.entries(vars).forEach(([key, value]) => {
       if (!value) return;
-      (style as Record<string, string>)[name] = value;
+      previous.set(key, root.style.getPropertyValue(key));
+      root.style.setProperty(key, value);
+    });
+
+    return () => {
+      previous.forEach((value, key) => {
+        if (value) root.style.setProperty(key, value);
+        else root.style.removeProperty(key);
+      });
     };
-    const applyMode = (
-      prefix: "--dt-light" | "--dt-dark",
-      mode: DynamicFormProps<TValues>["customColors"] extends infer X
-        ? X extends { lightMode?: infer L; darkMode?: infer D }
-          ? L | D
-          : never
-        : never,
-    ) => {
-      if (!mode || typeof mode !== "object") return;
-      const m = mode as any;
-      setVar(`${prefix}-surface-bg`, m.surfaceBg);
-      setVar(`${prefix}-popover-bg`, m.popoverBg);
-      setVar(`${prefix}-popover-option-hover`, m.popoverOptionHoverBg);
-      setVar(`${prefix}-surface-border`, m.surfaceBorder);
-      setVar(`${prefix}-text-primary`, m.textPrimary);
-      setVar(`${prefix}-text-secondary`, m.textSecondary);
-    };
-    setVar("--dt-primary", customColors.primaryColor);
-    applyMode("--dt-light", customColors.lightMode as any);
-    applyMode("--dt-dark", customColors.darkMode as any);
-    return style;
   }, [customColors]);
 
   const resolvedFieldsMaxHeight = useMemo<string | undefined>(() => {
@@ -336,9 +335,6 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
                   className={clsx("w-full", selectProps?.className)}
                   value={field.value as string | undefined}
                   onChange={field.onChange}
-                  getPopupContainer={
-                    selectProps?.getPopupContainer ?? getPopupContainer
-                  }
                   placeholder={
                     selectProps?.placeholder ?? fieldConfig.placeholder
                   }
@@ -370,9 +366,6 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
                   {...asyncProps}
                   value={field.value as string | undefined}
                   onChange={field.onChange}
-                  getPopupContainer={
-                    (asyncProps as any)?.getPopupContainer ?? getPopupContainer
-                  }
                 />
               );
             }
@@ -494,10 +487,9 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
   const defaultContent = (
     <form
       className={clsx("rdk-theme-scope dynamic-form", className)}
-      style={customColorVars}
       onSubmit={handleSubmit(onValidSubmit)}
     >
-      <div ref={popupContainerRef}>
+      <div>
         {header}
         <div className="dynamic-form__fields" style={fieldsContainerStyle}>
           {fieldNodes}
@@ -510,10 +502,9 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
   const modalContent = (
     <form
       className={clsx("rdk-theme-scope dynamic-form", className)}
-      style={customColorVars}
       onSubmit={handleSubmit(onValidSubmit)}
     >
-      <div ref={popupContainerRef}>
+      <div>
         {header}
         <div className="dynamic-form__fields" style={fieldsContainerStyle}>
           {fieldNodes}
@@ -538,12 +529,8 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
         maskClosable
         closable={false}
         rootClassName="dynamic-form-drawer"
-        rootStyle={customColorVars}
       >
-        <div
-          ref={popupContainerRef}
-          className={clsx("dynamic-form-drawer__inner", className)}
-        >
+        <div className={clsx("dynamic-form-drawer__inner", className)}>
           <div className="dynamic-form-drawer__content">
             {header}
             <form
@@ -592,7 +579,6 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
       width={modalWidth}
       title={null}
       rootClassName="dynamic-form-modal"
-      style={customColorVars}
     >
       {modalContent}
     </Modal>

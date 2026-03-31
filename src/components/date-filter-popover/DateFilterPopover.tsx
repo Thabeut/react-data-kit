@@ -123,9 +123,6 @@ export function DateFilterPopover({
           value={value ? [dayjs(value.date_from), dayjs(value.date_to)] : null}
           onChange={handleRangeChange}
           format="MMM D, YYYY"
-          getPopupContainer={(triggerNode) =>
-            triggerNode.parentElement ?? document.body
-          }
         />
       </div>
     );

@@ -1,87 +1,50 @@
-import { Divider, Table, Typography } from "antd";
 import { useMemo } from "react";
 import type { ColumnsType } from "antd/es/table";
+import { dynamicFormPropRows } from "./props-data";
+import { useTranslation } from "react-i18next";
+import { DocsIntroPage, type DocsIntroNextStep } from "../../components/DocsIntroPage";
 
-const { Title, Paragraph } = Typography;
-
-type Row = {
+type PropRow = {
   key: string;
-  topic: string;
-  details: string;
+  prop: string;
+  type: string;
+  required: string;
+  description: string;
 };
 
-const rows: Row[] = [
-  {
-    key: "what",
-    topic: "What it is",
-    details:
-      "`DynamicForm` renders a form from a `fields[]` config, validates with Yup + React Hook Form, and can render inline, in a Modal, or in a Drawer.",
-  },
-  {
-    key: "why",
-    topic: "Why",
-    details:
-      "Centralize form layout, validation wiring, required indicators, and variant containers (default/modal/drawer) so your pages stay thin.",
-  },
-  {
-    key: "validation",
-    topic: "Validation",
-    details:
-      "Define validation with `fieldSchema` on each field. DynamicForm generates the Yup object schema from these per-field rules.",
-  },
-  {
-    key: "fields",
-    topic: "Field types",
-    details:
-      "input, select, textarea, asyncSelect, upload (UploadFile[]), avatar, color, stringArray, switch, and custom render slots.",
-  },
-  {
-    key: "theming",
-    topic: "Light/dark + colors",
-    details:
-      "The playground toggles `html.dark` / `data-theme`. Use `customColors` to override surface/border/text/primary for both modes.",
-  },
-];
-
 export function DynamicFormIntroPage() {
-  const columns: ColumnsType<Row> = useMemo(
+  const { t } = useTranslation();
+  const propColumns: ColumnsType<PropRow> = useMemo(
     () => [
-      { title: "Topic", dataIndex: "topic", key: "topic", width: 180 },
-      { title: "Details", dataIndex: "details", key: "details" },
+      { title: t("dtColProp"), dataIndex: "prop", key: "prop", width: 220 },
+      { title: t("dtColType"), dataIndex: "type", key: "type", width: 240 },
+      { title: t("dtColRequired"), dataIndex: "required", key: "required", width: 120 },
+      { title: t("dtColDescription"), dataIndex: "description", key: "description" },
     ],
-    [],
+    [t],
   );
+  const nextSteps: DocsIntroNextStep[] = [
+    { to: "/dynamicform/default", label: t("docsExampleDefault"), color: "blue" },
+    { to: "/dynamicform/modal", label: t("docsExampleModal"), color: "geekblue" },
+    { to: "/dynamicform/drawer", label: t("docsExampleDrawer"), color: "purple" },
+    { to: "/dynamicform/colors", label: t("docsExampleColors"), color: "cyan" },
+  ];
 
   return (
-    <>
-      <Title level={2} style={{ marginTop: 0 }}>
-        DynamicForm Overview
-      </Title>
-      <Paragraph type="secondary" style={{ maxWidth: 900 }}>
-        Build package-ready forms from typed field definitions, run validation from
-        each field's `fieldSchema`, and render consistently in inline, modal, and
-        drawer views.
-      </Paragraph>
-
-      <Title level={4} style={{ marginBottom: 0 }}>
-        Install
-      </Title>
-      <pre className="docs-install-snippet">
-        <code>{`npm install @thabeut/react-data-kit`}</code>
-      </pre>
-
-      <Divider />
-
-      <Table<Row>
-        className="docs-props-table"
-        rowKey="key"
-        size="small"
-        columns={columns}
-        dataSource={rows}
-        pagination={false}
-        scroll={{ x: true }}
-      />
-    </>
+    <DocsIntroPage<PropRow>
+      title={t("docsDynamicFormIntroTitle")}
+      description="Build package-ready forms from typed field definitions, run validation from each field's fieldSchema, and render consistently in inline, modal, and drawer views."
+      installTitle={t("dtInstallTitle")}
+      installSnippets={[
+        "npm install @thabeut/react-data-kit",
+        'import { DynamicForm } from "@thabeut/react-data-kit";',
+      ]}
+      propsTitle={t("docsPropsTitle")}
+      propsIntro="Main DynamicForm props for layout, validation, variants, and theming."
+      propsTable={{ columns: propColumns, rows: dynamicFormPropRows }}
+      nextStepsTitle={t("docsNextSteps")}
+      nextSteps={nextSteps}
+    />
   );
 }
 

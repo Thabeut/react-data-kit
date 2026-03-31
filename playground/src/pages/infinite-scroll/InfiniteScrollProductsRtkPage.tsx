@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { Empty, Skeleton, Space, Spin, Typography } from "antd";
+import { useTranslation } from "react-i18next";
 import {
   InfiniteScrollRTK,
   type InfiniteScrollQueryArgs,
@@ -11,14 +12,18 @@ import type {
   ProductsQueryArgs,
 } from "../querytable/adapters/useProductsRtkQuery";
 import { useInfiniteProductsRtkQuery } from "../querytable/adapters/useProductsRtkQuery";
-import { ProductCard, ProductCardModel, rtkResultSelectors } from "./productsShared";
+import {
+  ProductCard,
+  ProductCardModel,
+  rtkResultSelectors,
+} from "./productsShared";
 
 const { Paragraph, Title } = Typography;
 
-export function InfiniteScrollProductsDemoPage() {
-  const title = "Infinite products feed (RTK Query)";
-  const description =
-    "Real-world infinite scroll built with RTK Query and the InfiniteScrollList helper. As you reach the bottom, the next page loads and cards are appended.";
+export function InfiniteScrollProductsRtkPage() {
+  const { t } = useTranslation();
+  const title = t("isRtkPageTitle");
+  const description = t("isRtkPageDescription");
 
   const resultSelectors = useMemo(() => rtkResultSelectors, []);
 
@@ -100,7 +105,7 @@ export function ProductsInfiniteScroll() {
     <DemoPageShell
       title={title}
       description={description}
-      setup="Scroll inside the panel to trigger loading of the next page. React Query manages caching; InfiniteScrollList handles scroll + append."
+      setup={t("isRtkPageSetup")}
     >
       <Space direction="vertical" size="large" style={{ width: "100%" }}>
         <ExamplePreviewCodeFlip
@@ -125,7 +130,7 @@ export function ProductsInfiniteScroll() {
                 selectItems={resultSelectors.selectItems}
                 selectHasNext={resultSelectors.selectHasNext}
                 getKey={(item) => String(item.id)}
-                emptyState={<Empty description="No products found" />}
+                emptyState={<Empty description={t("isNoProductsFound")} />}
                 renderItem={(item) => <ProductCard product={item} />}
                 renderInitialLoader={
                   <div style={{ padding: 12 }}>
@@ -144,7 +149,7 @@ export function ProductsInfiniteScroll() {
                     <Space>
                       <Spin size="small" />
                       <Paragraph style={{ marginBottom: 0 }}>
-                        Loading more products...
+                        {t("isLoadingMoreProducts")}
                       </Paragraph>
                     </Space>
                   </div>
@@ -157,13 +162,10 @@ export function ProductsInfiniteScroll() {
 
         <Space direction="vertical" size="middle" style={{ width: "100%" }}>
           <Title level={4} style={{ marginBottom: 0 }}>
-            How to make the RTK Query API
+            {t("isRtkHowToTitle")}
           </Title>
           <Paragraph type="secondary" style={{ maxWidth: 900 }}>
-            In plain RTK Query you create an infinite endpoint with <code>createApi</code>, wiring{" "}
-            <code>serializeQueryArgs</code>, <code>merge</code>, and <code>forceRefetch</code> so that all
-            pages for the same query key are appended into one cache entry.
-            See the <code>listInfinite</code> endpoint in <code>useProductsRtkQuery.ts</code> for the full implementation.
+            {t("isRtkHowToDesc")}
           </Paragraph>
         </Space>
       </Space>

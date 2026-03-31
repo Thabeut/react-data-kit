@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { Button, Space } from "antd";
+import { useTranslation } from "react-i18next";
 import { DynamicForm } from "@thabeut/react-data-kit";
 import { DemoPageShell } from "../../components/DemoPageShell";
 import { ExamplePreviewCodeFlip } from "../../components/ExamplePreviewCodeFlip";
 import { useDynamicFormFields, type FormValues } from "./shared";
 
 export function DynamicFormModalPage() {
+  const { t } = useTranslation();
   const fields = useDynamicFormFields();
   const [open, setOpen] = useState(false);
 
@@ -69,25 +71,25 @@ export function Page() {
 
   return (
     <DemoPageShell
-      title="Modal View"
-      description="Use the modal variant for focused, blocking create/edit flows that should appear above the current page."
-      setup="This view is ideal for compact forms that require full attention before the user returns to the underlying screen."
+      title={t("dfModalViewTitle")}
+      description={t("dfModalViewDescription")}
+      setup={t("dfModalViewSetup")}
     >
       <ExamplePreviewCodeFlip
         view={
           <>
             <Space wrap>
-              <Button onClick={() => setOpen(true)}>Open modal</Button>
+              <Button onClick={() => setOpen(true)}>{t("dfOpenModal")}</Button>
             </Space>
             <DynamicForm<FormValues>
               variant="modal"
               open={open}
               onClose={() => setOpen(false)}
-              title="Create team member"
-              description="Modal form with inline validation and typed field config."
+              title={t("dfCreateTeamMemberTitle")}
+              description={t("dfModalFormDesc")}
               fields={fields}
-              submitLabel="Submit"
-              cancelLabel="Cancel"
+              submitLabel={t("dfSubmit")}
+              cancelLabel={t("cancel")}
               onSubmit={async (values) => {
                 // eslint-disable-next-line no-alert
                 alert(JSON.stringify(values, null, 2));

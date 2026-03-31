@@ -4,12 +4,14 @@ import { Divider } from "antd";
 import { DemoPageShell } from "../../components/DemoPageShell";
 import { ExamplePreviewCodeFlip } from "../../components/ExamplePreviewCodeFlip";
 import { CrudManagerProductsDemo } from "./CrudManagerProductsDemo";
+import { useTranslation } from "react-i18next";
 import {
   makeProductsRtkStore,
   useProductsRtkQuery,
 } from "../querytable/adapters/useProductsRtkQuery";
 
 export function CrudManagerBasicPage() {
+  const { t } = useTranslation();
   const store = useMemo(() => makeProductsRtkStore(), []);
 
   const code = String.raw`import { CrudManager } from "@thabeut/react-data-kit";
@@ -34,9 +36,9 @@ export function CrudManagerBasicPage() {
 
   return (
     <DemoPageShell
-      title="CrudManager (Drawer default)"
-      description="Query-driven CRUD workflow with add/edit forms rendered in drawer by default."
-      setup="This demo uses RTK Query for list + add/update/delete mutations."
+      title={t("cmDrawerTitle")}
+      description={t("cmDrawerDescription")}
+      setup={t("cmDrawerSetup")}
     >
       <ExamplePreviewCodeFlip
         view={

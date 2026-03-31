@@ -1,5 +1,22 @@
 @use "../../styles/variables" as *;
 
+.ui-delete-modal.ant-modal {
+  .ant-modal-content {
+    background: var(--dt-light-surface-bg, #{$color-bg-primary});
+    border: 1px solid var(--dt-light-surface-border, #{$color-border-surface});
+    box-shadow: 0 10px 30px rgb(2 6 23 / 0.12);
+  }
+
+  .ant-modal-close {
+    color: var(--dt-light-text-secondary, #{$color-text-secondary});
+
+    &:hover {
+      color: var(--dt-light-text-primary, #{$color-text-primary});
+      background: var(--dt-light-popover-option-hover, #{$surface-active});
+    }
+  }
+}
+
 .ui-delete-modal__inner {
   display: flex;
   flex-direction: column;
@@ -26,7 +43,7 @@
   align-items: center;
   justify-content: center;
   border-radius: 9999px;
-  background: rgb(254 242 242);
+  background: color-mix(in srgb, #ef4444 14%, transparent);
 }
 
 .ui-delete-modal__icon {
@@ -70,19 +87,36 @@
   border-style: solid !important;
   border-color: $color-error-500 !important;
   color: $color-error-500 !important;
-  background: $color-bg-primary !important;
+  background: var(--dt-light-surface-bg, #{$color-bg-primary}) !important;
 
   &:hover:not(:disabled) {
     border-color: $color-error-500 !important;
     color: $color-error-600 !important;
-    background: rgb(254 242 242) !important;
+    background: color-mix(in srgb, #ef4444 12%, transparent) !important;
   }
 }
 
 html.dark,
 :root[data-theme="dark"] {
+  .ui-delete-modal.ant-modal {
+    .ant-modal-content {
+      background: var(--dt-dark-surface-bg, #{$color-bg-primary-dark});
+      border-color: var(--dt-dark-surface-border, #{$surface-border-dark});
+      box-shadow: 0 12px 32px rgb(0 0 0 / 0.45);
+    }
+
+    .ant-modal-close {
+      color: var(--dt-dark-text-secondary, #{$color-text-secondary-dark});
+
+      &:hover {
+        color: var(--dt-dark-text-primary, #{$color-text-primary-dark});
+        background: var(--dt-dark-popover-option-hover, #{$surface-active-dark});
+      }
+    }
+  }
+
   .ui-delete-modal__icon-wrap {
-    background: rgb(127 29 29 / 0.3);
+    background: color-mix(in srgb, #f87171 26%, transparent);
   }
 
   .ui-delete-modal__icon {
@@ -100,12 +134,12 @@ html.dark,
   .ui-delete-modal__confirm.ui-btn.ant-btn {
     border-color: $color-error-400 !important;
     color: $color-error-400 !important;
-    background: $color-bg-primary-dark !important;
+    background: var(--dt-dark-surface-bg, #{$color-bg-primary-dark}) !important;
 
     &:hover:not(:disabled) {
       border-color: $color-error-400 !important;
       color: $color-error-300 !important;
-      background: rgb(127 29 29 / 0.2) !important;
+      background: color-mix(in srgb, #f87171 22%, transparent) !important;
     }
   }
 }

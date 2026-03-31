@@ -2,8 +2,10 @@ import { ExamplePreviewCodeFlip } from "../../components/ExamplePreviewCodeFlip"
 import { DemoPageShell } from "../../components/DemoPageShell";
 import { ProductsQueryTableDemo } from "./ProductsQueryTableDemo";
 import { useProductsReactQuery } from "./adapters/useProductsReactQuery";
+import { useTranslation } from "react-i18next";
 
 export function QueryTableReactQueryPage() {
+  const { t } = useTranslation();
   const code = String.raw`import { QueryTable, parseTableState, serializeTableState } from "@thabeut/react-data-kit";
 import { useSearchParams } from "react-router-dom";
 import { useProductsReactQuery } from "./services/productsReact";
@@ -88,9 +90,9 @@ export function QueryTableReactExample() {
 
   return (
     <DemoPageShell
-      title="QueryTable + React Query (URL persisted)"
-      description="Real-world usage: same QueryTable API, only the injected `useQuery` adapter changes. The page owns URL persistence with `parseTableState` + `serializeTableState`."
-      setup="The React Query provider is already set up at app level. This snippet focuses only on the adapter + persistence."
+      title={t("qtReactTitle")}
+      description={t("qtReactDescription")}
+      setup={t("qtReactSetup")}
     >
       <ExamplePreviewCodeFlip
         view={

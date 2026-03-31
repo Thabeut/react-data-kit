@@ -1,19 +1,44 @@
 // Default theme — override before @use of data-table, or redefine in your app build.
 
+/** Background Colors **/
 $color-bg-primary: #ffffff !default;
 $color-bg-secondary: #ffffff !default;
-$color-border-surface: #e5e7eb !default;
-$color-text-primary: #111827 !default;
-$color-text-secondary: #71717a !default;
-
 $surface-bg: #fafafa !default;
 
+/** Border Colors **/
+$color-border-surface: #e5e7eb !default;
+$surface-border: #e4e4e7 !default;
+$color-border-light: #e4e4e7 !default;
+$color-border-medium: #d4d4d8 !default;
+
+/** Text Colors **/
+$color-text-primary: #111827 !default;
+$color-text-secondary: #71717a !default;
+$color-text-muted: $color-text-secondary !default;
+
+$surface-text: $color-text-primary !default;
+
+/** Gray Palette **/
+$color-gray-200: #e5e7eb !default;
+$color-gray-700: #374151 !default;
+$color-gray-900: #111827 !default;
+
+/** Primary Palette **/
 $color-primary-50: #eff6ff !default;
 $color-primary-100: #dbeafe !default;
+$color-primary-200: #bfdbfe !default;
+$color-primary-300: #93c5fd !default;
 $color-primary-400: #60a5fa !default;
-$color-primary-500: #2f54eb !default;
+$color-primary-500: #eb352f !default;
 $color-primary-600: #2563eb !default;
+$color-primary-800: #1e40af !default;
 
+/** Secondary Palette **/
+$color-secondary-600: #52525b !default;
+$color-secondary-700: #3f3f46 !default;
+$color-secondary-800: #27272a !default;
+
+/** Semantic Colors **/
 $color-error-300: #fca5a5 !default;
 $color-error-400: #f87171 !default;
 $color-error-500: #ef4444 !default;
@@ -21,39 +46,19 @@ $color-error-600: #dc2626 !default;
 
 $color-warning-500: #f59e0b !default;
 
+$color-white: #ffffff !default;
+
+/** Surface State Colors **/
 $surface-active: #f4f4f5 !default;
-$surface-border: #e4e4e7 !default;
 
-$color-secondary-700: #3f3f46 !default;
-$color-secondary-800: #27272a !default;
-
-// Dark palette
+/** Dark Theme Palette **/
 $surface-bg-dark: #111827 !default;
 $surface-border-dark: #374151 !default;
 $color-bg-primary-dark: #111827 !default;
 $color-bg-secondary-dark: #111827 !default;
 $color-text-primary-dark: #f9fafb !default;
 $color-text-secondary-dark: #a1a1aa !default;
-
-$color-white: #ffffff !default;
-$color-border-light: #e4e4e7 !default;
-$color-border-medium: #d4d4d8 !default;
-
-$surface-text: $color-text-primary !default;
-$surface-text-dark: $color-text-primary-dark !default;
-
-$color-text-muted: $color-text-secondary !default;
 $color-text-muted-dark: $color-text-secondary-dark !default;
-
+$surface-text-dark: $color-text-primary-dark !default;
 $surface-active-dark: #162033 !default;
 $surface-selected-dark: #1c2a42 !default;
-
-$color-gray-200: #e5e7eb !default;
-$color-gray-700: #374151 !default;
-$color-gray-900: #111827 !default;
-
-$color-primary-200: #bfdbfe !default;
-$color-primary-300: #93c5fd !default;
-$color-primary-800: #1e40af !default;
-
-$color-secondary-600: #52525b !default;

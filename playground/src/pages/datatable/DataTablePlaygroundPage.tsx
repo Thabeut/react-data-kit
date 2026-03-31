@@ -39,15 +39,15 @@ const SAMPLE_COLUMNS_JSON = `[
 ]`;
 
 function humanizeKey(key: string): string {
-  const spaced = key
-    .replace(/_/g, " ")
-    .replace(/([a-z])([A-Z])/g, "$1 $2");
+  const spaced = key.replace(/_/g, " ").replace(/([a-z])([A-Z])/g, "$1 $2");
   return spaced.charAt(0).toUpperCase() + spaced.slice(1);
 }
 
 function parseRowsJson(
   text: string,
-): { ok: true; rows: Record<string, unknown>[] } | { ok: false; error: string } {
+):
+  | { ok: true; rows: Record<string, unknown>[] }
+  | { ok: false; error: string } {
   const trimmed = text.trim();
   if (!trimmed) {
     return { ok: false, error: "empty" };
@@ -152,16 +152,17 @@ export function DataTablePlaygroundPage() {
   const [searchQuery, setSearchQuery] = useState("");
 
   const [selectedKeys, setSelectedKeys] = useState<(string | number)[]>([]);
-  const [bookmarkedKeys, setBookmarkedKeys] = useState<(string | number)[]>(
-    [],
-  );
+  const [bookmarkedKeys, setBookmarkedKeys] = useState<(string | number)[]>([]);
   const [lastClicked, setLastClicked] = useState<Record<
     string,
     unknown
   > | null>(null);
 
   const rowsParse = useMemo(() => parseRowsJson(rowsText), [rowsText]);
-  const columnsParse = useMemo(() => parseColumnsJson(columnsText), [columnsText]);
+  const columnsParse = useMemo(
+    () => parseColumnsJson(columnsText),
+    [columnsText],
+  );
 
   const columnsInfo = useMemo((): DataTableColumnInfo<
     Record<string, unknown>
@@ -207,7 +208,7 @@ export function DataTablePlaygroundPage() {
     const opts = pageSizeOptions;
     const d = opts.includes(defaultPageSize)
       ? defaultPageSize
-      : opts[0] ?? 10;
+      : (opts[0] ?? 10);
     return d;
   }, [pageSizeOptions, defaultPageSize]);
 
@@ -288,7 +289,10 @@ export function DataTablePlaygroundPage() {
       message.error(t(`dtPlaygroundColErr_${c.error}`));
       return;
     }
-    if (rowKeyField.trim() && r.rows.some((row) => row[rowKeyField] === undefined)) {
+    if (
+      rowKeyField.trim() &&
+      r.rows.some((row) => row[rowKeyField] === undefined)
+    ) {
       message.warning(t("dtPlaygroundWarnRowKey"));
     } else {
       message.success(t("dtPlaygroundValidateOk"));
@@ -334,7 +338,9 @@ export function DataTablePlaygroundPage() {
                   <Button onClick={formatRowsJson}>
                     {t("dtPlaygroundFormatRows")}
                   </Button>
-                  <Button onClick={loadSample}>{t("dtPlaygroundLoadSample")}</Button>
+                  <Button onClick={loadSample}>
+                    {t("dtPlaygroundLoadSample")}
+                  </Button>
                   <Button onClick={loadLargeSample}>
                     {t("dtPlaygroundLoadLarge")}
                   </Button>
@@ -392,7 +398,11 @@ export function DataTablePlaygroundPage() {
               </Card>
 
               <Card size="small" title={t("dtPlaygroundCardKeys")}>
-                <Space direction="vertical" style={{ width: "100%" }} size="small">
+                <Space
+                  direction="vertical"
+                  style={{ width: "100%" }}
+                  size="small"
+                >
                   <div>
                     <Text type="secondary">{t("dtPlaygroundRowKey")}</Text>
                     <Input
@@ -446,7 +456,10 @@ export function DataTablePlaygroundPage() {
                   </label>
                   <label className="dt-playground__switch-item">
                     <span>{t("dtPlaygroundTSearch")}</span>
-                    <Switch checked={searchEnabled} onChange={setSearchEnabled} />
+                    <Switch
+                      checked={searchEnabled}
+                      onChange={setSearchEnabled}
+                    />
                   </label>
                   <label className="dt-playground__switch-item">
                     <span>{t("dtPlaygroundTToolbar")}</span>
@@ -482,7 +495,11 @@ export function DataTablePlaygroundPage() {
                 <p className="dt-playground__panel-head">
                   {t("dtPlaygroundSectionPagination")}
                 </p>
-                <Space direction="vertical" style={{ width: "100%" }} size="small">
+                <Space
+                  direction="vertical"
+                  style={{ width: "100%" }}
+                  size="small"
+                >
                   <div>
                     <Text type="secondary">{t("dtPlaygroundPageSizes")}</Text>
                     <Input
@@ -492,7 +509,9 @@ export function DataTablePlaygroundPage() {
                     />
                   </div>
                   <div>
-                    <Text type="secondary">{t("dtPlaygroundDefaultPageSize")}</Text>
+                    <Text type="secondary">
+                      {t("dtPlaygroundDefaultPageSize")}
+                    </Text>
                     <InputNumber
                       min={1}
                       value={defaultPageSize}
@@ -541,9 +560,7 @@ export function DataTablePlaygroundPage() {
                       <span>
                         <Text type="secondary">{t("dtSelectionState")}: </Text>
                         <code>
-                          {selectedKeys.length
-                            ? selectedKeys.join(", ")
-                            : "—"}
+                          {selectedKeys.length ? selectedKeys.join(", ") : "—"}
                         </code>
                       </span>
                       <span>
@@ -559,7 +576,9 @@ export function DataTablePlaygroundPage() {
 
                   <div className="dt-playground__echo">
                     <span>
-                      <Text type="secondary">{t("dtPlaygroundLastClick")}: </Text>
+                      <Text type="secondary">
+                        {t("dtPlaygroundLastClick")}:{" "}
+                      </Text>
                       {lastClicked ? (
                         <Text strong>
                           {(rowKeyField.trim() || "id") +

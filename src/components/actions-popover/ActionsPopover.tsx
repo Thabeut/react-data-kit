@@ -6,7 +6,10 @@ import { Icon } from "@iconify/react";
 import { datatableIconNames } from "../../constants/datatable-icons";
 import { Button } from "../button";
 import { DeleteModal } from "../delete-modal";
-import type { ActionItem, DeleteModalConfig } from "../../types/data-table";
+import type {
+  ActionItem,
+  DeleteModalConfig,
+} from "../../types/data-table";
 
 export interface ActionsPopoverProps<T = unknown> {
   record: T;
@@ -118,7 +121,7 @@ export function ActionsPopover<T extends { [key: string]: unknown }>({
         trigger="click"
         placement="bottomRight"
         arrow={false}
-        rootClassName="rdk-theme-scope datatable-actions-popover"
+        rootClassName="rdk-theme-scope ui-actions-popover"
       >
         <Button
           unstyled

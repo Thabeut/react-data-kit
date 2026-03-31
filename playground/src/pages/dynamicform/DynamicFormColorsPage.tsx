@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { Button, Input, Space, Typography } from "antd";
+import { useTranslation } from "react-i18next";
 import {
   DynamicForm,
   type DynamicFormCustomColors,
@@ -31,6 +32,7 @@ const defaults: DynamicFormCustomColors = {
 };
 
 export function DynamicFormColorsPage() {
+  const { t } = useTranslation();
   const fields = useDynamicFormFields();
   const [colors, setColors] = useState<DynamicFormCustomColors>(defaults);
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -124,9 +126,9 @@ export function Page() {
 
   return (
     <DemoPageShell
-      title="Theming and Colors"
-      description="Customize DynamicForm color tokens for light and dark mode via `customColors`, including popovers and interactive controls."
-      setup="Adjust the token inputs below and preview the same palette across inline, modal, and drawer variants to validate consistency."
+      title={t("dfColorsTitle")}
+      description={t("dfColorsDescription")}
+      setup={t("dfColorsSetup")}
     >
       <ExamplePreviewCodeFlip
         view={
@@ -137,7 +139,7 @@ export function Page() {
               style={{ marginBottom: 16, alignItems: "end" }}
             >
               <label>
-                <Text>Primary</Text>
+                <Text>{t("dtColorsPrimary")}</Text>
                 <Input
                   type="color"
                   value={colors.primaryColor}
@@ -150,7 +152,7 @@ export function Page() {
                 />
               </label>
               <label>
-                <Text>Light surface</Text>
+                <Text>{t("dtColorsLightBg")}</Text>
                 <Input
                   type="color"
                   value={colors.lightMode?.surfaceBg}
@@ -166,7 +168,7 @@ export function Page() {
                 />
               </label>
               <label>
-                <Text>Light popover</Text>
+                <Text>{t("dtColorsLightPopoverBg")}</Text>
                 <Input
                   type="color"
                   value={colors.lightMode?.popoverBg}
@@ -182,7 +184,7 @@ export function Page() {
                 />
               </label>
               <label>
-                <Text>Light popover hover</Text>
+                <Text>{t("dtColorsLightPopoverHover")}</Text>
                 <Input
                   type="color"
                   value={colors.lightMode?.popoverOptionHoverBg}
@@ -198,7 +200,7 @@ export function Page() {
                 />
               </label>
               <label>
-                <Text>Light border</Text>
+                <Text>{t("dtColorsLightBorder")}</Text>
                 <Input
                   type="color"
                   value={colors.lightMode?.surfaceBorder}
@@ -214,7 +216,7 @@ export function Page() {
                 />
               </label>
               <label>
-                <Text>Light text</Text>
+                <Text>{t("dtColorsLightText")}</Text>
                 <Input
                   type="color"
                   value={colors.lightMode?.textPrimary}
@@ -230,7 +232,7 @@ export function Page() {
                 />
               </label>
               <label>
-                <Text>Light muted</Text>
+                <Text>{t("dfLightMuted")}</Text>
                 <Input
                   type="color"
                   value={colors.lightMode?.textSecondary}
@@ -246,7 +248,7 @@ export function Page() {
                 />
               </label>
               <label>
-                <Text>Dark surface</Text>
+                <Text>{t("dtColorsDarkBg")}</Text>
                 <Input
                   type="color"
                   value={colors.darkMode?.surfaceBg}
@@ -259,7 +261,7 @@ export function Page() {
                 />
               </label>
               <label>
-                <Text>Dark popover</Text>
+                <Text>{t("dtColorsDarkPopoverBg")}</Text>
                 <Input
                   type="color"
                   value={colors.darkMode?.popoverBg}
@@ -272,7 +274,7 @@ export function Page() {
                 />
               </label>
               <label>
-                <Text>Dark popover hover</Text>
+                <Text>{t("dtColorsDarkPopoverHover")}</Text>
                 <Input
                   type="color"
                   value={colors.darkMode?.popoverOptionHoverBg}
@@ -288,7 +290,7 @@ export function Page() {
                 />
               </label>
               <label>
-                <Text>Dark border</Text>
+                <Text>{t("dtColorsDarkBorder")}</Text>
                 <Input
                   type="color"
                   value={colors.darkMode?.surfaceBorder}
@@ -304,7 +306,7 @@ export function Page() {
                 />
               </label>
               <label>
-                <Text>Dark text</Text>
+                <Text>{t("dtColorsDarkText")}</Text>
                 <Input
                   type="color"
                   value={colors.darkMode?.textPrimary}
@@ -320,7 +322,7 @@ export function Page() {
                 />
               </label>
               <label>
-                <Text>Dark muted</Text>
+                <Text>{t("dfDarkMuted")}</Text>
                 <Input
                   type="color"
                   value={colors.darkMode?.textSecondary}
@@ -335,18 +337,18 @@ export function Page() {
                   }
                 />
               </label>
-              <Button onClick={() => setColors(defaults)}>Reset</Button>
-              <Button onClick={() => setOpenModal(true)}>Open modal</Button>
-              <Button onClick={() => setOpenDrawer(true)}>Open drawer</Button>
+              <Button onClick={() => setColors(defaults)}>{t("dtColorsReset")}</Button>
+              <Button onClick={() => setOpenModal(true)}>{t("dfOpenModal")}</Button>
+              <Button onClick={() => setOpenDrawer(true)}>{t("dfOpenDrawer")}</Button>
             </Space>
 
             <DynamicForm<FormValues>
               variant="default"
-              title="Create profile"
-              description="Inline variant with live color token overrides."
+              title={t("dfCreateProfileTitle")}
+              description={t("dfInlineColorOverrideDesc")}
               fields={fields}
-              submitLabel="Submit"
-              cancelLabel="Cancel"
+              submitLabel={t("dfSubmit")}
+              cancelLabel={t("cancel")}
               customColors={customColors}
               onSubmit={async (values) => {
                 // eslint-disable-next-line no-alert
@@ -358,11 +360,11 @@ export function Page() {
               variant="modal"
               open={openModal}
               onClose={() => setOpenModal(false)}
-              title="Create profile (Modal)"
-              description="Modal variant using the same custom color tokens."
+              title={t("dfCreateProfileModalTitle")}
+              description={t("dfModalColorOverrideDesc")}
               fields={fields}
-              submitLabel="Submit"
-              cancelLabel="Cancel"
+              submitLabel={t("dfSubmit")}
+              cancelLabel={t("cancel")}
               customColors={customColors}
               onSubmit={async (values) => {
                 // eslint-disable-next-line no-alert
@@ -374,11 +376,11 @@ export function Page() {
               variant="drawer"
               open={openDrawer}
               onClose={() => setOpenDrawer(false)}
-              title="Create profile (Drawer)"
-              description="Drawer variant using the same custom color tokens."
+              title={t("dfCreateProfileDrawerTitle")}
+              description={t("dfDrawerColorOverrideDesc")}
               fields={fields}
-              submitLabel="Submit"
-              cancelLabel="Cancel"
+              submitLabel={t("dfSubmit")}
+              cancelLabel={t("cancel")}
               customColors={customColors}
               onSubmit={async (values) => {
                 // eslint-disable-next-line no-alert

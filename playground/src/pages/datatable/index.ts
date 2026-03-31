@@ -1,4 +1,4 @@
-export { DataTablePropsPage } from "./DataTablePropsPage";
+export { DataTableIntroPage } from "./DataTableIntroPage";
 export { DataTableBasicPage } from "./DataTableBasicPage";
 export { DataTableGroupsPage } from "./DataTableGroupsPage";
 export { DataTableFiltersPage } from "./DataTableFiltersPage";

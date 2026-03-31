@@ -1,10 +1,12 @@
 import { Divider } from "antd";
+import { useTranslation } from "react-i18next";
 import { ExamplePreviewCodeFlip } from "../../components/ExamplePreviewCodeFlip";
 import { DemoPageShell } from "../../components/DemoPageShell";
 import { ProductsQueryTableDemo } from "./ProductsQueryTableDemo";
 import { useProductsRtkQuery } from "./adapters/useProductsRtkQuery";
 
 export function QueryTableRtkQueryPage() {
+  const { t } = useTranslation();
   const code = String.raw`import {
   QueryTable,
   parseTableState,
@@ -95,9 +97,9 @@ export function QueryTableRtkExample() {
 
   return (
     <DemoPageShell
-      title="QueryTable + RTK Query (URL persisted)"
-      description="QueryTable stays framework-agnostic. You only inject a `{ tag, query } => useQuery(...)` adapter. URL state is handled by `parseTableState` + `serializeTableState`."
-      setup="This page hides the RTK Query store/api setup. Only the adapter shape + URL persistence are shown."
+      title={t("qtRtkTitle")}
+      description={t("qtRtkDescription")}
+      setup={t("qtRtkSetup")}
     >
       <ExamplePreviewCodeFlip
         view={

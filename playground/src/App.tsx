@@ -23,7 +23,7 @@ import {
   DataTableBasicPage,
   DataTableFiltersPage,
   DataTableGroupsPage,
-  DataTablePropsPage,
+  DataTableIntroPage,
   DataTableUsersDemoPage,
   DataTableSelectionPage,
   DataTableServerPage,
@@ -32,8 +32,7 @@ import {
 } from "./pages/datatable";
 import {
   InfiniteScrollIntroPage,
-  InfiniteScrollPropsPage,
-  InfiniteScrollProductsDemoPage,
+  InfiniteScrollProductsRtkPage,
   InfiniteScrollProductsReactQueryPage,
 } from "./pages/infinite-scroll";
 import {
@@ -43,7 +42,6 @@ import {
 } from "./pages/querytable";
 import {
   DynamicFormIntroPage,
-  DynamicFormPropsPage,
   DynamicFormDefaultPage,
   DynamicFormModalPage,
   DynamicFormDrawerPage,
@@ -51,7 +49,6 @@ import {
 } from "./pages/dynamicform";
 import {
   CrudManagerIntroPage,
-  CrudManagerPropsPage,
   CrudManagerBasicPage,
   CrudManagerModalPage,
 } from "./pages/crudmanager";
@@ -113,7 +110,7 @@ function AppShell() {
         id: "datatable",
         label: t("docsNavDataTable"),
         children: [
-          { to: "/datatable/overview", label: t("dtNavOverview") },
+          { to: "/datatable/overview", label: t("docsNavIntroduction") },
           { to: "/datatable/basic", label: t("dtNavBasic") },
           { to: "/datatable/selection", label: t("dtNavSelection") },
           { to: "/datatable/groups", label: t("dtNavGroups") },
@@ -126,48 +123,45 @@ function AppShell() {
       },
       {
         id: "querytable",
-        label: "Query table",
+        label: t("docsNavQueryTable"),
         children: [
-          { to: "/querytable/overview", label: "Intro & props" },
-          { to: "/querytable/rtk-query", label: "RTK Query" },
-          { to: "/querytable/react-query", label: "React Query" },
+          { to: "/querytable/overview", label: t("docsNavIntroduction") },
+          { to: "/querytable/rtk-query", label: t("docsNavRtkQuery") },
+          { to: "/querytable/react-query", label: t("docsNavReactQuery") },
         ],
       },
       {
         id: "dynamicform",
-        label: "Dynamic form",
+        label: t("docsNavDynamicForm"),
         children: [
-          { to: "/dynamicform/overview", label: "Introduction" },
-          { to: "/dynamicform/props", label: "Props" },
-          { to: "/dynamicform/default", label: "Default" },
-          { to: "/dynamicform/modal", label: "Modal" },
-          { to: "/dynamicform/drawer", label: "Drawer" },
-          { to: "/dynamicform/colors", label: "Colors" },
+          { to: "/dynamicform/overview", label: t("docsNavIntroduction") },
+          { to: "/dynamicform/default", label: t("docsNavDefault") },
+          { to: "/dynamicform/modal", label: t("docsNavModal") },
+          { to: "/dynamicform/drawer", label: t("docsNavDrawer") },
+          { to: "/dynamicform/colors", label: t("docsNavColors") },
         ],
       },
       {
         id: "crudmanager",
-        label: "Crud manager",
+        label: t("docsNavCrudManager"),
         children: [
-          { to: "/crudmanager/overview", label: "Introduction" },
-          { to: "/crudmanager/props", label: "Props" },
-          { to: "/crudmanager/basic", label: "Drawer default" },
-          { to: "/crudmanager/modal", label: "Modal" },
+          { to: "/crudmanager/overview", label: t("docsNavIntroduction") },
+          { to: "/crudmanager/basic", label: t("docsNavDrawerDefault") },
+          { to: "/crudmanager/modal", label: t("docsNavModal") },
         ],
       },
       {
         id: "infinitescroll",
-        label: "Infinite scroll",
+        label: t("docsNavInfiniteScroll"),
         children: [
-          { to: "/infinite-scroll/overview", label: "Introduction" },
-          { to: "/infinite-scroll/props", label: "Props" },
+          { to: "/infinite-scroll/overview", label: t("docsNavIntroduction") },
           {
             to: "/infinite-scroll/rtk-query",
-            label: "RTK Query",
+            label: t("docsNavRtkQuery"),
           },
           {
             to: "/infinite-scroll/react-query",
-            label: "React Query",
+            label: t("docsNavReactQuery"),
           },
         ],
       },
@@ -249,7 +243,7 @@ export default function App() {
             index
             element={<Navigate to="/datatable/overview" replace />}
           />
-          <Route path="datatable/overview" element={<DataTablePropsPage />} />
+          <Route path="datatable/overview" element={<DataTableIntroPage />} />
           <Route path="datatable/basic" element={<DataTableBasicPage />} />
           <Route path="datatable/groups" element={<DataTableGroupsPage />} />
           <Route
@@ -269,12 +263,8 @@ export default function App() {
             element={<InfiniteScrollIntroPage />}
           />
           <Route
-            path="infinite-scroll/props"
-            element={<InfiniteScrollPropsPage />}
-          />
-          <Route
             path="infinite-scroll/rtk-query"
-            element={<InfiniteScrollProductsDemoPage />}
+            element={<InfiniteScrollProductsRtkPage />}
           />
           <Route
             path="infinite-scroll/react-query"
@@ -293,7 +283,6 @@ export default function App() {
             path="dynamicform/overview"
             element={<DynamicFormIntroPage />}
           />
-          <Route path="dynamicform/props" element={<DynamicFormPropsPage />} />
           <Route
             path="dynamicform/default"
             element={<DynamicFormDefaultPage />}
@@ -311,7 +300,6 @@ export default function App() {
             path="crudmanager/overview"
             element={<CrudManagerIntroPage />}
           />
-          <Route path="crudmanager/props" element={<CrudManagerPropsPage />} />
           <Route path="crudmanager/basic" element={<CrudManagerBasicPage />} />
           <Route path="crudmanager/modal" element={<CrudManagerModalPage />} />
           <Route

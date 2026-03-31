@@ -4,12 +4,14 @@ import { Divider } from "antd";
 import { DemoPageShell } from "../../components/DemoPageShell";
 import { ExamplePreviewCodeFlip } from "../../components/ExamplePreviewCodeFlip";
 import { CrudManagerProductsDemo } from "./CrudManagerProductsDemo";
+import { useTranslation } from "react-i18next";
 import {
   makeProductsRtkStore,
   useProductsRtkQuery,
 } from "../querytable/adapters/useProductsRtkQuery";
 
 export function CrudManagerModalPage() {
+  const { t } = useTranslation();
   const store = useMemo(() => makeProductsRtkStore(), []);
 
   const code = String.raw`<CrudManager
@@ -32,9 +34,9 @@ export function CrudManagerModalPage() {
 
   return (
     <DemoPageShell
-      title="CrudManager (Modal variant)"
-      description="Same API as drawer mode, but form surface is modal for focused editing."
-      setup="Same API, with RTK Query mutations and modal form surface."
+      title={t("cmModalTitle")}
+      description={t("cmModalDescription")}
+      setup={t("cmModalSetup")}
     >
       <ExamplePreviewCodeFlip
         view={

@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import type { CSSProperties, Key } from "react";
+import type { Key } from "react";
 import { useTranslation } from "react-i18next";
 import { Checkbox } from "antd";
 import type { TableRowSelection } from "antd/es/table/interface";
 import { Icon } from "@iconify/react";
 import clsx from "clsx";
-import { useDataTableColumns } from "../../hooks/use-data-table-columns";
+import { useDataTableColumns } from "./hooks/use-data-table-columns";
 import { datatableIconNames } from "../../constants/datatable-icons";
 import { Button } from "../../components/button";
 import { DateFilterPopover } from "../../components/date-filter-popover";
@@ -17,7 +17,6 @@ import { DataTableTableSection } from "./components/table-section";
 import { DataTableToolbar } from "./components/toolbar";
 import type {
   DataTableColumnInfo,
-  DataTableCustomColors,
   DataTableFilterConfig,
   DataTableKey,
   DataTableProps,
@@ -83,33 +82,44 @@ export function DataTable<T extends { [key: string]: unknown }>(
   const isServer = Boolean(serverMode);
   const clientPaginate = !isServer;
 
-  const customColorVars = useMemo(() => {
-    if (!customColors) return undefined;
-    const style: CSSProperties = {};
-    const setVar = (name: string, value?: string) => {
+  useEffect(() => {
+    if (!customColors || typeof document === "undefined") return;
+    const root = document.documentElement;
+    const vars: Record<string, string | undefined> = {
+      "--dt-primary": customColors.primaryColor,
+      "--dt-light-surface-bg": customColors.lightMode?.surfaceBg,
+      "--dt-light-popover-bg": customColors.lightMode?.popoverBg,
+      "--dt-light-popover-option-hover":
+        customColors.lightMode?.popoverOptionHoverBg,
+      "--dt-light-surface-border": customColors.lightMode?.surfaceBorder,
+      "--dt-light-text-primary": customColors.lightMode?.textPrimary,
+      "--dt-light-row-hover": customColors.lightMode?.rowHoverBg,
+      "--dt-light-row-selected": customColors.lightMode?.rowSelectedBg,
+      "--dt-light-group-row": customColors.lightMode?.groupRowBg,
+      "--dt-dark-surface-bg": customColors.darkMode?.surfaceBg,
+      "--dt-dark-popover-bg": customColors.darkMode?.popoverBg,
+      "--dt-dark-popover-option-hover":
+        customColors.darkMode?.popoverOptionHoverBg,
+      "--dt-dark-surface-border": customColors.darkMode?.surfaceBorder,
+      "--dt-dark-text-primary": customColors.darkMode?.textPrimary,
+      "--dt-dark-row-hover": customColors.darkMode?.rowHoverBg,
+      "--dt-dark-row-selected": customColors.darkMode?.rowSelectedBg,
+      "--dt-dark-group-row": customColors.darkMode?.groupRowBg,
+    };
+
+    const previous = new Map<string, string>();
+    Object.entries(vars).forEach(([key, value]) => {
       if (!value) return;
-      (style as Record<string, string>)[name] = value;
+      previous.set(key, root.style.getPropertyValue(key));
+      root.style.setProperty(key, value);
+    });
+
+    return () => {
+      previous.forEach((value, key) => {
+        if (value) root.style.setProperty(key, value);
+        else root.style.removeProperty(key);
+      });
     };
-    const applyMode = (
-      prefix: "--dt-light" | "--dt-dark",
-      mode?:
-        | DataTableCustomColors["lightMode"]
-        | DataTableCustomColors["darkMode"],
-    ) => {
-      if (!mode) return;
-      setVar(`${prefix}-surface-bg`, mode.surfaceBg);
-      setVar(`${prefix}-popover-bg`, mode.popoverBg);
-      setVar(`${prefix}-popover-option-hover`, mode.popoverOptionHoverBg);
-      setVar(`${prefix}-surface-border`, mode.surfaceBorder);
-      setVar(`${prefix}-text-primary`, mode.textPrimary);
-      setVar(`${prefix}-row-hover`, mode.rowHoverBg);
-      setVar(`${prefix}-row-selected`, mode.rowSelectedBg);
-      setVar(`${prefix}-group-row`, mode.groupRowBg);
-    };
-    setVar("--dt-primary", customColors.primaryColor);
-    applyMode("--dt-light", customColors.lightMode);
-    applyMode("--dt-dark", customColors.darkMode);
-    return style;
   }, [customColors]);
   const columnHeaderText = (column: DataTableColumnInfo<T>) => column.label;
 
@@ -755,7 +765,6 @@ export function DataTable<T extends { [key: string]: unknown }>(
         "datatable-root",
         shouldConstrainByHeight && "datatable-root--fill",
       )}
-      style={customColorVars}
     >
       <DataTableToolbar<T>
         showSearch={Boolean(!isServer || onSearch || searchValue !== undefined)}

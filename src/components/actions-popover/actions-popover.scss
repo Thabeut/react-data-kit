@@ -20,7 +20,7 @@
   border-radius: 6px;
   background: transparent;
   cursor: pointer;
-  color: $color-text-primary;
+  color: var(--dt-light-text-primary, #{$color-text-primary});
   transition: background 0.15s ease;
 
   &:hover {
@@ -46,17 +46,20 @@
   border: none;
   background: transparent;
   cursor: pointer;
-  color: $color-text-primary;
+  color: var(--dt-light-text-primary, #{$color-text-primary});
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
 
   &:hover {
-    background: $surface-active;
+    background: var(--dt-light-popover-option-hover, #{$surface-active});
   }
 }
 
 html.dark,
 :root[data-theme="dark"] {
   .ui-actions-popover__item {
-    color: $color-text-primary-dark;
+    color: var(--dt-dark-text-primary, #{$color-text-primary-dark});
 
     &:hover {
       background: var(--dt-dark-popover-option-hover);
@@ -72,10 +75,10 @@ html.dark,
   }
 
   .ui-actions-popover__trigger {
-    color: $color-text-primary-dark;
+    color: var(--dt-dark-text-primary, #{$color-text-primary-dark});
 
     &:hover {
-      background: $color-secondary-800;
+      background: var(--dt-dark-popover-option-hover, #{$surface-active-dark});
     }
   }
 
