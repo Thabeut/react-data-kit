@@ -16,7 +16,7 @@ import type {
 import { isGroupRow } from "../../../../utils/data-table";
 import { saveColumnWidths } from "../../../../utils/data-table-column-widths";
 
-interface UseDataTableColumnsParams<T extends { [key: string]: unknown }> {
+interface UseDataTableColumnsParams<T extends object> {
   columnsInfo: DataTableColumnInfo<T>[];
   visibleColumnIds: string[];
   groupConfig: DataTableGroupConfig<T> | undefined;
@@ -30,7 +30,7 @@ interface UseDataTableColumnsParams<T extends { [key: string]: unknown }> {
   columnHeaderText: (column: DataTableColumnInfo<T>) => string;
 }
 
-export function useDataTableColumns<T extends { [key: string]: unknown }>(
+export function useDataTableColumns<T extends object>(
   params: UseDataTableColumnsParams<T>,
 ): ColumnsType<InternalRow<T>> {
   const {

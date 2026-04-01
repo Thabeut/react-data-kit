@@ -117,7 +117,7 @@ Use `customColors` to override CSS variables for light/dark surfaces, borders, a
 - Keep `fields` memoized.
 - Use explicit `defaultValues` for edit mode forms.
 - Use `submitLoading` from your mutation state.
-- Keep long forms in modal/drawer with `maxHeight` to avoid layout jumps.
+- Keep long forms in modal/drawer with `maxFormHeight` to avoid layout jumps.
 
 ## 10) Field dependencies (`dependsOn`)
 

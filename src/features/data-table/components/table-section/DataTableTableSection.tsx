@@ -5,7 +5,7 @@ import clsx from "clsx";
 import type { InternalRow } from "../../../../types/data-table";
 import { isGroupRow } from "../../../../utils/data-table";
 
-export interface DataTableTableSectionProps<T extends { [key: string]: unknown }> {
+export interface DataTableTableSectionProps<T extends object> {
   maxTableHeight?: string;
   columns: ColumnsType<InternalRow<T>>;
   displayData: InternalRow<T>[];
@@ -16,7 +16,7 @@ export interface DataTableTableSectionProps<T extends { [key: string]: unknown }
   internalRowKey: (record: InternalRow<T>) => string | number;
 }
 
-export function DataTableTableSection<T extends { [key: string]: unknown }>(
+export function DataTableTableSection<T extends object>(
   props: DataTableTableSectionProps<T>,
 ) {
   const {

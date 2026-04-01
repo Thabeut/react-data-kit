@@ -18,13 +18,17 @@ import {
 
 ## 2) Required inputs
 
-- `tableState` and `onTableStateChange`
 - `tableId`, `rowKey`, `columnsInfo`
 - `useQuery` hook (RTK-style hook signature)
 - `tag` object
 - `resultAdapter` with `selectItems` and optional `selectTotalItems`
 
-## 3) Basic example
+`tableState` and `onTableStateChange` are optional:
+
+- Pass both for controlled mode (URL sync, external state, deep-linking).
+- Omit both for uncontrolled mode (QueryTable keeps state internally).
+
+## 3) Basic example (uncontrolled)
 
 ```tsx
 type UserRow = { id: number; name: string; email: string };
@@ -36,8 +40,6 @@ const resultAdapter: QueryResultAdapter<UserRow, UsersResponse> = {
 };
 
 <QueryTable<UserRow, UsersResponse>
-  tableState={tableState}
-  onTableStateChange={setTableState}
   tableId="users-query-table"
   rowKey="id"
   columnsInfo={columnsInfo}
@@ -48,7 +50,7 @@ const resultAdapter: QueryResultAdapter<UserRow, UsersResponse> = {
 />
 ```
 
-## 4) URL synchronization pattern
+## 4) Controlled mode (URL synchronization pattern)
 
 ```tsx
 import { useMemo } from "react";
@@ -64,6 +66,17 @@ const tableState = useMemo(
 const onTableStateChange = (next: ReturnType<typeof parseTableState>) => {
   setSearchParams(new URLSearchParams(serializeTableState(next)));
 };
+
+<QueryTable<UserRow, UsersResponse>
+  tableState={tableState}
+  onTableStateChange={onTableStateChange}
+  tableId="users-query-table"
+  rowKey="id"
+  columnsInfo={columnsInfo}
+  useQuery={useUsersQuery}
+  tag={{ type: "Users" }}
+  resultAdapter={resultAdapter}
+/>
 ```
 
 ## 5) Query mapping controls
@@ -74,6 +87,7 @@ You can customize backend query keys:
 - `searchKey` (default: `search`)
 - `sortKey` (default: `sort`)
 - `filterQueryKeys` (map UI filter ids to backend keys)
+- `serializeSort` (customize sort value shape sent to backend)
 
 ```tsx
 <QueryTable
@@ -85,15 +99,25 @@ You can customize backend query keys:
 />
 ```
 
+If your backend expects a string sort (instead of object), use `serializeSort`:
+
+```tsx
+<QueryTable
+  // ...
+  serializeSort={(sort) => `${sort.field}:${sort.direction}`}
+/>
+```
+
 ## 6) Filters and sort behavior
 
 - Multi filters become arrays.
 - Date filters become `{ date_from, date_to }`.
-- Sort maps to `{ field, direction }`.
+- Sort maps to `{ field, direction }` by default.
+- Use `serializeSort` to change sort shape (for example: `"field:direction"`).
 - Search/filter/sort changes reset page to `1`.
 
 ## 7) Best practices
 
 - Keep `columnsInfo`, `filters`, and `resultAdapter` stable via `useMemo`.
-- Keep `tableState` as your single source of truth.
+- Use controlled mode when URL sync/shareable links are needed.
 - Use `extraQuery` for static query params (tenant id, organization id, etc.).

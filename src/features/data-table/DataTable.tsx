@@ -37,9 +37,7 @@ import {
 import { RDK_I18N_DEFAULT_TEXT } from "../../constants/rdk-i18n-keys";
 import "./data-table.scss";
 
-export function DataTable<T extends { [key: string]: unknown }>(
-  props: DataTableProps<T>,
-) {
+export function DataTable<T extends object>(props: DataTableProps<T>) {
   const {
     tableId,
     rowKey,
@@ -675,8 +673,8 @@ export function DataTable<T extends { [key: string]: unknown }>(
                     ? datatableIconNames.StarFilled
                     : datatableIconNames.Star
                 }
-                width={20}
-                height={20}
+                width={16}
+                height={16}
               />
             </Button>
           ) : null}
@@ -692,8 +690,8 @@ export function DataTable<T extends { [key: string]: unknown }>(
             >
               <Icon
                 icon={datatableIconNames.RefreshCw}
-                width={20}
-                height={20}
+                width={16}
+                height={16}
               />
             </Button>
           ) : null}
@@ -798,34 +796,36 @@ export function DataTable<T extends { [key: string]: unknown }>(
         )}
       >
         <DataTableToolbar<T>
-        showSearch={Boolean(!isServer || onSearch || searchValue !== undefined)}
-        resolvedSearchValue={resolvedSearchValue}
-        useInternalSearch={useInternalSearch}
-        setSearchInternal={setSearchInternal}
-        onSearch={onSearch}
-        inputPlaceholder={
-          searchPlaceholder ??
-          t("searchByName", {
-            defaultValue: RDK_I18N_DEFAULT_TEXT.searchByName,
-          })
-        }
-        renderToolbarLeft={renderToolbarLeft}
-        filters={filters}
-        renderFilterContent={renderFilterContent}
-        handleFilterToggle={handleFilterToggle}
-        isFilterActive={isFilterActive}
-        activeFilterIds={activeFilterIds}
-        openFilterId={openFilterId}
-        setOpenFilterId={setOpenFilterId}
-        renderToolbarRight={renderToolbarRight}
-        hideColumnOptions={hideColumnOptions}
-        columnsInfo={columnsInfo}
-        visibleColumnIds={visibleColumnIds}
-        handleColumnToggle={handleColumnToggle}
-        toggleColumnsTitle={t("toggleColumns", {
-          defaultValue: RDK_I18N_DEFAULT_TEXT.toggleColumns,
-        })}
-      />
+          showSearch={Boolean(
+            !isServer || onSearch || searchValue !== undefined,
+          )}
+          resolvedSearchValue={resolvedSearchValue}
+          useInternalSearch={useInternalSearch}
+          setSearchInternal={setSearchInternal}
+          onSearch={onSearch}
+          inputPlaceholder={
+            searchPlaceholder ??
+            t("searchByName", {
+              defaultValue: RDK_I18N_DEFAULT_TEXT.searchByName,
+            })
+          }
+          renderToolbarLeft={renderToolbarLeft}
+          filters={filters}
+          renderFilterContent={renderFilterContent}
+          handleFilterToggle={handleFilterToggle}
+          isFilterActive={isFilterActive}
+          activeFilterIds={activeFilterIds}
+          openFilterId={openFilterId}
+          setOpenFilterId={setOpenFilterId}
+          renderToolbarRight={renderToolbarRight}
+          hideColumnOptions={hideColumnOptions}
+          columnsInfo={columnsInfo}
+          visibleColumnIds={visibleColumnIds}
+          handleColumnToggle={handleColumnToggle}
+          toggleColumnsTitle={t("toggleColumns", {
+            defaultValue: RDK_I18N_DEFAULT_TEXT.toggleColumns,
+          })}
+        />
 
         <div
           className={clsx(
@@ -834,37 +834,37 @@ export function DataTable<T extends { [key: string]: unknown }>(
           )}
         >
           <DataTableTableSection<T>
-          maxTableHeight={maxTableHeight}
-          columns={visibleColumns}
-          displayData={displayData}
-          loading={loading}
-          rowSelection={rowSelection}
-          disableSelectionAndBookmark={disableSelectionAndBookmark}
-          onRowClick={onRowClick}
-          internalRowKey={internalRowKey}
-        />
+            maxTableHeight={maxTableHeight}
+            columns={visibleColumns}
+            displayData={displayData}
+            loading={loading}
+            rowSelection={rowSelection}
+            disableSelectionAndBookmark={disableSelectionAndBookmark}
+            onRowClick={onRowClick}
+            internalRowKey={internalRowKey}
+          />
 
           <DataTableFooter
-          showSelectionSummary={!disableSelectionAndBookmark}
-          totalSelectedLabel={totalSelected}
-          rowsPerPageLabel={t("rowsPerPage", {
-            defaultValue: RDK_I18N_DEFAULT_TEXT.rowsPerPage,
-          })}
-          pageSize={pageSize}
-          pageSizeOptions={pagination.pageSizeOptions}
-          onPageSizeChange={handlePageSizeChange}
-          pageInfoLabel={t("datatablePageOf", {
-            defaultValue: RDK_I18N_DEFAULT_TEXT.datatablePageOf,
-            page: currentPage,
-            totalPages,
-          })}
-          isRTL={isRTL}
-          onGoFirst={() => goToPage(1)}
-          onGoPrev={() => goToPage(currentPage - 1)}
-          onGoNext={() => goToPage(currentPage + 1)}
-          onGoLast={() => goToPage(totalPages)}
-          disablePrev={currentPage === 1}
-          disableNext={currentPage === totalPages}
+            showSelectionSummary={!disableSelectionAndBookmark}
+            totalSelectedLabel={totalSelected}
+            rowsPerPageLabel={t("rowsPerPage", {
+              defaultValue: RDK_I18N_DEFAULT_TEXT.rowsPerPage,
+            })}
+            pageSize={pageSize}
+            pageSizeOptions={pagination.pageSizeOptions}
+            onPageSizeChange={handlePageSizeChange}
+            pageInfoLabel={t("datatablePageOf", {
+              defaultValue: RDK_I18N_DEFAULT_TEXT.datatablePageOf,
+              page: currentPage,
+              totalPages,
+            })}
+            isRTL={isRTL}
+            onGoFirst={() => goToPage(1)}
+            onGoPrev={() => goToPage(currentPage - 1)}
+            onGoNext={() => goToPage(currentPage + 1)}
+            onGoLast={() => goToPage(totalPages)}
+            disablePrev={currentPage === 1}
+            disableNext={currentPage === totalPages}
           />
         </div>
       </div>

@@ -195,7 +195,7 @@ export interface DynamicFormProps<TValues extends Record<string, unknown>> {
   className?: string;
   modalWidth?: number;
   drawerWidth?: number;
-  maxHeight?: string;
+  maxFormHeight?: string;
 }
 
 export function DynamicForm<TValues extends Record<string, unknown>>(
@@ -217,7 +217,7 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
     className,
     modalWidth = 600,
     drawerWidth = 460,
-    maxHeight,
+    maxFormHeight,
   } = props;
 
   useEffect(() => {
@@ -257,11 +257,11 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
   }, [customColors]);
 
   const resolvedFieldsMaxHeight = useMemo<string | undefined>(() => {
-    if (maxHeight) return maxHeight;
+    if (maxFormHeight) return maxFormHeight;
     if (variant === "drawer") return "calc(100vh - 240px)";
     if (variant === "modal") return "min(60vh, 520px)";
     return undefined;
-  }, [maxHeight, variant]);
+  }, [maxFormHeight, variant]);
 
   const fieldsContainerStyle = useMemo<CSSProperties | undefined>(() => {
     if (!resolvedFieldsMaxHeight) return undefined;

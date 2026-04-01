@@ -11,7 +11,7 @@ import type {
   DataTableFilterConfig,
 } from "../../../../types/data-table";
 
-export interface DataTableToolbarProps<T extends { [key: string]: unknown }> {
+export interface DataTableToolbarProps<T extends object> {
   showSearch: boolean;
   resolvedSearchValue: string;
   useInternalSearch: boolean;
@@ -34,7 +34,7 @@ export interface DataTableToolbarProps<T extends { [key: string]: unknown }> {
   toggleColumnsTitle: string;
 }
 
-export function DataTableToolbar<T extends { [key: string]: unknown }>(
+export function DataTableToolbar<T extends object>(
   props: DataTableToolbarProps<T>,
 ) {
   const {

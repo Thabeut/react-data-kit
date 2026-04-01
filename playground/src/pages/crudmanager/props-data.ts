@@ -17,7 +17,7 @@ export const crudManagerPropRows: PropDocRow[] = [
   },
   {
     key: "form-props",
-    prop: "fields, cancelLabel, description, modalWidth, drawerWidth, maxHeight, formClassName, formCustomColors, ...",
+    prop: "fields, cancelLabel, description, modalWidth, drawerWidth, maxFormHeight, formClassName, formCustomColors, ...",
     type: "DynamicForm props (flattened)",
     required: "yes",
     description:

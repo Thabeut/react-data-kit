@@ -25,9 +25,11 @@ import * as yup from "yup";
 
 ## 3) Required setup
 
-- All main `QueryTable` props (`tableState`, `useQuery`, `resultAdapter`, etc.)
+- Main `QueryTable` props (`useQuery`, `resultAdapter`, etc.)
 - Form `fields`
 - CRUD handlers (`onCreate`, `onUpdate`, optional `onDelete`)
+
+Note: `tableState` + `onTableStateChange` are optional and only needed for controlled mode (URL sync/deep-linking).
 
 ## 4) Basic example
 
@@ -63,12 +65,13 @@ const fields: DynamicFormField[] = [
   formVariant="drawer"
   createTitle="Create user"
   editTitle="Edit user"
-  submitLabel="Save"
+  createSubmitLabel="Create"
+  editSubmitLabel="Save"
   onCreate={createUser}
   onUpdate={(row, values) => updateUser(row.id, values)}
   onDelete={(row) => deleteUser(row.id)}
   editDefaultValues={(row) => ({ name: row.name, email: row.email })}
-/>
+/>;
 ```
 
 ## 5) Form mode and labels
@@ -76,6 +79,8 @@ const fields: DynamicFormField[] = [
 Customize:
 
 - `formVariant`: `"default" | "modal" | "drawer"`
+- `maxFormHeight` (form fields max height)
+- `maxTableHeight` (table area max height)
 - `addButtonLabel`
 - `createTitle`, `editTitle`
 - `createSubmitLabel`, `editSubmitLabel`
@@ -97,5 +102,6 @@ Use `onAfterSubmit(mode, values, record?)` to run side effects (toast, analytics
 ## 8) Production tips
 
 - Keep table state in URL if deep-linking matters.
+- If your API expects string sort values, pass `serializeSort`.
 - Use `editDefaultValues` to avoid uncontrolled form behavior.
 - Keep `fields` and query adapters memoized.

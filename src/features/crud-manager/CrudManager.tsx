@@ -15,7 +15,7 @@ import { datatableIconNames } from "../../constants/datatable-icons";
 type CrudMode = "create" | "edit";
 
 export interface CrudManagerProps<
-  TItem extends { [key: string]: unknown },
+  TItem extends object,
   TRaw,
   TValues extends Record<string, unknown>,
 > extends Omit<QueryTableProps<TItem, TRaw>, "actions"> {
@@ -25,7 +25,7 @@ export interface CrudManagerProps<
   cancelLabel?: DynamicFormProps<TValues>["cancelLabel"];
   modalWidth?: DynamicFormProps<TValues>["modalWidth"];
   drawerWidth?: DynamicFormProps<TValues>["drawerWidth"];
-  maxHeight?: DynamicFormProps<TValues>["maxHeight"];
+  maxFormHeight?: DynamicFormProps<TValues>["maxFormHeight"];
   formClassName?: string;
   formCustomColors?: DynamicFormCustomColors;
 
@@ -56,7 +56,7 @@ export interface CrudManagerProps<
 }
 
 export function CrudManager<
-  TItem extends { [key: string]: unknown },
+  TItem extends object,
   TRaw,
   TValues extends Record<string, unknown>,
 >(props: CrudManagerProps<TItem, TRaw, TValues>) {
@@ -89,13 +89,15 @@ export function CrudManager<
     searchKey,
     sortKey,
     filterQueryKeys,
+    serializeSort,
+    maxTableHeight,
     // DynamicForm props (flattened)
     fields,
     cancelLabel,
     description,
     modalWidth,
     drawerWidth,
-    maxHeight,
+    maxFormHeight,
     formClassName,
     formCustomColors,
     formVariant = "drawer",
@@ -114,6 +116,7 @@ export function CrudManager<
     actions: providedActions,
     onAfterSubmit,
   } = props;
+  const resolvedFormCustomColors = formCustomColors ?? customColors;
 
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState<CrudMode>("create");
@@ -217,6 +220,7 @@ export function CrudManager<
   return (
     <>
       <QueryTable<TItem, TRaw>
+        className={className}
         tableState={tableState}
         onTableStateChange={onTableStateChange}
         tableId={tableId}
@@ -228,7 +232,6 @@ export function CrudManager<
         resultAdapter={resultAdapter}
         pageSizeOptions={pageSizeOptions}
         initialPageSize={initialPageSize}
-        className={className}
         customColors={customColors}
         filters={filters}
         groupConfig={groupConfig}
@@ -242,12 +245,15 @@ export function CrudManager<
         searchKey={searchKey}
         sortKey={sortKey}
         filterQueryKeys={filterQueryKeys}
+        serializeSort={serializeSort}
         actions={actions}
         renderToolbarLeft={renderToolbarLeft}
         renderToolbarRight={mergedToolbarRight}
+        maxTableHeight={maxTableHeight}
       />
       <DynamicForm<TValues>
         key={mode}
+        className={formClassName}
         variant={formVariant}
         open={open}
         onClose={closeForm}
@@ -259,11 +265,10 @@ export function CrudManager<
         fields={fields}
         cancelLabel={cancelLabel}
         description={description}
-        className={formClassName}
-        customColors={formCustomColors}
+        customColors={resolvedFormCustomColors}
         modalWidth={modalWidth}
         drawerWidth={drawerWidth}
-        maxHeight={maxHeight}
+        maxFormHeight={maxFormHeight}
       />
     </>
   );

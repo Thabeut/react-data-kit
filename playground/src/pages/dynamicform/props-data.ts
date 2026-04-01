@@ -118,8 +118,8 @@ export const dynamicFormPropRows: PropDocRow[] = [
     description: "Drawer width (default: 460).",
   },
   {
-    key: "maxHeight",
-    prop: "maxHeight",
+    key: "maxFormHeight",
+    prop: "maxFormHeight",
     type: "string",
     required: "no",
     description:

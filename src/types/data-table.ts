@@ -126,7 +126,7 @@ export interface DataTableCustomColors {
   darkMode?: Partial<DataTableModeColors>;
 }
 
-export interface DataTableProps<T extends { [key: string]: unknown }> {
+export interface DataTableProps<T extends object> {
   tableId: string;
   rowKey: TableProps<T>["rowKey"];
   columnsInfo: DataTableColumnInfo<T>[];

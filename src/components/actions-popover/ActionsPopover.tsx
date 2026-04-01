@@ -19,7 +19,7 @@ export interface ActionsPopoverProps<T = unknown> {
   customActions?: ActionItem<T>[] | ((record: T) => ActionItem<T>[]);
 }
 
-export function ActionsPopover<T extends { [key: string]: unknown }>({
+export function ActionsPopover<T extends object>({
   record,
   onPreview,
   onEdit,

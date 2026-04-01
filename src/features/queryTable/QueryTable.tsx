@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { DataTable } from "../data-table";
 import type {
   DataTableActionsConfig,
@@ -47,11 +47,11 @@ type TUseQueryHook<TQueryArgs extends object, TRaw> = (
 };
 
 export interface QueryTableProps<
-  TItem extends { [key: string]: unknown },
+  TItem extends object,
   TRaw,
 > {
-  tableState: UrlTableState;
-  onTableStateChange: (next: UrlTableState) => void;
+  tableState?: UrlTableState;
+  onTableStateChange?: (next: UrlTableState) => void;
 
   tableId: string;
   rowKey: DataTableProps<TItem>["rowKey"];
@@ -81,12 +81,18 @@ export interface QueryTableProps<
   onSelectionChange?: (selectedRowKeys: DataTableKey[], rows: TItem[]) => void;
   onBookmarkChange?: (bookmarkedRowKeys: DataTableKey[], rows: TItem[]) => void;
   onRowClick?: (record: TItem) => void;
+  onRefresh?: () => void;
+  onFiltersChange?: (activeFilterIds: string[]) => void;
+  onVisibleColumnsChange?: (visibleColumnIds: string[]) => void;
+  columnResize?: boolean;
+  maxTableHeight?: string;
 
   // Query arg mapping keys
   limitKey?: string;
   searchKey?: string;
   sortKey?: string;
   filterQueryKeys?: Record<string, string>;
+  serializeSort?: (sort: UrlTableSort) => unknown;
 }
 
 function mapSortToDataTableSort(
@@ -184,7 +190,7 @@ function mapFilterValueForQuery(
   return undefined;
 }
 
-export function QueryTable<TItem extends { [key: string]: unknown }, TRaw>(
+export function QueryTable<TItem extends object, TRaw>(
   props: QueryTableProps<TItem, TRaw>,
 ) {
   const {
@@ -217,22 +223,40 @@ export function QueryTable<TItem extends { [key: string]: unknown }, TRaw>(
     onSelectionChange,
     onBookmarkChange,
     onRowClick,
+    onRefresh,
+    onFiltersChange,
+    onVisibleColumnsChange,
+    columnResize,
+    maxTableHeight,
 
     limitKey = "limit",
     searchKey = "search",
     sortKey = "sort",
     filterQueryKeys,
+    serializeSort,
   } = props;
 
+  const fallbackInitialPageSize = initialPageSize || pageSizeOptions[0] || 10;
+  const [internalTableState, setInternalTableState] = useState<UrlTableState>({
+    page: 1,
+    pageSize: fallbackInitialPageSize,
+  });
+  const isControlled =
+    tableState !== undefined && onTableStateChange !== undefined;
+  const resolvedTableState = isControlled ? tableState : internalTableState;
+  const applyTableStateChange = isControlled
+    ? onTableStateChange
+    : setInternalTableState;
+
   const resolvedPageSize =
-    tableState.pageSize || initialPageSize || pageSizeOptions[0] || 10;
+    resolvedTableState.pageSize || initialPageSize || pageSizeOptions[0] || 10;
 
   const paginationState: DataTablePaginationState = useMemo(
     () => ({
-      page: tableState.page,
+      page: resolvedTableState.page,
       pageSize: resolvedPageSize,
     }),
-    [tableState.page, resolvedPageSize],
+    [resolvedTableState.page, resolvedPageSize],
   );
 
   const dataTableFilterValues = useMemo(() => {
@@ -240,7 +264,7 @@ export function QueryTable<TItem extends { [key: string]: unknown }, TRaw>(
     if (!filters) return next;
 
     for (const filter of filters) {
-      const raw = tableState.filters?.[filter.id];
+      const raw = resolvedTableState.filters?.[filter.id];
       const mapped = mapFilterValueForDataTable(raw, filter);
       if (mapped == null) continue;
       if (Array.isArray(mapped) && mapped.length === 0) continue;
@@ -248,36 +272,38 @@ export function QueryTable<TItem extends { [key: string]: unknown }, TRaw>(
     }
 
     return next;
-  }, [filters, tableState.filters]);
+  }, [filters, resolvedTableState.filters]);
 
   const sortState = useMemo(
-    () => mapSortToDataTableSort(tableState.sort),
-    [tableState.sort],
+    () => mapSortToDataTableSort(resolvedTableState.sort),
+    [resolvedTableState.sort],
   );
 
   const query = useMemo(() => {
     const q: Record<string, unknown> = {
-      page: tableState.page,
+      page: resolvedTableState.page,
       [limitKey]: resolvedPageSize,
       ...(extraQuery ?? {}),
     };
 
-    const s = tableState.search?.trim();
+    const s = resolvedTableState.search?.trim();
     if (s) {
       q[searchKey] = s;
     }
 
-    if (tableState.sort) {
-      q[sortKey] = {
-        field: tableState.sort.field,
-        direction: tableState.sort.direction,
-      };
+    if (resolvedTableState.sort) {
+      q[sortKey] = serializeSort
+        ? serializeSort(resolvedTableState.sort)
+        : {
+            field: resolvedTableState.sort.field,
+            direction: resolvedTableState.sort.direction,
+          };
     }
 
     // Include known filters (from UI config) first to keep encoding consistent.
     if (filters) {
       for (const filter of filters) {
-        const raw = tableState.filters?.[filter.id];
+        const raw = resolvedTableState.filters?.[filter.id];
         if (raw == null) continue;
         const queryKey = filterQueryKeys?.[filter.id] ?? filter.id;
         const mapped = mapFilterValueForQuery(raw, filter);
@@ -287,8 +313,8 @@ export function QueryTable<TItem extends { [key: string]: unknown }, TRaw>(
     }
 
     // Then include any extra filters not in the UI config.
-    if (tableState.filters) {
-      for (const [filterId, raw] of Object.entries(tableState.filters)) {
+    if (resolvedTableState.filters) {
+      for (const [filterId, raw] of Object.entries(resolvedTableState.filters)) {
         if (filters?.some((f) => f.id === filterId)) continue;
         const queryKey = filterQueryKeys?.[filterId] ?? filterId;
         if (raw == null) continue;
@@ -298,14 +324,15 @@ export function QueryTable<TItem extends { [key: string]: unknown }, TRaw>(
 
     return q;
   }, [
-    tableState.page,
+    resolvedTableState.page,
     resolvedPageSize,
     extraQuery,
-    tableState.search,
-    tableState.sort,
+    resolvedTableState.search,
+    resolvedTableState.sort,
     filters,
     filterQueryKeys,
-    tableState.filters,
+    serializeSort,
+    resolvedTableState.filters,
     limitKey,
     searchKey,
     sortKey,
@@ -316,6 +343,11 @@ export function QueryTable<TItem extends { [key: string]: unknown }, TRaw>(
     query,
   });
 
+  const handleRefresh = useCallback(() => {
+    refetch();
+    onRefresh?.();
+  }, [onRefresh, refetch]);
+
   const items = resultAdapter.selectItems(data);
   const totalItems =
     resultAdapter.selectTotalItems?.(data) ?? items.length ?? 0;
@@ -323,30 +355,30 @@ export function QueryTable<TItem extends { [key: string]: unknown }, TRaw>(
   const onSearch = useCallback(
     (value: string) => {
       const nextSearch = value.trim() || undefined;
-      onTableStateChange({
-        ...tableState,
+      applyTableStateChange({
+        ...resolvedTableState,
         page: 1,
         search: nextSearch,
       });
     },
-    [onTableStateChange, tableState],
+    [applyTableStateChange, resolvedTableState],
   );
 
   const onPageChange = useCallback(
     (nextPage: number, nextPageSize: number) => {
-      onTableStateChange({
-        ...tableState,
+      applyTableStateChange({
+        ...resolvedTableState,
         page: nextPage,
         pageSize: nextPageSize,
       });
     },
-    [onTableStateChange, tableState],
+    [applyTableStateChange, resolvedTableState],
   );
 
   const onSortChange = useCallback(
     (next: DataTableSortState | null) => {
-      onTableStateChange({
-        ...tableState,
+      applyTableStateChange({
+        ...resolvedTableState,
         page: 1,
         sort: next
           ? {
@@ -356,7 +388,7 @@ export function QueryTable<TItem extends { [key: string]: unknown }, TRaw>(
           : undefined,
       });
     },
-    [onTableStateChange, tableState],
+    [applyTableStateChange, resolvedTableState],
   );
 
   const onFilterChange = useCallback(
@@ -365,7 +397,7 @@ export function QueryTable<TItem extends { [key: string]: unknown }, TRaw>(
       const type = filterCfg?.type ?? "multi";
 
       const nextFilters: Record<string, UrlTableFilterValue> = {
-        ...(tableState.filters ?? {}),
+        ...(resolvedTableState.filters ?? {}),
       };
 
       if (type === "date") {
@@ -405,13 +437,13 @@ export function QueryTable<TItem extends { [key: string]: unknown }, TRaw>(
         }
       }
 
-      onTableStateChange({
-        ...tableState,
+      applyTableStateChange({
+        ...resolvedTableState,
         page: 1,
         filters: Object.keys(nextFilters).length > 0 ? nextFilters : undefined,
       });
     },
-    [filters, onTableStateChange, tableState],
+    [filters, applyTableStateChange, resolvedTableState],
   );
 
   return (
@@ -435,10 +467,12 @@ export function QueryTable<TItem extends { [key: string]: unknown }, TRaw>(
       filters={filters}
       filterValues={dataTableFilterValues}
       onFilterChange={onFilterChange}
-      onRefresh={refetch}
+      onRefresh={handleRefresh}
+      onFiltersChange={onFiltersChange}
+      onVisibleColumnsChange={onVisibleColumnsChange}
       renderToolbarLeft={renderToolbarLeft}
       renderToolbarRight={renderToolbarRight}
-      searchValue={searchPlaceholder ? tableState.search : undefined}
+      searchValue={searchPlaceholder ? resolvedTableState.search : undefined}
       onSearch={searchPlaceholder ? onSearch : undefined}
       searchPlaceholder={searchPlaceholder}
       actions={actions}
@@ -447,9 +481,11 @@ export function QueryTable<TItem extends { [key: string]: unknown }, TRaw>(
       onSelectionChange={onSelectionChange}
       onBookmarkChange={onBookmarkChange}
       onRowClick={onRowClick}
+      columnResize={columnResize}
       groupConfig={groupConfig}
       className={className}
       customColors={customColors}
+      maxTableHeight={maxTableHeight}
     />
   );
 }
