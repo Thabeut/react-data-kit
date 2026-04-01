@@ -507,6 +507,9 @@ export function DataTable<T extends object>(props: DataTableProps<T>) {
   const scopeAllBookmarked =
     scopeRowKeys.length > 0 &&
     scopeRowKeys.every((key) => bookmarkedRowKeys.includes(key));
+  const scopeSomeBookmarked =
+    !scopeAllBookmarked &&
+    scopeRowKeys.some((key) => bookmarkedRowKeys.includes(key));
 
   const handleBookmarkAll = useCallback(() => {
     const allMarked = scopeRowKeys.every((key) =>
@@ -584,6 +587,8 @@ export function DataTable<T extends object>(props: DataTableProps<T>) {
 
   const rowSelection: TableRowSelection<InternalRow<T>> = useMemo(
     () => ({
+      columnWidth:
+        canBookmark && canRefresh ? 112 : canBookmark || canRefresh ? 56 : 0,
       preserveSelectedRowKeys: true,
       selectedRowKeys,
       onChange: handleSelectionChange,
@@ -660,7 +665,8 @@ export function DataTable<T extends object>(props: DataTableProps<T>) {
               onClick={handleBookmarkAll}
               className={clsx(
                 "datatable-bookmark-all-button",
-                scopeAllBookmarked && "datatable-bookmark-all-button-active",
+                (scopeAllBookmarked || scopeSomeBookmarked) &&
+                  "datatable-bookmark-all-button-active",
               )}
               aria-label={t("bookmarkAll", {
                 defaultValue: RDK_I18N_DEFAULT_TEXT.bookmarkAll,
@@ -668,9 +674,11 @@ export function DataTable<T extends object>(props: DataTableProps<T>) {
             >
               <Icon
                 icon={
-                  scopeAllBookmarked
-                    ? datatableIconNames.StarFilled
-                    : datatableIconNames.Star
+                    scopeAllBookmarked
+                      ? datatableIconNames.StarFilled
+                      : scopeSomeBookmarked
+                        ? datatableIconNames.StarHalf
+                        : datatableIconNames.Star
                 }
                 width={16}
                 height={16}
@@ -706,6 +714,7 @@ export function DataTable<T extends object>(props: DataTableProps<T>) {
       canBookmark,
       canRefresh,
       scopeAllBookmarked,
+      scopeSomeBookmarked,
       internalData,
       bookmarkedRowKeys,
       rowsMatchingKeys,

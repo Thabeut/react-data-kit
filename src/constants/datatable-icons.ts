@@ -4,6 +4,7 @@ export const datatableIconNames = {
   MoreVertical: "lucide:more-vertical",
   Eye: "lucide:eye",
   Star: "bi:star",
+  StarHalf: "bi:star-half",
   StarFilled: "bi:star-fill",
   RefreshCw: "lucide:refresh-cw",
   ChevronsLeft: "lucide:chevrons-left",
