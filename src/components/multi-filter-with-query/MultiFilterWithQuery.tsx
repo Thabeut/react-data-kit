@@ -2,8 +2,6 @@ import type { ReactNode } from "react";
 import { useMemo, type UIEvent } from "react";
 import { Checkbox } from "antd";
 import { Icon } from "@iconify/react";
-import { useTranslation } from "react-i18next";
-import { RDK_I18N_DEFAULT_TEXT } from "../../constants/rdk-i18n-keys";
 import { datatableIconNames } from "../../constants/datatable-icons";
 import { Button } from "../button";
 import { Input } from "../input";
@@ -34,7 +32,6 @@ export function MultiFilterWithQuery({
   searchPlaceholder,
   renderFilterOption,
 }: MultiFilterWithQueryProps) {
-  const { t } = useTranslation();
   const isStaticMode = Array.isArray(staticOptions);
   const asyncState = useAsyncOptions<IMultiFilterOption>({
     loadOptions,
@@ -72,42 +69,6 @@ export function MultiFilterWithQuery({
     onChange(next);
   };
 
-  if (!isStaticMode && asyncState.isLoading === true) {
-    return (
-      <div
-        className="datatable-multi-filter"
-        style={{
-          minHeight: 120,
-          minWidth: 220,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: 16,
-        }}
-      >
-        <Loader />
-      </div>
-    );
-  }
-
-  if (visibleItems.length === 0 && (isStaticMode || !asyncState.isLoading)) {
-    return (
-      <div
-        className="datatable-multi-filter"
-        style={{
-          minWidth: 220,
-          padding: 12,
-          fontSize: 14,
-          lineHeight: "20px",
-        }}
-      >
-        {t("noOptionsAvailable", {
-          defaultValue: RDK_I18N_DEFAULT_TEXT.noOptionsAvailable,
-        })}
-      </div>
-    );
-  }
-
   return (
     <div className="datatable-multi-filter">
       {searchPlaceholder ? (
@@ -124,7 +85,19 @@ export function MultiFilterWithQuery({
         />
       ) : null}
       <div className="datatable-multi-filter-list" onScroll={handleListScroll}>
-        {visibleItems.length === 0 ? (
+        {!isStaticMode && asyncState.isLoading ? (
+          <div
+            style={{
+              minHeight: 120,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: 16,
+            }}
+          >
+            <Loader />
+          </div>
+        ) : visibleItems.length === 0 ? (
           <PopoverEmpty
             variant={asyncState.search.trim() ? "search" : "default"}
           />
