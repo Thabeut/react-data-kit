@@ -103,5 +103,6 @@ Use `onAfterSubmit(mode, values, record?)` to run side effects (toast, analytics
 
 - Keep table state in URL if deep-linking matters.
 - If your API expects string sort values, pass `serializeSort`.
+- If your API expects split sort keys (for example `sort` + `order`), pass `mapSortToQuery`.
 - Use `editDefaultValues` to avoid uncontrolled form behavior.
 - Keep `fields` and query adapters memoized.

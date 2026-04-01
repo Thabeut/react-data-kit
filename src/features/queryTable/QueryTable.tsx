@@ -93,6 +93,7 @@ export interface QueryTableProps<
   sortKey?: string;
   filterQueryKeys?: Record<string, string>;
   serializeSort?: (sort: UrlTableSort) => unknown;
+  mapSortToQuery?: (sort: UrlTableSort) => Record<string, unknown>;
 }
 
 function mapSortToDataTableSort(
@@ -234,6 +235,7 @@ export function QueryTable<TItem extends object, TRaw>(
     sortKey = "sort",
     filterQueryKeys,
     serializeSort,
+    mapSortToQuery,
   } = props;
 
   const fallbackInitialPageSize = initialPageSize || pageSizeOptions[0] || 10;
@@ -292,12 +294,16 @@ export function QueryTable<TItem extends object, TRaw>(
     }
 
     if (resolvedTableState.sort) {
-      q[sortKey] = serializeSort
-        ? serializeSort(resolvedTableState.sort)
-        : {
-            field: resolvedTableState.sort.field,
-            direction: resolvedTableState.sort.direction,
-          };
+      if (mapSortToQuery) {
+        Object.assign(q, mapSortToQuery(resolvedTableState.sort));
+      } else {
+        q[sortKey] = serializeSort
+          ? serializeSort(resolvedTableState.sort)
+          : {
+              field: resolvedTableState.sort.field,
+              direction: resolvedTableState.sort.direction,
+            };
+      }
     }
 
     // Include known filters (from UI config) first to keep encoding consistent.
@@ -332,6 +338,7 @@ export function QueryTable<TItem extends object, TRaw>(
     filters,
     filterQueryKeys,
     serializeSort,
+    mapSortToQuery,
     resolvedTableState.filters,
     limitKey,
     searchKey,

@@ -90,6 +90,7 @@ export function CrudManager<
     sortKey,
     filterQueryKeys,
     serializeSort,
+    mapSortToQuery,
     maxTableHeight,
     // DynamicForm props (flattened)
     fields,
@@ -246,6 +247,7 @@ export function CrudManager<
         sortKey={sortKey}
         filterQueryKeys={filterQueryKeys}
         serializeSort={serializeSort}
+        mapSortToQuery={mapSortToQuery}
         actions={actions}
         renderToolbarLeft={renderToolbarLeft}
         renderToolbarRight={mergedToolbarRight}

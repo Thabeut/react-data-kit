@@ -88,6 +88,7 @@ You can customize backend query keys:
 - `sortKey` (default: `sort`)
 - `filterQueryKeys` (map UI filter ids to backend keys)
 - `serializeSort` (customize sort value shape sent to backend)
+- `mapSortToQuery` (map sort into multiple query keys)
 
 ```tsx
 <QueryTable
@@ -108,12 +109,25 @@ If your backend expects a string sort (instead of object), use `serializeSort`:
 />
 ```
 
+If your backend expects separate keys (for example `sort` + `order`), use `mapSortToQuery`:
+
+```tsx
+<QueryTable
+  // ...
+  mapSortToQuery={(sort) => ({
+    sort: sort.field,
+    order: sort.direction,
+  })}
+/>
+```
+
 ## 6) Filters and sort behavior
 
 - Multi filters become arrays.
 - Date filters become `{ date_from, date_to }`.
 - Sort maps to `{ field, direction }` by default.
 - Use `serializeSort` to change sort shape (for example: `"field:direction"`).
+- Use `mapSortToQuery` when sort must be spread into multiple payload keys.
 - Search/filter/sort changes reset page to `1`.
 
 ## 7) Best practices
