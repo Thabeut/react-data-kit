@@ -1,103 +1,103 @@
 @use "../../styles/variables" as *;
 
 .root-rdk {
-.dynamic-form {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  border-radius: 8px;
-  padding: 16px;
-  background: var(--rdk-light-surface-bg, #{$color-bg-primary});
-}
+  .dynamic-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    border-radius: 8px;
+    padding: 16px;
+    background: var(--rdk-light-surface-bg, #{$color-bg-primary});
+  }
 
-.dynamic-form__header {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid
-    var(--rdk-light-surface-border, #{$color-border-surface});
-}
+  .dynamic-form__header {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid
+      var(--rdk-light-surface-border, #{$color-border-surface});
+  }
 
-.dynamic-form__title {
-  font-size: 18px;
-  font-weight: 500;
-  line-height: 24px;
-  color: var(--rdk-light-text-primary, #{$color-text-primary});
-}
+  .dynamic-form__title {
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 24px;
+    color: var(--rdk-light-text-primary, #{$color-text-primary});
+  }
 
-.dynamic-form__description {
-  font-size: 13px;
-  line-height: 18px;
-  color: var(--rdk-light-text-secondary, #{$color-text-secondary});
-}
+  .dynamic-form__description {
+    font-size: 13px;
+    line-height: 18px;
+    color: var(--rdk-light-text-secondary, #{$color-text-secondary});
+  }
 
-.dynamic-form__fields {
-  margin: 16px 0;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
+  .dynamic-form__fields {
+    margin: 16px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
 
-.dynamic-form__field {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
+  .dynamic-form__field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
 
-.dynamic-form__label {
-  display: flex;
-  flex-direction: row;
-  align-items: baseline;
-  gap: 2px;
-}
+  .dynamic-form__label {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    gap: 2px;
+  }
 
-.dynamic-form__label-text {
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 20px;
-  color: var(--rdk-light-text-primary, #{$color-text-primary});
-}
+  .dynamic-form__label-text {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    color: var(--rdk-light-text-primary, #{$color-text-primary});
+  }
 
-.dynamic-form__required {
-  color: $color-error-500;
-}
+  .dynamic-form__required {
+    color: $color-error-500;
+  }
 
-.dynamic-form__actions {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  gap: 8px;
-  padding-top: 12px;
-  border-top: 1px solid var(--rdk-light-surface-border, #{$color-border-surface});
-}
+  .dynamic-form__actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 8px;
+    padding-top: 12px;
+  }
 
-.dynamic-form-drawer__inner {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
-}
+  .dynamic-form-drawer__inner {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100% !important;
+  }
 
-.dynamic-form-drawer__content {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
+  .dynamic-form-drawer__content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
 
-.dynamic-form-drawer__form {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  padding-bottom: 8px;
-}
+  .dynamic-form-drawer__form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-bottom: 8px;
+  }
 
-.dynamic-form-drawer__footer {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding-bottom: 12px;
-}
+  .dynamic-form-drawer__footer {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-bottom: 2px;
+  }
 }
 
 :root[data-theme="dark"] .root-rdk {
@@ -105,8 +105,7 @@
     background: var(--rdk-dark-surface-bg);
   }
 
-  .dynamic-form__header,
-  .dynamic-form__actions {
+  .dynamic-form__header {
     border-color: var(--rdk-dark-surface-border, #{$surface-border-dark});
   }
 
@@ -143,11 +142,9 @@
   background: var(--rdk-light-surface-bg, #{$surface-bg});
 }
 
-.rdk-theme-scope.dynamic-form-drawer .ant-drawer-body {
-  padding: 20px;
-}
-
-:root[data-theme="dark"] .rdk-theme-scope.dynamic-form-modal .ant-modal-content {
+:root[data-theme="dark"]
+  .rdk-theme-scope.dynamic-form-modal
+  .ant-modal-content {
   background: var(--rdk-dark-surface-bg);
 }
 

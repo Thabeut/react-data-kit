@@ -164,8 +164,7 @@ export type DynamicAsyncSelectField<TItem> = Omit<
 > & {
   fieldProps: Omit<
     AsyncSelectFieldProps,
-    | "getOptionValue"
-    | "getOptionLabel"
+    "getOptionValue" | "getOptionLabel"
   > & {
     loadOptions?: LoadOptions<TItem>;
     options?: TItem[];
@@ -325,6 +324,30 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
     return info.tests.some((t) => t.name === "required");
   };
 
+  const getFieldLabelText = (label: ReactNode): string | undefined => {
+    if (typeof label === "string") return label.trim();
+    if (typeof label === "number") return String(label);
+    return undefined;
+  };
+
+  const getDefaultPlaceholder = (field: DynamicFormField): string | undefined => {
+    const labelText = getFieldLabelText(field.label);
+
+    if (field.type === "select" || field.type === "asyncSelect") {
+      return labelText ? `Select ${labelText}` : "Select an option";
+    }
+
+    if (field.type === "input" || field.type === "textarea") {
+      return labelText ? `Enter ${labelText}` : "Enter a value";
+    }
+
+    if (field.type === "stringArray") {
+      return labelText ? `Add ${labelText}` : "Add item";
+    }
+
+    return undefined;
+  };
+
   const handleClose = () => {
     reset(resolvedDefaults);
     onClose?.();
@@ -469,7 +492,9 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
                   value={field.value as string | undefined}
                   onChange={field.onChange}
                   placeholder={
-                    selectProps?.placeholder ?? fieldConfig.placeholder
+                    selectProps?.placeholder ??
+                    fieldConfig.placeholder ??
+                    getDefaultPlaceholder(fieldConfig)
                   }
                 />
               );
@@ -489,7 +514,9 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
                   value={(field.value as string | undefined) ?? ""}
                   onChange={field.onChange as never}
                   placeholder={
-                    textAreaProps?.placeholder ?? fieldConfig.placeholder
+                    textAreaProps?.placeholder ??
+                    fieldConfig.placeholder ??
+                    getDefaultPlaceholder(fieldConfig)
                   }
                 />
               );
@@ -521,7 +548,9 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
                   {...asyncProps}
                   loadOptions={resolvedLoadOptions}
                   placeholder={
-                    asyncProps?.placeholder ?? fieldConfig.placeholder
+                    asyncProps?.placeholder ??
+                    fieldConfig.placeholder ??
+                    getDefaultPlaceholder(fieldConfig)
                   }
                   disabled={
                     Boolean((asyncProps as { disabled?: boolean })?.disabled) ||
@@ -594,7 +623,9 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
                   value={(field.value as string[] | undefined) ?? []}
                   onChange={field.onChange}
                   placeholder={
-                    stringArrayProps?.placeholder ?? fieldConfig.placeholder
+                    stringArrayProps?.placeholder ??
+                    fieldConfig.placeholder ??
+                    getDefaultPlaceholder(fieldConfig)
                   }
                 />
               );
@@ -626,7 +657,11 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
                 disabled={Boolean(inputProps?.disabled) || isDependencyDisabled}
                 value={(field.value as string | undefined) ?? ""}
                 onChange={field.onChange}
-                placeholder={inputProps?.placeholder ?? fieldConfig.placeholder}
+                placeholder={
+                  inputProps?.placeholder ??
+                  fieldConfig.placeholder ??
+                  getDefaultPlaceholder(fieldConfig)
+                }
               />
             );
           }}
@@ -713,7 +748,15 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
         closable={false}
         rootClassName="rdk-theme-scope dynamic-form-drawer"
       >
-        <div className={clsx("root-rdk dynamic-form-drawer__inner", className)}>
+        <div
+          className={clsx("root-rdk dynamic-form-drawer__inner", className)}
+          style={{
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+          }}
+        >
           <div className="dynamic-form-drawer__content">
             {header}
             <form
