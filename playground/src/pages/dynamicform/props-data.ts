@@ -51,6 +51,14 @@ export const dynamicFormPropRows: PropDocRow[] = [
       "Array of field configs. Each item maps to a rendered form control and can include `fieldSchema` for validation.",
   },
   {
+    key: "fields_custom_render",
+    prop: "fields[].render (custom only)",
+    type: "(form, context) => ReactNode",
+    required: "custom only",
+    description:
+      "`context` includes `{ disabled, values }` so custom fields can react to dependency disable state and read live form values.",
+  },
+  {
     key: "fields_depends_on",
     prop: "fields[].dependsOn",
     type: "DynamicFormDependencyRule | DynamicFormDependencyRule[]",

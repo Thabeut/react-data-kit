@@ -100,26 +100,32 @@ const fields: DynamicFormField[] = [
   name: "customArea",
   label: "Custom",
   type: DynamicFieldTypeEnum.Custom,
-  render: (form) => (
-    <button type="button" onClick={() => form.setValue("name", "Preset")}>
-      Fill preset
-    </button>
+  dependsOn: {
+    field: ["status", "name"],
+    effect: "disable",
+    when: (values) => values.status === "active",
+  },
+  render: (form, { disabled, values }) => (
+    <div style={{ opacity: disabled ? 0.55 : 1 }}>
+      <button
+        type="button"
+        disabled={disabled}
+        onClick={() => form.setValue("name", "Preset")}
+      >
+        Fill preset
+      </button>
+      <div>Live name: {String(values.name ?? "-")}</div>
+      <div>Live status: {String(values.status ?? "-")}</div>
+    </div>
   ),
 }
 ```
 
-## 8) Theme customization
+- `render` receives `(form, context)`.
+- `context.disabled`: resolved dependency disabled state for this custom field.
+- `context.values`: current form values snapshot (useful for live previews).
 
-Use `customColors` to override CSS variables for light/dark surfaces, borders, and text.
-
-## 9) Production tips
-
-- Keep `fields` memoized.
-- Use explicit `defaultValues` for edit mode forms.
-- Use `submitLoading` from your mutation state.
-- Keep long forms in modal/drawer with `maxFormHeight` to avoid layout jumps.
-
-## 10) Field dependencies (`dependsOn`)
+## 8) Field dependencies (`dependsOn`)
 
 Use `dependsOn` on any field to control visibility or disabled state based on other field values.
 
@@ -136,10 +142,11 @@ Use `dependsOn` on any field to control visibility or disabled state based on ot
 - `effect: "disable"`: field stays visible but disabled until condition passes.
 - `when(values)`: optional custom predicate.
 - `resetOnHide`: optional, clears field value when it becomes hidden.
+- For `custom` fields, apply `context.disabled` in your rendered UI (for example button/input disabled state).
 
 You can pass an array to combine rules (for example one `show` rule + one `disable` rule).
 
-## 11) AsyncSelect with `loadOptions`
+## 9) AsyncSelect with `loadOptions`
 
 `asyncSelect` is library-agnostic and accepts:
 
@@ -165,7 +172,7 @@ const countryField: DynamicFormField = {
 };
 ```
 
-## 12) Cross-field async params (`queryDependsOn`)
+## 10) Cross-field async params (`queryDependsOn`)
 
 Use `queryDependsOn` to inject other form values into `loadOptions` params.
 
@@ -193,7 +200,7 @@ Use `queryDependsOn` to inject other form values into `loadOptions` params.
 - `buildParams`: returns final params passed to your `loadOptions`.
 - `resetOnChange` (default true): clears field value when dependency fields change.
 
-## 13) RTK Query adapter for `loadOptions`
+## 11) RTK Query adapter for `loadOptions`
 
 ```tsx
 const dispatch = useDispatch<AppDispatch>();
@@ -201,7 +208,7 @@ const dispatch = useDispatch<AppDispatch>();
 const loadCountryOptions = useMemo(
   () => async ({ page = 1, search = "" }) => {
     const data = await dispatch(
-      productsRtkApi.endpoints.countriesOptionsInfinite.initiate(
+      productsRtkApi.endpoints.countriesOptions.initiate(
         { tag: { type: "dynamicform-countries" }, query: { page, search } },
         { subscribe: false },
       ),
@@ -216,7 +223,7 @@ const loadCountryOptions = useMemo(
 );
 ```
 
-## 14) React Query adapter for `loadOptions`
+## 12) React Query adapter for `loadOptions`
 
 ```tsx
 const queryClient = useQueryClient();
@@ -239,3 +246,14 @@ const loadCountryOptions = useMemo(
 ```
 
 Do not call `useQuery` directly inside `loadOptions`; use imperative client APIs (`dispatch(...initiate)` or `queryClient.fetchQuery`) in the adapter.
+
+## 13) Theme customization
+
+Use `customColors` to override CSS variables for light/dark surfaces, borders, and text.
+
+## 14) Production tips
+
+- Keep `fields` memoized.
+- Use explicit `defaultValues` for edit mode forms.
+- Use `submitLoading` from your mutation state.
+- Keep long forms in modal/drawer with `maxFormHeight` to avoid layout jumps.

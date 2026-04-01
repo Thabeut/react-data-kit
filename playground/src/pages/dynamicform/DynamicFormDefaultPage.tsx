@@ -83,6 +83,22 @@ const fields: DynamicFormField[] = [
     fieldSchema: yup.boolean().required(),
     fieldProps: { checkedLabel: "Yes", uncheckedLabel: "No" },
   },
+  {
+    type: DynamicFieldTypeEnum.Custom,
+    name: "customPreview",
+    label: "Custom preview",
+    dependsOn: {
+      field: ["country", "name"],
+      effect: "disable",
+      when: (values) => Boolean(values.country),
+    },
+    render: (_form, { disabled, values }) => (
+      <div style={{ opacity: disabled ? 0.55 : 1 }}>
+        <div>Country: {String(values.country ?? "-")}</div>
+        <div>Name: {String(values.name ?? "-")}</div>
+      </div>
+    ),
+  },
 ];
 
 const handleSubmit = async (values: FormValues) => {

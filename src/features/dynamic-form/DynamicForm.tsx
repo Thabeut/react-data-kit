@@ -102,6 +102,11 @@ export interface DynamicFormQueryDependency {
   resetOnChange?: boolean;
 }
 
+export interface DynamicCustomFieldRenderContext {
+  disabled: boolean;
+  values: Record<string, unknown>;
+}
+
 type InputFieldProps = Omit<InputProps, "value" | "onChange">;
 type SelectFieldProps = Omit<SelectProps<string>, "value" | "onChange">;
 type TextAreaFieldProps = Omit<TextAreaProps, "value" | "onChange">;
@@ -155,7 +160,10 @@ export type DynamicFormField =
     })
   | (BaseDynamicFormField & {
       type: "custom";
-      render: (form: UseFormReturn<Record<string, unknown>>) => ReactNode;
+      render: (
+        form: UseFormReturn<Record<string, unknown>>,
+        context: DynamicCustomFieldRenderContext,
+      ) => ReactNode;
     });
 
 export type DynamicAsyncSelectField<TItem> = Omit<
@@ -296,8 +304,44 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
     formState: { errors, isSubmitting },
     reset,
     setValue,
+    getValues,
   } = form;
-  const watchedValues = useWatch({ control }) as Record<string, unknown>;
+  const dependencyFieldNames = useMemo(
+    () =>
+      Array.from(
+        new Set(
+          fields.flatMap((field) => {
+            const fromDependsOn = field.dependsOn
+              ? (Array.isArray(field.dependsOn) ? field.dependsOn : [field.dependsOn])
+                  .flatMap((rule) =>
+                    Array.isArray(rule.field) ? rule.field : [rule.field],
+                  )
+              : [];
+            const fromQueryDependsOn =
+              field.type === "asyncSelect" && field.queryDependsOn
+                ? Array.isArray(field.queryDependsOn.fields)
+                  ? field.queryDependsOn.fields
+                  : [field.queryDependsOn.fields]
+                : [];
+            return [...fromDependsOn, ...fromQueryDependsOn];
+          }),
+        ),
+      ),
+    [fields],
+  );
+  const watchedDependencyValuesArray =
+    (useWatch({
+      control,
+      name: dependencyFieldNames as Path<TValues>[],
+    }) as unknown[]) ?? [];
+  const watchedDependencyValues = useMemo<Record<string, unknown>>(
+    () =>
+      dependencyFieldNames.reduce<Record<string, unknown>>((acc, name, index) => {
+        acc[name] = watchedDependencyValuesArray[index];
+        return acc;
+      }, {}),
+    [dependencyFieldNames, watchedDependencyValuesArray],
+  );
   const asyncDependencySignatureRef = useRef<Record<string, string>>({});
   const hiddenFieldStateRef = useRef<Record<string, boolean>>({});
 
@@ -357,7 +401,7 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
   };
 
   const dependencyStateByField = useMemo(() => {
-    const values = watchedValues ?? {};
+    const values = watchedDependencyValues ?? {};
     const state: Record<
       string,
       { hidden: boolean; disabled: boolean; resetOnHide: boolean }
@@ -399,7 +443,7 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
     }
 
     return state;
-  }, [fields, watchedValues]);
+  }, [fields, watchedDependencyValues]);
 
   useEffect(() => {
     for (const field of fields) {
@@ -408,7 +452,7 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
         ? field.queryDependsOn.fields
         : [field.queryDependsOn.fields];
       const signature = JSON.stringify(
-        depFields.map((name) => watchedValues?.[name]),
+        depFields.map((name) => watchedDependencyValues?.[name]),
       );
       const previousSignature = asyncDependencySignatureRef.current[field.name];
       if (
@@ -423,7 +467,7 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
       }
       asyncDependencySignatureRef.current[field.name] = signature;
     }
-  }, [fields, setValue, watchedValues]);
+  }, [fields, setValue, watchedDependencyValues]);
 
   useEffect(() => {
     for (const field of fields) {
@@ -455,7 +499,10 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
     if (fieldConfig.type === "custom") {
       return (
         <div key={fieldConfig.name} className={fieldConfig.className}>
-          {fieldConfig.render(form as UseFormReturn<Record<string, unknown>>)}
+          {fieldConfig.render(form as UseFormReturn<Record<string, unknown>>, {
+            disabled: isDependencyDisabled,
+            values: getValues() as Record<string, unknown>,
+          })}
           {errorMessage && <ErrorText>{errorMessage}</ErrorText>}
         </div>
       );
@@ -527,7 +574,7 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
                     ? fieldConfig.queryDependsOn.fields
                     : [fieldConfig.queryDependsOn.fields]
                   )
-                    .map((name) => watchedValues?.[name])
+                    .map((name) => watchedDependencyValues?.[name])
                     .join("|")
                 : "";
               const resolvedLoadOptions: LoadOptions<unknown> | undefined =
@@ -535,7 +582,7 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
                   ? (params) =>
                       asyncProps.loadOptions!(
                         fieldConfig.queryDependsOn!.buildParams({
-                          values: watchedValues ?? {},
+                          values: getValues() as Record<string, unknown>,
                           params,
                         }),
                       )

@@ -145,8 +145,8 @@ const dispatch = useDispatch<AppDispatch>();
 const loadCategoryOptions = useMemo<LoadOptions<IMultiFilterOption>>(
   () => async ({ page = 1, search = "" }) => {
     const data = await dispatch(
-      productsRtkApi.endpoints.productCategoriesOptionsInfinite.initiate(
-        { tag: { type: "category-infinite" }, query: { page, search } },
+      productsRtkApi.endpoints.productCategoriesOptions.initiate(
+        { tag: { type: "category-options" }, query: { page, search } },
         { subscribe: false },
       ),
     ).unwrap();
@@ -159,6 +159,8 @@ const loadCategoryOptions = useMemo<LoadOptions<IMultiFilterOption>>(
   [dispatch],
 );
 ```
+
+Use non-infinite endpoints for `loadOptions` and let the component handle appending pages internally. Reserve `useInfiniteQuery`/infinite RTK endpoints for the dedicated `InfiniteScroll` components.
 
 #### React Query adapter pattern (inside component)
 

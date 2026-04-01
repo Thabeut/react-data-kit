@@ -93,15 +93,6 @@ function paginateOptions(args: {
   };
 }
 
-function mergeOptionItems(
-  current: PublicOptionItem[],
-  incoming: PublicOptionItem[],
-): PublicOptionItem[] {
-  return Array.from(
-    new Map([...current, ...incoming].map((item) => [item.id, item])).values(),
-  );
-}
-
 function buildProductsPath(args: ProductsQueryArgs): string {
   const page = Number(args.page ?? 1) || 1;
   const pageSize = Number(args.limit ?? 10) || 10;
@@ -212,7 +203,7 @@ export const productsRtkApi = createApi({
     categories: build.query<DummyJsonCategory[], void>({
       query: () => `${PRODUCTS_BASE_PATH}/categories`,
     }),
-    productCategoriesOptionsInfinite: build.query<
+    productCategoriesOptions: build.query<
       PublicOptionsListResponse,
       PublicOptionsQueryPayload
     >({
@@ -240,39 +231,6 @@ export const productsRtkApi = createApi({
           .filter((item) => item.id && item.label);
         return { data: paginateOptions({ source, page, limit, search }) };
       },
-      serializeQueryArgs: ({ endpointName, queryArgs }) => {
-        const normalized = { ...(queryArgs.query ?? {}) };
-        delete normalized.page;
-        return `${endpointName}-${queryArgs.tag.type}-${JSON.stringify(normalized)}`;
-      },
-      merge(currentCache, incoming, { arg }) {
-        const page = Number(arg.query.page ?? 1) || 1;
-        if (page <= 1) {
-          Object.assign(currentCache, incoming);
-          return;
-        }
-        currentCache.items = mergeOptionItems(
-          currentCache.items ?? [],
-          incoming.items ?? [],
-        );
-        currentCache.total = incoming.total;
-        currentCache.skip = incoming.skip;
-        currentCache.limit = incoming.limit;
-      },
-      forceRefetch({ currentArg, previousArg }) {
-        if (!currentArg || !previousArg) return true;
-        const currentPage = Number(currentArg.query.page ?? 1) || 1;
-        const previousPage = Number(previousArg.query.page ?? 1) || 1;
-        if (currentPage !== previousPage) return true;
-        const clean = (query: PublicOptionsQueryPayload["query"]) => {
-          const { page, ...rest } = query;
-          return rest;
-        };
-        return (
-          JSON.stringify(clean(currentArg.query)) !==
-          JSON.stringify(clean(previousArg.query))
-        );
-      },
     }),
     countriesOptions: build.query<
       PublicOptionsListResponse,
@@ -298,65 +256,6 @@ export const productsRtkApi = createApi({
           .filter((item) => item.id && item.label)
           .sort((a, b) => a.label.localeCompare(b.label));
         return { data: paginateOptions({ source, page, limit, search }) };
-      },
-    }),
-    countriesOptionsInfinite: build.query<
-      PublicOptionsListResponse,
-      PublicOptionsQueryPayload
-    >({
-      async queryFn(payload) {
-        const page = Number(payload.query.page ?? 1) || 1;
-        const limit = 10;
-        const search = String(payload.query.search ?? "");
-        const response = await fetch(
-          "https://restcountries.com/v3.1/all?fields=name,cca2",
-        );
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        const json = (await response.json()) as Array<{
-          name?: { common?: string };
-          cca2?: string;
-        }>;
-        const source = json
-          .map((item) => ({
-            id: item.cca2 ?? item.name?.common ?? "",
-            label: item.name?.common ?? "",
-          }))
-          .filter((item) => item.id && item.label)
-          .sort((a, b) => a.label.localeCompare(b.label));
-        return { data: paginateOptions({ source, page, limit, search }) };
-      },
-      serializeQueryArgs: ({ endpointName, queryArgs }) => {
-        const normalized = { ...(queryArgs.query ?? {}) };
-        delete normalized.page;
-        return `${endpointName}-${queryArgs.tag.type}-${JSON.stringify(normalized)}`;
-      },
-      merge(currentCache, incoming, { arg }) {
-        const page = Number(arg.query.page ?? 1) || 1;
-        if (page <= 1) {
-          Object.assign(currentCache, incoming);
-          return;
-        }
-        currentCache.items = mergeOptionItems(
-          currentCache.items ?? [],
-          incoming.items ?? [],
-        );
-        currentCache.total = incoming.total;
-        currentCache.skip = incoming.skip;
-        currentCache.limit = incoming.limit;
-      },
-      forceRefetch({ currentArg, previousArg }) {
-        if (!currentArg || !previousArg) return true;
-        const currentPage = Number(currentArg.query.page ?? 1) || 1;
-        const previousPage = Number(previousArg.query.page ?? 1) || 1;
-        if (currentPage !== previousPage) return true;
-        const clean = (query: PublicOptionsQueryPayload["query"]) => {
-          const { page, ...rest } = query;
-          return rest;
-        };
-        return (
-          JSON.stringify(clean(currentArg.query)) !==
-          JSON.stringify(clean(previousArg.query))
-        );
       },
     }),
     citiesByCountryOptions: build.query<
@@ -386,68 +285,6 @@ export const productsRtkApi = createApi({
           label: cityName,
         }));
         return { data: paginateOptions({ source, page, limit, search }) };
-      },
-    }),
-    citiesByCountryOptionsInfinite: build.query<
-      PublicOptionsListResponse,
-      PublicOptionsQueryPayload
-    >({
-      async queryFn(payload) {
-        const country = String(payload.query.country ?? "").trim();
-        if (!country) {
-          return { data: { items: [], total: 0, skip: 0, limit: 10 } };
-        }
-        const page = Number(payload.query.page ?? 1) || 1;
-        const limit = 10;
-        const search = String(payload.query.search ?? "");
-        const response = await fetch(
-          "https://countriesnow.space/api/v0.1/countries/cities",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ country }),
-          },
-        );
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        const json = (await response.json()) as CountriesNowCityResponse;
-        const source = (json.data ?? []).map((cityName) => ({
-          id: cityName,
-          label: cityName,
-        }));
-        return { data: paginateOptions({ source, page, limit, search }) };
-      },
-      serializeQueryArgs: ({ endpointName, queryArgs }) => {
-        const normalized = { ...(queryArgs.query ?? {}) };
-        delete normalized.page;
-        return `${endpointName}-${queryArgs.tag.type}-${JSON.stringify(normalized)}`;
-      },
-      merge(currentCache, incoming, { arg }) {
-        const page = Number(arg.query.page ?? 1) || 1;
-        if (page <= 1) {
-          Object.assign(currentCache, incoming);
-          return;
-        }
-        currentCache.items = mergeOptionItems(
-          currentCache.items ?? [],
-          incoming.items ?? [],
-        );
-        currentCache.total = incoming.total;
-        currentCache.skip = incoming.skip;
-        currentCache.limit = incoming.limit;
-      },
-      forceRefetch({ currentArg, previousArg }) {
-        if (!currentArg || !previousArg) return true;
-        const currentPage = Number(currentArg.query.page ?? 1) || 1;
-        const previousPage = Number(previousArg.query.page ?? 1) || 1;
-        if (currentPage !== previousPage) return true;
-        const clean = (query: PublicOptionsQueryPayload["query"]) => {
-          const { page, ...rest } = query;
-          return rest;
-        };
-        return (
-          JSON.stringify(clean(currentArg.query)) !==
-          JSON.stringify(clean(previousArg.query))
-        );
       },
     }),
     addProduct: build.mutation<DummyJsonProduct, ProductMutationPayload>({
@@ -493,13 +330,8 @@ export const {
   useListQuery: useProductsRtkQuery,
   useListInfiniteQuery: useInfiniteProductsRtkQuery,
   useCategoriesQuery: useProductsCategoriesQuery,
-  useProductCategoriesOptionsInfiniteQuery:
-    useProductCategoriesOptionsInfiniteRtkQuery,
   useCountriesOptionsQuery: useCountriesOptionsRtkQuery,
-  useCountriesOptionsInfiniteQuery: useCountriesOptionsInfiniteRtkQuery,
   useCitiesByCountryOptionsQuery: useCitiesByCountryOptionsRtkQuery,
-  useCitiesByCountryOptionsInfiniteQuery:
-    useCitiesByCountryOptionsInfiniteRtkQuery,
   useAddProductMutation: useProductsCreateMutation,
   useUpdateProductMutation: useProductsUpdateMutation,
   useDeleteProductMutation: useProductsDeleteMutation,

@@ -28,7 +28,7 @@ export function DataTableFiltersPage() {
         const page = params.page ?? 1;
         const search = params.search ?? "";
         const result = (await dispatch(
-          productsRtkApi.endpoints.productCategoriesOptionsInfinite.initiate(
+          productsRtkApi.endpoints.productCategoriesOptions.initiate(
             {
               tag: { type: "category-infinite" },
               query: { page, search },

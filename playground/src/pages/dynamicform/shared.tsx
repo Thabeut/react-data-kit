@@ -43,7 +43,7 @@ export function useDynamicFormFields() {
         const page = params.page ?? 1;
         const search = params.search ?? "";
         const data = (await dispatch(
-          productsRtkApi.endpoints.countriesOptionsInfinite.initiate(
+          productsRtkApi.endpoints.countriesOptions.initiate(
             {
               tag: { type: "dynamicform-countries" },
               query: { page, search },
@@ -74,7 +74,7 @@ export function useDynamicFormFields() {
           return { options: [], hasMore: false };
         }
         const data = (await dispatch(
-          productsRtkApi.endpoints.citiesByCountryOptionsInfinite.initiate(
+          productsRtkApi.endpoints.citiesByCountryOptions.initiate(
             {
               tag: { type: "dynamicform-cities" },
               query: { page, search, country },
@@ -101,7 +101,7 @@ export function useDynamicFormFields() {
         const search = params.search ?? "";
         const pageSize = params.pageSize ?? 10;
         const data = (await dispatch(
-          productsRtkApi.endpoints.listInfinite.initiate(
+          productsRtkApi.endpoints.list.initiate(
             {
               tag: { type: "dynamicform-products" },
               query: { page, limit: pageSize, search },
