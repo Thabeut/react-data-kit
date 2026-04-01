@@ -12,20 +12,6 @@ type PropRow = {
 
 const queryTablePropRows: PropRow[] = [
   {
-    key: "tableState",
-    prop: "tableState",
-    required: "required",
-    description:
-      "Normalized table state object that QueryTable reads from. Usually comes from `parseTableState(searchParams)`.",
-  },
-  {
-    key: "onTableStateChange",
-    prop: "onTableStateChange",
-    required: "required",
-    description:
-      "Callback fired whenever the user changes page, page size, search, filters, or sort. You typically serialize this back into the URL.",
-  },
-  {
     key: "tableId",
     prop: "tableId",
     required: "required",
@@ -47,32 +33,113 @@ const queryTablePropRows: PropRow[] = [
       "Columns configuration passed through to DataTable (id, label, dataIndex, sortable, render, etc.).",
   },
   {
-    key: "filters",
-    prop: "filters",
-    required: "optional",
-    description:
-      "Toolbar filters definition. Only filters specified here are synced into table state and ultimately into the query payload.",
-  },
-  {
     key: "useQuery",
     prop: "useQuery",
     required: "required",
     description:
-      "Injected data-fetching hook (RTK Query or React Query). QueryTable calls it with `{ tag, query }`.",
+      "Injected data-fetching hook (RTK Query or React Query style). QueryTable calls it with `{ tag, query }`.",
   },
   {
     key: "tag",
     prop: "tag",
     required: "required",
     description:
-      "Small discriminator passed to `useQuery`. Commonly becomes part of the cache key.",
+      "Discriminator passed to `useQuery`. Usually part of caching identity.",
   },
   {
     key: "resultAdapter",
     prop: "resultAdapter",
     required: "required",
     description:
-      "Adapter that maps the raw server response into `{ rows, totalItems }` so DataTable can render pagination correctly.",
+      "Maps raw server response to table rows and total count (`selectItems`, optional `selectTotalItems`).",
+  },
+  {
+    key: "extraQuery",
+    prop: "extraQuery",
+    required: "optional",
+    description:
+      "Static query params merged into every request payload.",
+  },
+  {
+    key: "filters",
+    prop: "filters",
+    required: "optional",
+    description:
+      "Toolbar filter definitions. Filter state is mapped into query payload using filter ids or `filterQueryKeys`.",
+  },
+  {
+    key: "groupConfig",
+    prop: "groupConfig",
+    required: "optional",
+    description: "DataTable row grouping config pass-through.",
+  },
+  {
+    key: "searchPlaceholder",
+    prop: "searchPlaceholder",
+    required: "optional",
+    description:
+      "Enables search UI and controls displayed placeholder.",
+  },
+  {
+    key: "renderToolbarLeft",
+    prop: "renderToolbarLeft",
+    required: "optional",
+    description: "Custom content rendered on toolbar left side.",
+  },
+  {
+    key: "renderToolbarRight",
+    prop: "renderToolbarRight",
+    required: "optional",
+    description: "Custom content rendered on toolbar right side.",
+  },
+  {
+    key: "actions",
+    prop: "actions",
+    required: "optional",
+    description:
+      "Row action config pass-through (preview/edit/delete/custom actions + delete modal config).",
+  },
+  {
+    key: "selection-bookmark",
+    prop: "disableSelectionAndBookmark, onSelectionChange, onBookmarkChange",
+    required: "optional",
+    description:
+      "Selection/bookmark controls and callbacks pass-through from DataTable.",
+  },
+  {
+    key: "column-options",
+    prop: "hideColumnOptions, onVisibleColumnsChange, columnResize",
+    required: "optional",
+    description:
+      "Column options visibility, persistence callbacks, and resize support.",
+  },
+  {
+    key: "table-layout",
+    prop: "className, customColors, maxTableHeight",
+    required: "optional",
+    description:
+      "Visual styling/theming controls and max table scroll height.",
+  },
+  {
+    key: "query-mapping",
+    prop: "limitKey, searchKey, sortKey, filterQueryKeys",
+    required: "optional",
+    description:
+      "Custom backend query key mapping for pagination/search/sort/filters.",
+  },
+  {
+    key: "sort-serialization",
+    prop: "serializeSort, mapSortToQuery",
+    required: "optional",
+    description:
+      "Customize sort payload shape. `serializeSort` returns one value; `mapSortToQuery` spreads into multiple query keys.",
+  },
+  {
+    key: "events",
+    prop: "onRowClick, onFiltersChange, onRefresh",
+    required: "optional",
+    description:
+      "Row click and toolbar/filter/refresh callbacks passed through from DataTable/QueryTable.",
   },
   {
     key: "pageSizeOptions",
@@ -87,6 +154,20 @@ const queryTablePropRows: PropRow[] = [
     required: "optional",
     description:
       "Fallback page size used when the external state source does not yet contain a concrete `pageSize`.",
+  },
+  {
+    key: "tableState",
+    prop: "tableState",
+    required: "optional",
+    description:
+      "Controlled table state (often from `parseTableState(searchParams)`). Omit with `onTableStateChange` for uncontrolled mode.",
+  },
+  {
+    key: "onTableStateChange",
+    prop: "onTableStateChange",
+    required: "optional",
+    description:
+      "Controlled state callback for page/pageSize/search/filter/sort changes. Omit with `tableState` for uncontrolled mode.",
   },
 ];
 

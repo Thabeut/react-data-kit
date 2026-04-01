@@ -20,6 +20,7 @@ export interface DataTableFooterProps {
   onGoLast: () => void;
   disablePrev: boolean;
   disableNext: boolean;
+  themeClassName?: string;
 }
 
 export function DataTableFooter(props: DataTableFooterProps) {
@@ -38,6 +39,7 @@ export function DataTableFooter(props: DataTableFooterProps) {
     onGoLast,
     disablePrev,
     disableNext,
+    themeClassName,
   } = props;
 
   return (
@@ -52,6 +54,7 @@ export function DataTableFooter(props: DataTableFooterProps) {
           </span>
           <Select<number>
             className="datatable-page-size-select"
+            popupClassName={themeClassName}
             value={pageSize}
             onChange={(v) => onPageSizeChange(Number(v))}
             options={pageSizeOptions.map((value) => ({

@@ -1,12 +1,11 @@
 import { useMemo, useState } from "react";
-import { Button, Input, Modal, Space, Tag, Typography } from "antd";
+import { Button, Input, Space, Tag, Typography } from "antd";
 import { useTranslation } from "react-i18next";
 import { DataTable, DataTableFilterTypeEnum } from "@thabeut/react-data-kit";
 import type { DataTableCustomColors } from "@thabeut/react-data-kit";
 import { DemoPageShell } from "../../components/DemoPageShell";
 import { ExamplePreviewCodeFlip } from "../../components/ExamplePreviewCodeFlip";
 import { buildLargeRows, type BasicRow } from "../../data";
-import "./datatable-colors-modal.css";
 
 const { Text } = Typography;
 
@@ -59,8 +58,6 @@ const defaults: ColorState = {
 export function DataTableColorsPage() {
   const { t } = useTranslation();
   const [colors, setColors] = useState<ColorState>(defaults);
-  const [customActionOpen, setCustomActionOpen] = useState(false);
-  const [customActionRow, setCustomActionRow] = useState<ColorRow | null>(null);
   const rows = useMemo<ColorRow[]>(
     () =>
       buildLargeRows(120).map((row, i) => ({
@@ -521,16 +518,6 @@ export function DataTableColorsExample() {
               actions={{
                 onEdit: (row) => console.log("edit", row),
                 onDelete: async (row) => console.log("delete", row),
-                customActions: (row) => [
-                  {
-                    key: "custom-modal",
-                    label: "Open custom modal",
-                    onClick: () => {
-                      setCustomActionRow(row);
-                      setCustomActionOpen(true);
-                    },
-                  },
-                ],
                 deleteModalConfig: {
                   title: t("deleteConfirmTitle"),
                   description: t("deleteConfirmDescription"),
@@ -558,44 +545,6 @@ export function DataTableColorsExample() {
                 },
               ]}
             />
-            <Modal
-              open={customActionOpen}
-              onCancel={() => {
-                setCustomActionOpen(false);
-                setCustomActionRow(null);
-              }}
-              footer={null}
-              title="Custom action modal"
-              centered
-              destroyOnClose
-              rootClassName="dt-colors-custom-modal"
-            >
-              <div>
-                <div style={{ marginBottom: 8 }}>
-                  <Text strong>Row:</Text>{" "}
-                  <Text code>{customActionRow?.id ?? "-"}</Text>
-                </div>
-                <div style={{ marginBottom: 8 }}>
-                  <Text strong>Name:</Text>{" "}
-                  <Text>{customActionRow?.name ?? "-"}</Text>
-                </div>
-                <div style={{ marginBottom: 8 }}>
-                  <Text strong>Email:</Text>{" "}
-                  <Text>{customActionRow?.email ?? "-"}</Text>
-                </div>
-                <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                  <Button
-                    type="primary"
-                    onClick={() => {
-                      setCustomActionOpen(false);
-                      setCustomActionRow(null);
-                    }}
-                  >
-                    Close
-                  </Button>
-                </div>
-              </div>
-            </Modal>
           </>
         }
         code={code}

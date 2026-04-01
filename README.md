@@ -48,8 +48,6 @@ If your app toggles only `html.dark` (class-based theme), package components can
 
 Package components scope their styles under a dedicated wrapper class (`root-rdk`) so importing package CSS should not restyle unrelated host app UI.
 
-For app-owned custom overlays (for example a `Modal` you open from DataTable `customActions`), use the package `--rdk-*` CSS variables in your own styling. See `docs/datatable.md` for the variable list and example.
-
 ## Documentation
 
 - [DataTable guide](./docs/datatable.md)

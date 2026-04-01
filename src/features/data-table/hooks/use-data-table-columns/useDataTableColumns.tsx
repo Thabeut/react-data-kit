@@ -28,6 +28,7 @@ interface UseDataTableColumnsParams<T extends object> {
   resolvedSortState: DataTableSortState | null;
   handleSortChange: (columnId: string) => void;
   columnHeaderText: (column: DataTableColumnInfo<T>) => string;
+  themeClassName?: string;
 }
 
 export function useDataTableColumns<T extends object>(
@@ -45,6 +46,7 @@ export function useDataTableColumns<T extends object>(
     resolvedSortState,
     handleSortChange,
     columnHeaderText,
+    themeClassName,
   } = params;
 
   return useMemo<ColumnsType<InternalRow<T>>>(() => {
@@ -246,6 +248,7 @@ export function useDataTableColumns<T extends object>(
           return (
             <ActionsPopover
               record={record as T}
+              themeClassName={themeClassName}
               onPreview={
                 actions.canPreview && !actions.canPreview(record as T)
                   ? undefined
@@ -282,5 +285,6 @@ export function useDataTableColumns<T extends object>(
     handleSortChange,
     columnHeaderText,
     setColumnWidths,
+    themeClassName,
   ]);
 }

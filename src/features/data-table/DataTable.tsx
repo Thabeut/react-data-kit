@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import type { Key } from "react";
+import type { CSSProperties, Key } from "react";
 import { useTranslation } from "react-i18next";
 import { Checkbox } from "antd";
 import type { TableRowSelection } from "antd/es/table/interface";
@@ -91,11 +91,14 @@ export function DataTable<T extends object>(props: DataTableProps<T>) {
 
   const isServer = Boolean(serverMode);
   const clientPaginate = !isServer;
+  const themeClassName = useMemo(
+    () => `rdk-theme-${String(tableId).replace(/[^a-zA-Z0-9_-]/g, "-")}`,
+    [tableId],
+  );
 
-  useEffect(() => {
-    if (!customColors || typeof document === "undefined") return;
-    const root = document.documentElement;
-    const vars: Record<string, string | undefined> = {
+  const tableThemeStyle = useMemo<CSSProperties | undefined>(() => {
+    if (!customColors) return undefined;
+    return {
       "--rdk-primary": customColors.primaryColor,
       "--rdk-light-surface-bg": customColors.lightMode?.surfaceBg,
       "--rdk-light-popover-bg": customColors.lightMode?.popoverBg,
@@ -115,22 +118,16 @@ export function DataTable<T extends object>(props: DataTableProps<T>) {
       "--rdk-dark-row-hover": customColors.darkMode?.rowHoverBg,
       "--rdk-dark-row-selected": customColors.darkMode?.rowSelectedBg,
       "--rdk-dark-group-row": customColors.darkMode?.groupRowBg,
-    };
-
-    const previous = new Map<string, string>();
-    Object.entries(vars).forEach(([key, value]) => {
-      if (!value) return;
-      previous.set(key, root.style.getPropertyValue(key));
-      root.style.setProperty(key, value);
-    });
-
-    return () => {
-      previous.forEach((value, key) => {
-        if (value) root.style.setProperty(key, value);
-        else root.style.removeProperty(key);
-      });
-    };
+    } as CSSProperties;
   }, [customColors]);
+  const tableThemeCss = useMemo(() => {
+    if (!tableThemeStyle) return undefined;
+    const declarations = Object.entries(tableThemeStyle)
+      .filter(([, value]) => value != null)
+      .map(([key, value]) => `${key}: ${String(value)};`)
+      .join(" ");
+    return `.${themeClassName} { ${declarations} }`;
+  }, [tableThemeStyle, themeClassName]);
   const columnHeaderText = (column: DataTableColumnInfo<T>) => column.label;
 
   const [visibleColumnIds, setVisibleColumnIds] = useState<string[]>(() =>
@@ -245,6 +242,7 @@ export function DataTable<T extends object>(props: DataTableProps<T>) {
         <DateFilterPopover
           options={filter.dateOptions}
           value={(value as IDateFilterValue) ?? null}
+          themeClassName={themeClassName}
           onChange={(next) => {
             setFilterValue(filter.id, next);
             setOpenFilterId(null);
@@ -344,6 +342,7 @@ export function DataTable<T extends object>(props: DataTableProps<T>) {
     resolvedSortState,
     handleSortChange,
     columnHeaderText,
+    themeClassName,
   });
 
   const filteredClientRows = useMemo(() => {
@@ -786,11 +785,13 @@ export function DataTable<T extends object>(props: DataTableProps<T>) {
   };
 
   return (
-    <div className="root-rdk">
+    <div className="root-rdk" style={tableThemeStyle}>
+      {tableThemeCss ? <style>{tableThemeCss}</style> : null}
       <div
         className={clsx(
           className,
           "rdk-theme-scope",
+          themeClassName,
           "datatable-root",
           shouldConstrainByHeight && "datatable-root--fill",
         )}
@@ -822,6 +823,7 @@ export function DataTable<T extends object>(props: DataTableProps<T>) {
           columnsInfo={columnsInfo}
           visibleColumnIds={visibleColumnIds}
           handleColumnToggle={handleColumnToggle}
+          themeClassName={themeClassName}
           toggleColumnsTitle={t("toggleColumns", {
             defaultValue: RDK_I18N_DEFAULT_TEXT.toggleColumns,
           })}
@@ -865,6 +867,7 @@ export function DataTable<T extends object>(props: DataTableProps<T>) {
             onGoLast={() => goToPage(totalPages)}
             disablePrev={currentPage === 1}
             disableNext={currentPage === totalPages}
+            themeClassName={themeClassName}
           />
         </div>
       </div>

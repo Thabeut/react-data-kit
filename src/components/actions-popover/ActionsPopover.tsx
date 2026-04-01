@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Popover } from "antd";
 import { Icon } from "@iconify/react";
+import clsx from "clsx";
 import { datatableIconNames } from "../../constants/datatable-icons";
 import { RDK_I18N_DEFAULT_TEXT } from "../../constants/rdk-i18n-keys";
 import { Button } from "../button";
@@ -17,6 +18,7 @@ export interface ActionsPopoverProps<T = unknown> {
   onDelete?: (record: T) => void | Promise<void>;
   deleteModalConfig?: DeleteModalConfig;
   customActions?: ActionItem<T>[] | ((record: T) => ActionItem<T>[]);
+  themeClassName?: string;
 }
 
 export function ActionsPopover<T extends object>({
@@ -26,6 +28,7 @@ export function ActionsPopover<T extends object>({
   onDelete,
   deleteModalConfig,
   customActions,
+  themeClassName,
 }: ActionsPopoverProps<T>) {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
@@ -125,7 +128,10 @@ export function ActionsPopover<T extends object>({
         trigger="click"
         placement="bottomRight"
         arrow={false}
-        rootClassName="rdk-theme-scope ui-actions-popover"
+        rootClassName={clsx(
+          "rdk-theme-scope ui-actions-popover",
+          themeClassName,
+        )}
       >
         <Button
           unstyled
@@ -156,6 +162,7 @@ export function ActionsPopover<T extends object>({
             }
           }}
           isLoading={deleteModalConfig.isLoading}
+          rootClassName={themeClassName}
         />
       ) : null}
     </>

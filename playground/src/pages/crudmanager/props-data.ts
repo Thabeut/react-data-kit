@@ -66,7 +66,7 @@ export const crudManagerPropRows: PropDocRow[] = [
     type: "QueryTable actions config",
     required: "no",
     description:
-      "Optional pass-through table actions (custom actions, permissions, modal config).",
+      "Optional pass-through table actions (permissions, delete modal config, custom actions). Custom action UI (modal/drawer) is app-owned.",
   },
   {
     key: "labels",

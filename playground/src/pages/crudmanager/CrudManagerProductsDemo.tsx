@@ -14,6 +14,8 @@ import {
   DynamicFieldTypeEnum,
   parseTableState,
   serializeTableState,
+  type DataTableCustomColors,
+  type DynamicFormCustomColors,
   type DynamicFormField,
   type QueryTableProps,
 } from "@thabeut/react-data-kit";
@@ -53,6 +55,11 @@ export type ProductsCrudUseQuery = QueryTableProps<
 type CrudManagerProductsDemoProps = {
   useQuery: ProductsCrudUseQuery;
   formVariant?: "drawer" | "modal";
+  customColors?: DataTableCustomColors;
+  formCustomColors?: DynamicFormCustomColors;
+  syncWithUrl?: boolean;
+  tableId?: string;
+  title?: string;
 };
 
 function productToRow(p: DummyJsonProduct): ProductRow {
@@ -68,12 +75,17 @@ function productToRow(p: DummyJsonProduct): ProductRow {
 export function CrudManagerProductsDemo({
   useQuery,
   formVariant = "drawer",
+  customColors,
+  formCustomColors,
+  syncWithUrl = true,
+  tableId = "crud-manager-products",
+  title = "CrudManager",
 }: CrudManagerProductsDemoProps) {
   const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const tableState = useMemo(
-    () => parseTableState(searchParams),
-    [searchParams],
+    () => (syncWithUrl ? parseTableState(searchParams) : undefined),
+    [searchParams, syncWithUrl],
   );
 
   const {
@@ -270,22 +282,27 @@ export function CrudManagerProductsDemo({
             })}
           </Tag>
         ) : null}
-        <AntButton
-          size="small"
-          onClick={() => {
-            setSearchParams({});
-          }}
-        >
-          {t("crudManagerResetDemo", { defaultValue: "Reset demo" })}
-        </AntButton>
+        {syncWithUrl ? (
+          <AntButton
+            size="small"
+            onClick={() => {
+              setSearchParams({});
+            }}
+          >
+            {t("crudManagerResetDemo", { defaultValue: "Reset demo" })}
+          </AntButton>
+        ) : null}
       </Space>
 
       <CrudManager<ProductRow, DummyJsonListResponse, ProductFormValues>
         tableState={tableState}
-        onTableStateChange={(next) =>
-          setSearchParams(new URLSearchParams(serializeTableState(next)))
+        onTableStateChange={
+          syncWithUrl
+            ? (next) =>
+                setSearchParams(new URLSearchParams(serializeTableState(next)))
+            : undefined
         }
-        tableId="crud-manager-products"
+        tableId={tableId}
         rowKey="id"
         columnsInfo={columnsInfo as never}
         filters={filters}
@@ -300,7 +317,9 @@ export function CrudManagerProductsDemo({
         searchPlaceholder={t("crudManagerSearchProducts", {
           defaultValue: "Search products",
         })}
-        renderToolbarLeft={<Tag color="processing">CrudManager</Tag>}
+        renderToolbarLeft={<Tag color="processing">{title}</Tag>}
+        customColors={customColors}
+        formCustomColors={formCustomColors}
         fields={fields}
         cancelLabel={t("crudManagerCancel", { defaultValue: "Cancel" })}
         description={t("crudManagerFormDescription", {

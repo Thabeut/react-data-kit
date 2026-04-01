@@ -32,6 +32,7 @@ export interface DataTableToolbarProps<T extends object> {
   visibleColumnIds: string[];
   handleColumnToggle: (id: string) => void;
   toggleColumnsTitle: string;
+  themeClassName?: string;
 }
 
 export function DataTableToolbar<T extends object>(
@@ -58,6 +59,7 @@ export function DataTableToolbar<T extends object>(
     visibleColumnIds,
     handleColumnToggle,
     toggleColumnsTitle,
+    themeClassName,
   } = props;
 
   return (
@@ -122,7 +124,10 @@ export function DataTableToolbar<T extends object>(
                 }
                 trigger="click"
                 placement="bottomLeft"
-                rootClassName="rdk-theme-scope datatable-filter-popover"
+                rootClassName={clsx(
+                  "rdk-theme-scope datatable-filter-popover",
+                  themeClassName,
+                )}
                 content={renderFilterContent(filter)}
               >
                 {triggerBtn}
@@ -146,6 +151,7 @@ export function DataTableToolbar<T extends object>(
             onChange={handleColumnToggle}
             multi
             placement="bottomRight"
+            overlayClassName={themeClassName}
             trigger={
               <Button type="button">
                 <Icon

@@ -14,6 +14,7 @@ export interface DeleteModalProps {
 
   cancelLabel?: string;
   isLoading?: boolean;
+  rootClassName?: string;
 }
 
 export function DeleteModal({
@@ -25,6 +26,7 @@ export function DeleteModal({
   onConfirm,
   cancelLabel = "Cancel",
   isLoading = false,
+  rootClassName,
 }: DeleteModalProps) {
   const handleConfirm = async () => {
     await onConfirm();
@@ -39,7 +41,9 @@ export function DeleteModal({
       closable
       centered
       destroyOnClose
-      rootClassName="rdk-theme-scope ui-delete-modal"
+      rootClassName={["rdk-theme-scope ui-delete-modal", rootClassName]
+        .filter(Boolean)
+        .join(" ")}
       maskStyle={{ background: "transparent" }}
       onCancel={(e) => {
         e.stopPropagation();

@@ -219,11 +219,14 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
     drawerWidth = 460,
     maxFormHeight,
   } = props;
+  const themeClassName = useMemo(
+    () => `rdk-df-theme-${Math.random().toString(36).slice(2, 10)}`,
+    [],
+  );
 
-  useEffect(() => {
-    if (!customColors || typeof document === "undefined") return;
-    const root = document.documentElement;
-    const vars: Record<string, string | undefined> = {
+  const formThemeStyle = useMemo<CSSProperties | undefined>(() => {
+    if (!customColors) return undefined;
+    return {
       "--rdk-primary": customColors.primaryColor,
       "--rdk-light-surface-bg": customColors.lightMode?.surfaceBg,
       "--rdk-light-popover-bg": customColors.lightMode?.popoverBg,
@@ -239,22 +242,16 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
       "--rdk-dark-surface-border": customColors.darkMode?.surfaceBorder,
       "--rdk-dark-text-primary": customColors.darkMode?.textPrimary,
       "--rdk-dark-text-secondary": customColors.darkMode?.textSecondary,
-    };
-
-    const previous = new Map<string, string>();
-    Object.entries(vars).forEach(([key, value]) => {
-      if (!value) return;
-      previous.set(key, root.style.getPropertyValue(key));
-      root.style.setProperty(key, value);
-    });
-
-    return () => {
-      previous.forEach((value, key) => {
-        if (value) root.style.setProperty(key, value);
-        else root.style.removeProperty(key);
-      });
-    };
+    } as CSSProperties;
   }, [customColors]);
+  const formThemeCss = useMemo(() => {
+    if (!formThemeStyle) return undefined;
+    const declarations = Object.entries(formThemeStyle)
+      .filter(([, value]) => value != null)
+      .map(([key, value]) => `${key}: ${String(value)};`)
+      .join(" ");
+    return `.${themeClassName} { ${declarations} }`;
+  }, [formThemeStyle, themeClassName]);
 
   const resolvedFieldsMaxHeight = useMemo<string | undefined>(() => {
     if (maxFormHeight) return maxFormHeight;
@@ -486,6 +483,7 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
                 <Select<string>
                   {...selectProps}
                   className={clsx("w-full", selectProps?.className)}
+                  popupClassName={clsx(selectProps?.popupClassName, themeClassName)}
                   disabled={
                     Boolean(selectProps?.disabled) || isDependencyDisabled
                   }
@@ -546,6 +544,10 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
                 <AsyncSelect<unknown>
                   key={`${fieldConfig.name}-${queryDependencySignature}`}
                   {...asyncProps}
+                  popupClassName={clsx(
+                    (asyncProps as { popupClassName?: string })?.popupClassName,
+                    themeClassName,
+                  )}
                   loadOptions={resolvedLoadOptions}
                   placeholder={
                     asyncProps?.placeholder ??
@@ -700,8 +702,10 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
 
   const defaultContent = (
     <div className="root-rdk">
+      {formThemeCss ? <style>{formThemeCss}</style> : null}
       <form
-        className={clsx("rdk-theme-scope dynamic-form", className)}
+        className={clsx("rdk-theme-scope dynamic-form", themeClassName, className)}
+        style={formThemeStyle}
         onSubmit={handleSubmit(onValidSubmit)}
       >
         <div>
@@ -717,8 +721,10 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
 
   const modalContent = (
     <div className="root-rdk">
+      {formThemeCss ? <style>{formThemeCss}</style> : null}
       <form
-        className={clsx("rdk-theme-scope dynamic-form", className)}
+        className={clsx("rdk-theme-scope dynamic-form", themeClassName, className)}
+        style={formThemeStyle}
         onSubmit={handleSubmit(onValidSubmit)}
       >
         <div>
@@ -746,17 +752,23 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
         destroyOnClose={false}
         maskClosable
         closable={false}
-        rootClassName="rdk-theme-scope dynamic-form-drawer"
+        rootClassName={clsx("rdk-theme-scope dynamic-form-drawer", themeClassName)}
       >
         <div
-          className={clsx("root-rdk dynamic-form-drawer__inner", className)}
+          className={clsx(
+            "root-rdk dynamic-form-drawer__inner",
+            themeClassName,
+            className,
+          )}
           style={{
+            ...formThemeStyle,
             height: "100%",
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
           }}
         >
+          {formThemeCss ? <style>{formThemeCss}</style> : null}
           <div className="dynamic-form-drawer__content">
             {header}
             <form
@@ -804,7 +816,7 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
       centered
       width={modalWidth}
       title={null}
-      rootClassName="rdk-theme-scope dynamic-form-modal"
+      rootClassName={clsx("rdk-theme-scope dynamic-form-modal", themeClassName)}
     >
       {modalContent}
     </Modal>

@@ -121,7 +121,16 @@ If your backend expects separate keys (for example `sort` + `order`), use `mapSo
 />
 ```
 
-## 6) Filters and sort behavior
+## 6) Props reference (quick)
+
+- **Required:** `tableId`, `rowKey`, `columnsInfo`, `useQuery`, `tag`, `resultAdapter`
+- **State mode:** `tableState` + `onTableStateChange` are optional (controlled mode when provided together)
+- **Query mapping:** `limitKey`, `searchKey`, `sortKey`, `filterQueryKeys`, `serializeSort`, `mapSortToQuery`
+- **Table behavior:** `filters`, `groupConfig`, `searchPlaceholder`, `actions`
+- **Appearance/layout:** `className`, `customColors`, `maxTableHeight`, `columnResize`, `hideColumnOptions`
+- **Callbacks:** `onSelectionChange`, `onBookmarkChange`, `onRowClick`, `onFiltersChange`, `onVisibleColumnsChange`, `onRefresh`
+
+## 7) Filters and sort behavior
 
 - Multi filters become arrays.
 - Date filters become `{ date_from, date_to }`.
@@ -130,7 +139,7 @@ If your backend expects separate keys (for example `sort` + `order`), use `mapSo
 - Use `mapSortToQuery` when sort must be spread into multiple payload keys.
 - Search/filter/sort changes reset page to `1`.
 
-## 7) Best practices
+## 8) Best practices
 
 - Keep `columnsInfo`, `filters`, and `resultAdapter` stable via `useMemo`.
 - Use controlled mode when URL sync/shareable links are needed.

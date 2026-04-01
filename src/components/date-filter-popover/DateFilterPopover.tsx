@@ -22,6 +22,7 @@ export interface DateFilterPopoverProps {
   onChange: (value: IDateFilterValue | null) => void;
   onClose?: () => void;
   isOpen?: boolean;
+  themeClassName?: string;
 }
 
 function getPresetRange(preset: string): { from: Dayjs; to: Dayjs } {
@@ -65,6 +66,7 @@ export function DateFilterPopover({
   onChange,
   onClose,
   isOpen,
+  themeClassName,
 }: DateFilterPopoverProps) {
   const { t } = useTranslation();
   const [showCustom, setShowCustom] = useState(false);
@@ -119,7 +121,9 @@ export function DateFilterPopover({
         </Button>
         <DatePicker.RangePicker
           className="ui-date-picker-range"
-          popupClassName="rdk-theme-scope datatable-date-picker-dropdown"
+          popupClassName={`rdk-theme-scope datatable-date-picker-dropdown${
+            themeClassName ? ` ${themeClassName}` : ""
+          }`}
           style={{ width: "100%" }}
           value={value ? [dayjs(value.date_from), dayjs(value.date_to)] : null}
           onChange={handleRangeChange}
