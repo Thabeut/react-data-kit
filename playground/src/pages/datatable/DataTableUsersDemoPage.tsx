@@ -6,7 +6,11 @@ import "dayjs/locale/ar";
 import "dayjs/locale/fr";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { Icon } from "@iconify/react";
-import { DataTable, type InternalRow } from "@thabeut/react-data-kit";
+import {
+  DataTable,
+  DataTableFilterTypeEnum,
+  type InternalRow,
+} from "@thabeut/react-data-kit";
 import { DemoPageShell } from "../../components/DemoPageShell";
 import { ExamplePreviewCodeFlip } from "../../components/ExamplePreviewCodeFlip";
 import { ICONS } from "../../constants/icons";
@@ -40,6 +44,43 @@ function roleTagColor(role: string): string {
 export function DataTableUsersDemoPage() {
   const { t, i18n } = useTranslation();
   const data = useMemo(() => userDemoRows, []);
+  const filters = useMemo(
+    () => [
+      {
+        id: "status",
+        label: t("dtColStatus"),
+        type: DataTableFilterTypeEnum.Multi,
+        options: [
+          { value: "active", label: t("dtUserStatus_active") },
+          { value: "away", label: t("dtUserStatus_away") },
+          { value: "offline", label: t("dtUserStatus_offline") },
+        ],
+      },
+      {
+        id: "department",
+        label: t("dtColDepartment"),
+        type: DataTableFilterTypeEnum.Multi,
+        options: Array.from(new Set(data.map((row) => row.department))).map(
+          (value) => ({
+            value,
+            label: value,
+          }),
+        ),
+      },
+      {
+        id: "role",
+        label: t("dtColRole"),
+        type: DataTableFilterTypeEnum.Multi,
+        options: Array.from(new Set(data.map((row) => row.role))).map(
+          (value) => ({
+            value,
+            label: value,
+          }),
+        ),
+      },
+    ],
+    [data, t],
+  );
 
   const columnsInfo = useMemo(
     () => [
@@ -64,6 +105,7 @@ export function DataTableUsersDemoPage() {
             </div>
           );
         },
+        sortable: true,
       },
       {
         id: "role",
@@ -127,6 +169,7 @@ export function DataTableUsersDemoPage() {
             </div>
           );
         },
+        sortable: true,
       },
       {
         id: "department",
@@ -146,7 +189,7 @@ import { Avatar, Tag, Tooltip, Typography } from "antd";
 import { Icon } from "@iconify/react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { DataTable, type InternalRow, type DataTableColumnInfo } from "@thabeut/react-data-kit";
+import { DataTable, DataTableFilterTypeEnum, type InternalRow, type DataTableColumnInfo } from "@thabeut/react-data-kit";
 import { ICONS } from "../../constants/icons";
 
 dayjs.extend(relativeTime);
@@ -245,6 +288,32 @@ const pagination = {
   defaultPageSize: 10,
 };
 
+const filters = [
+  {
+    id: "status",
+    label: "Status",
+    type: DataTableFilterTypeEnum.Multi,
+    options: [
+      { value: "active", label: "Active" },
+      { value: "away", label: "Away" },
+      { value: "offline", label: "Offline" },
+    ],
+  },
+  {
+    id: "department",
+    label: "Department",
+    type: DataTableFilterTypeEnum.Multi,
+    options: [
+      { value: "Engineering", label: "Engineering" },
+      { value: "Design", label: "Design" },
+      { value: "Operations", label: "Operations" },
+      { value: "Product", label: "Product" },
+      { value: "Support", label: "Support" },
+      { value: "Data", label: "Data" },
+    ],
+  },
+];
+
 function avatarUrl(seed: string) {
   return \`https://api.dicebear.com/7.x/notionists/svg?seed=\${encodeURIComponent(seed)}\`;
 }
@@ -258,8 +327,26 @@ export function DataTableUsersExample() {
       rowKey="id"
       columnResize
       dataSource={data}
+      filters={filters}
+      searchPlaceholder="Search users"
       pagination={pagination}
       columnsInfo={columnsInfo}
+      actions={{
+        onEdit: (row) => console.log("edit", row),
+        onDelete: async (row) => console.log("delete", row),
+        deleteModalConfig: {
+          title: "Delete user?",
+          description: "This action cannot be undone.",
+          confirmLabel: "Delete",
+          cancelLabel: "Cancel",
+        },
+      }}
+      onBookmarkChange={(bookmarkedRowKeys, rows) => {
+        console.log(bookmarkedRowKeys, rows);
+      }}
+      onRefresh={() => {
+        console.log("refresh");
+      }}
     />
   );
 }`;
@@ -277,6 +364,8 @@ export function DataTableUsersExample() {
             columnResize
             rowKey="id"
             dataSource={data}
+            filters={filters}
+            searchPlaceholder={t("searchByName")}
             pagination={{
               pageSizeOptions: [10, 20, 50],
               defaultPageSize: 10,
@@ -291,6 +380,12 @@ export function DataTableUsersExample() {
                 confirmLabel: t("actionDelete"),
                 cancelLabel: t("cancel"),
               },
+            }}
+            onBookmarkChange={(bookmarkedRowKeys, rows) => {
+              console.log(bookmarkedRowKeys, rows);
+            }}
+            onRefresh={() => {
+              console.log("refresh");
             }}
           />
         }
