@@ -62,7 +62,6 @@
   }
 }
 
-html.dark,
 :root[data-theme="dark"] {
   .datatable-date-filter-preset-btn,
   .datatable-date-filter-back {
@@ -171,7 +170,6 @@ html.dark,
   }
 }
 
-html.dark .datatable-date-picker-dropdown,
 :root[data-theme="dark"] .datatable-date-picker-dropdown {
   .ant-picker-panel-container {
     background: var(--rdk-dark-popover-bg, #{$surface-bg-dark}) !important;
@@ -272,7 +270,6 @@ html.dark .datatable-date-picker-dropdown,
   }
 }
 
-html.dark .datatable-date-filter-custom .ui-date-picker-range.ant-picker,
 :root[data-theme="dark"]
   .datatable-date-filter-custom
   .ui-date-picker-range.ant-picker {

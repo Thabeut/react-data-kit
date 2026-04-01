@@ -81,7 +81,10 @@ export function DataTable<T extends { [key: string]: unknown }>(
   const resolvedDirection = useMemo<"ltr" | "rtl">(() => {
     const i18nDir = typeof i18n?.dir === "function" ? i18n.dir() : null;
     if (i18nDir === "rtl") return "rtl";
-    if (typeof document !== "undefined" && document.documentElement.dir === "rtl") {
+    if (
+      typeof document !== "undefined" &&
+      document.documentElement.dir === "rtl"
+    ) {
       return "rtl";
     }
     return "ltr";

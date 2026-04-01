@@ -55,7 +55,6 @@
   }
 }
 
-html.dark,
 :root[data-theme="dark"] {
   .ui-textarea.ant-input {
     border-color: var(--rdk-dark-surface-border, #{$surface-border-dark});

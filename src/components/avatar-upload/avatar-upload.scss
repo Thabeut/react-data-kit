@@ -68,7 +68,6 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
 }
 
-html.dark,
 :root[data-theme="dark"] {
   .ui-avatar-upload__trigger {
     border-color: var(--rdk-dark-surface-border, #{$surface-border-dark});

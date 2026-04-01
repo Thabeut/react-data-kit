@@ -69,7 +69,6 @@
   color: var(--rdk-primary, #{$color-primary-600});
 }
 
-html.dark,
 :root[data-theme="dark"] {
   .ui-switch-field {
     .ant-switch {

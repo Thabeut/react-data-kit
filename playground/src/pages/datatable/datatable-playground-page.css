@@ -7,7 +7,7 @@
   width: 100%;
 }
 
-html.dark .dt-playground {
+:root[data-theme="dark"] .dt-playground {
   --rdk-playground-border: rgba(255, 255, 255, 0.12);
   --rdk-playground-muted: rgba(255, 255, 255, 0.55);
   --rdk-playground-surface: rgba(255, 255, 255, 0.04);

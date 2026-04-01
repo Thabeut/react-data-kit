@@ -56,7 +56,6 @@
   }
 }
 
-html.dark,
 :root[data-theme="dark"] {
   .ui-actions-popover__item {
     color: var(--rdk-dark-text-primary, #{$color-text-primary-dark});

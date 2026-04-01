@@ -181,7 +181,6 @@
   }
 }
 
-html.dark,
 :root[data-theme="dark"] {
   .ui-input.ant-input {
     background: var(--rdk-dark-surface-bg, #{$color-bg-primary-dark});

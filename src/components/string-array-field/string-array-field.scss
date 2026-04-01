@@ -81,7 +81,6 @@
   font-size: 14px;
 }
 
-html.dark,
 :root[data-theme="dark"] {
   .ui-string-array-field__composer {
     background: var(--rdk-dark-surface-bg, #{$color-bg-primary-dark});

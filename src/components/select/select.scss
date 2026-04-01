@@ -40,7 +40,6 @@
   }
 }
 
-html.dark,
 :root[data-theme="dark"] {
   .ui-select.ant-select {
     color: var(--rdk-dark-text-primary, #{$surface-text-dark});
@@ -88,29 +87,21 @@ html.dark,
   color: var(--rdk-light-text-primary, #{$surface-text});
 }
 
-html.dark .ui-select-dropdown.ant-select-dropdown,
 :root[data-theme="dark"] .ui-select-dropdown.ant-select-dropdown {
   background: var(--rdk-dark-popover-bg, #{$surface-bg-dark});
   border-color: var(--rdk-dark-surface-border, #{$surface-border-dark});
 }
 
-html.dark .ui-select-dropdown .ant-select-item,
 :root[data-theme="dark"] .ui-select-dropdown .ant-select-item {
   color: var(--rdk-dark-text-primary, #{$surface-text-dark});
 }
 
-html.dark
-  .ui-select-dropdown
-  .ant-select-item-option-active:not(.ant-select-item-option-disabled),
 :root[data-theme="dark"]
   .ui-select-dropdown
   .ant-select-item-option-active:not(.ant-select-item-option-disabled) {
   background: var(--rdk-dark-popover-option-hover, #{$color-secondary-800});
 }
 
-html.dark
-  .ui-select-dropdown
-  .ant-select-item-option-selected:not(.ant-select-item-option-disabled),
 :root[data-theme="dark"]
   .ui-select-dropdown
   .ant-select-item-option-selected:not(.ant-select-item-option-disabled) {

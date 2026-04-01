@@ -44,7 +44,7 @@
   color: var(--docs-active-fg, #0369a1);
 }
 
-html.dark .users-demo__segment.ant-segmented {
+:root[data-theme="dark"] .users-demo__segment.ant-segmented {
   background: color-mix(in srgb, var(--docs-sidebar-bg, #111827) 90%, #0b1220);
 }
 
@@ -73,7 +73,7 @@ html.dark .users-demo__segment.ant-segmented {
   color: var(--docs-text, #0f172a);
 }
 
-html.dark .users-demo-user-cell__name {
+:root[data-theme="dark"] .users-demo-user-cell__name {
   color: var(--docs-text, #f8fafc);
 }
 
@@ -91,7 +91,7 @@ html.dark .users-demo-user-cell__name {
   color: var(--docs-text, #334155);
 }
 
-html.dark .users-demo-location {
+:root[data-theme="dark"] .users-demo-location {
   color: var(--docs-text, #e2e8f0);
 }
 
@@ -107,7 +107,7 @@ html.dark .users-demo-location {
   color: var(--docs-text, #334155);
 }
 
-html.dark .users-demo-joined {
+:root[data-theme="dark"] .users-demo-joined {
   color: var(--docs-text, #e2e8f0);
 }
 

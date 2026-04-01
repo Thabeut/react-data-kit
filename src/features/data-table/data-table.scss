@@ -102,10 +102,12 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  padding: 8px 16px;
+  padding: 0 !important;
   gap: 8px;
-  width: 32px;
-  height: 32px;
+  width: 36px !important;
+  min-width: 36px !important;
+  height: 36px !important;
+  min-height: 36px !important;
   background: var(--rdk-light-surface-bg);
   border: 1px solid var(--rdk-light-surface-border);
   border-radius: 6px;
@@ -457,7 +459,6 @@
   transform: rotate(180deg);
 }
 
-html.dark,
 :root[data-theme="dark"] {
   .datatable-table .ant-table-container {
     border-color: var(--rdk-dark-surface-border);

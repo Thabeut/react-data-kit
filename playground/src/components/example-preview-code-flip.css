@@ -73,13 +73,13 @@
   animation: dtExampleCopiedPulse 1.2s ease-in-out;
 }
 
-html.dark .dt-example-flip__toggle.ant-btn {
+:root[data-theme="dark"] .dt-example-flip__toggle.ant-btn {
   background: rgba(59, 130, 246, 0.14) !important;
   border-color: rgba(59, 130, 246, 0.35) !important;
   color: rgba(147, 197, 253, 1) !important;
 }
 
-html.dark .dt-example-flip__copy.ant-btn {
+:root[data-theme="dark"] .dt-example-flip__copy.ant-btn {
   background: rgba(59, 130, 246, 0.16) !important;
   border-color: rgba(59, 130, 246, 0.4) !important;
   color: rgba(147, 197, 253, 1) !important;
@@ -122,7 +122,7 @@ html.dark .dt-example-flip__copy.ant-btn {
   transform: rotateY(180deg);
 }
 
-html.dark .dt-example-flip__face--back {
+:root[data-theme="dark"] .dt-example-flip__face--back {
   background: rgba(255, 255, 255, 0.03);
 }
 
@@ -142,7 +142,7 @@ html.dark .dt-example-flip__face--back {
   color: rgba(0, 0, 0, 0.6);
 }
 
-html.dark .dt-example-flip__code-label {
+:root[data-theme="dark"] .dt-example-flip__code-label {
   color: rgba(255, 255, 255, 0.7);
 }
 
@@ -158,7 +158,7 @@ html.dark .dt-example-flip__code-label {
   min-height: 220px;
 }
 
-html.dark .dt-example-flip__code {
+:root[data-theme="dark"] .dt-example-flip__code {
   border-color: rgba(255, 255, 255, 0.14);
 }
 

@@ -147,7 +147,10 @@ export function DataTableToolbar<T extends { [key: string]: unknown }>(
             multi
             placement="bottomRight"
             trigger={
-              <Button type="button">
+              <Button
+                type="button"
+                className="datatable-toggle-columns-button"
+              >
                 <Icon
                   icon={datatableIconNames.Filters}
                   width={18}

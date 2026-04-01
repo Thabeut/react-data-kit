@@ -31,6 +31,27 @@ Make sure your app provides the required peers:
 - `i18next`
 - `react-i18next`
 
+## Theme Setup (Required)
+
+This package uses `data-theme` on the root HTML element as the single source of truth for dark/light mode styling.
+
+You must keep `document.documentElement` in sync with your app theme state:
+
+```ts
+const root = document.documentElement;
+root.setAttribute("data-theme", theme); // "light" | "dark"
+```
+
+If your app toggles only `html.dark` (class-based theme), package components can appear with mixed styles. Always set `data-theme` to `"light"` or `"dark"`.
+
+## CSS Isolation
+
+Package components are scoped with a dedicated wrapper class (`root-rdk`) and portal overlays use `rdk-theme-scope`.
+
+- Regular component styling is intended to apply only inside package component trees.
+- Portal-based UI (popover, dropdown, modal, drawer) is rendered with `rdk-theme-scope` classes to keep Ant Design overrides local to package overlays.
+- Importing package CSS should not restyle unrelated host app tables/forms/buttons.
+
 ## Documentation
 
 - [DataTable guide](./docs/datatable.md)

@@ -93,7 +93,6 @@ function AppShell() {
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", colorMode);
-    document.documentElement.classList.toggle("dark", colorMode === "dark");
     localStorage.setItem(PLAYGROUND_THEME_KEY, colorMode);
   }, [colorMode]);
 

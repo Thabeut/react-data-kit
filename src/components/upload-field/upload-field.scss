@@ -49,7 +49,6 @@
   color: var(--rdk-light-text-secondary, #{$color-text-secondary});
 }
 
-html.dark,
 :root[data-theme="dark"] {
   .ui-upload-field.ant-upload-wrapper .ant-upload-drag {
     border-color: var(--rdk-dark-surface-border, #{$surface-border-dark});
