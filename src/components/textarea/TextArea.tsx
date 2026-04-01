@@ -18,6 +18,7 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
         ref={ref}
         autoSize={autoSize ?? { minRows: 3, maxRows: 6 }}
         className={clsx(
+          "root-rdk",
           unstyled ? "ui-textarea--bare" : "ui-textarea",
           className,
         )}

@@ -48,6 +48,7 @@ export function DataTableTableSection<T extends { [key: string]: unknown }>(
         dataSource={displayData}
         loading={loading}
         pagination={false}
+        scroll={{ x: "max-content" }}
         rowSelection={disableSelectionAndBookmark ? undefined : rowSelection}
         rowClassName={(record) =>
           clsx({

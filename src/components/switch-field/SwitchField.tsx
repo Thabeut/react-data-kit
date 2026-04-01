@@ -24,6 +24,7 @@ export function SwitchField({
   return (
     <div
       className={clsx(
+        "root-rdk",
         "ui-switch-field",
         checked ? "ui-switch-field--checked" : "ui-switch-field--unchecked",
         className,

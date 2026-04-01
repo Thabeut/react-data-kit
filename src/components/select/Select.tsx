@@ -13,7 +13,7 @@ function SelectInner<T>(props: SelectProps<T>) {
   return (
     <AntSelect<T>
       {...rest}
-      className={clsx("ui-select", className)}
+      className={clsx("root-rdk", "ui-select", className)}
       popupClassName={clsx("rdk-theme-scope ui-select-dropdown", popupClassName)}
     />
   );

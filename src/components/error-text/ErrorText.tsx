@@ -8,6 +8,8 @@ export interface ErrorTextProps {
 }
 
 export function ErrorText({ children, className }: ErrorTextProps) {
-  return <div className={clsx("ui-error-text", className)}>{children}</div>;
+  return (
+    <div className={clsx("root-rdk", "ui-error-text", className)}>{children}</div>
+  );
 }
 

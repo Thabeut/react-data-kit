@@ -788,15 +788,16 @@ export function DataTable<T extends { [key: string]: unknown }>(
   };
 
   return (
-    <div
-      className={clsx(
-        className,
-        "rdk-theme-scope",
-        "datatable-root",
-        shouldConstrainByHeight && "datatable-root--fill",
-      )}
-    >
-      <DataTableToolbar<T>
+    <div className="root-rdk">
+      <div
+        className={clsx(
+          className,
+          "rdk-theme-scope",
+          "datatable-root",
+          shouldConstrainByHeight && "datatable-root--fill",
+        )}
+      >
+        <DataTableToolbar<T>
         showSearch={Boolean(!isServer || onSearch || searchValue !== undefined)}
         resolvedSearchValue={resolvedSearchValue}
         useInternalSearch={useInternalSearch}
@@ -826,13 +827,13 @@ export function DataTable<T extends { [key: string]: unknown }>(
         })}
       />
 
-      <div
-        className={clsx(
-          "datatable-table-wrapper",
-          shouldConstrainByHeight && "datatable-table-wrapper--flex",
-        )}
-      >
-        <DataTableTableSection<T>
+        <div
+          className={clsx(
+            "datatable-table-wrapper",
+            shouldConstrainByHeight && "datatable-table-wrapper--flex",
+          )}
+        >
+          <DataTableTableSection<T>
           maxTableHeight={maxTableHeight}
           columns={visibleColumns}
           displayData={displayData}
@@ -843,7 +844,7 @@ export function DataTable<T extends { [key: string]: unknown }>(
           internalRowKey={internalRowKey}
         />
 
-        <DataTableFooter
+          <DataTableFooter
           showSelectionSummary={!disableSelectionAndBookmark}
           totalSelectedLabel={totalSelected}
           rowsPerPageLabel={t("rowsPerPage", {
@@ -864,7 +865,8 @@ export function DataTable<T extends { [key: string]: unknown }>(
           onGoLast={() => goToPage(totalPages)}
           disablePrev={currentPage === 1}
           disableNext={currentPage === totalPages}
-        />
+          />
+        </div>
       </div>
     </div>
   );

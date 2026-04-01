@@ -46,11 +46,9 @@ If your app toggles only `html.dark` (class-based theme), package components can
 
 ## CSS Isolation
 
-Package components are scoped with a dedicated wrapper class (`root-rdk`) and portal overlays use `rdk-theme-scope`.
+Package components scope their styles under a dedicated wrapper class (`root-rdk`) so importing package CSS should not restyle unrelated host app UI.
 
-- Regular component styling is intended to apply only inside package component trees.
-- Portal-based UI (popover, dropdown, modal, drawer) is rendered with `rdk-theme-scope` classes to keep Ant Design overrides local to package overlays.
-- Importing package CSS should not restyle unrelated host app tables/forms/buttons.
+For app-owned custom overlays (for example a `Modal` you open from DataTable `customActions`), use the package `--rdk-*` CSS variables in your own styling. See `docs/datatable.md` for the variable list and example.
 
 ## Documentation
 

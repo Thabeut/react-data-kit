@@ -14,7 +14,11 @@ export const Input = React.forwardRef<InputRef, InputProps>(
     return (
       <AntInput
         ref={ref}
-        className={clsx(unstyled ? "ui-input--bare" : "ui-input", className)}
+        className={clsx(
+          "root-rdk",
+          unstyled ? "ui-input--bare" : "ui-input",
+          className,
+        )}
         {...rest}
       />
     );

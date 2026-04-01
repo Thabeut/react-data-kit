@@ -131,7 +131,10 @@
 
 :root[data-theme="dark"] {
   .ui-btn--default {
-    background: var(--rdk-dark-surface-bg, #{$color-bg-primary-dark}) !important;
+    background: var(
+      --rdk-dark-surface-bg,
+      #{$color-bg-primary-dark}
+    ) !important;
     color: var(--rdk-dark-text-primary, #{$color-text-primary-dark}) !important;
     border-color: var(
       --rdk-dark-surface-border,

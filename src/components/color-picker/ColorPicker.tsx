@@ -25,6 +25,7 @@ export function ColorPicker({
   return (
     <div
       className={clsx(
+        "root-rdk",
         "ui-color-picker",
         disabled && "ui-color-picker--disabled",
         className,

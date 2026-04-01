@@ -1,5 +1,6 @@
 @use "../../styles/variables" as *;
 
+.root-rdk {
 .dynamic-form {
   display: flex;
   flex-direction: column;
@@ -71,32 +72,6 @@
   border-top: 1px solid var(--rdk-light-surface-border, #{$color-border-surface});
 }
 
-.dynamic-form-modal .ant-modal-body {
-  padding: 0 !important;
-}
-
-.dynamic-form-modal .ant-modal-content {
-  background: var(--rdk-light-surface-bg, #{$color-bg-primary});
-  border-radius: 16px !important;
-}
-
-.dynamic-form-drawer .ant-drawer-content-wrapper {
-  border-radius: 16px 0 0 16px;
-}
-
-.dynamic-form-drawer .ant-drawer-content {
-  border-top-left-radius: 20px;
-  border-bottom-left-radius: 20px;
-}
-
-.dynamic-form-drawer .ant-drawer-body {
-  padding: 20px;
-}
-
-.dynamic-form-drawer .ant-drawer-content {
-  background: var(--rdk-light-surface-bg, #{$surface-bg});
-}
-
 .dynamic-form-drawer__inner {
   display: flex;
   flex-direction: column;
@@ -123,8 +98,9 @@
   gap: 8px;
   padding-bottom: 12px;
 }
+}
 
-:root[data-theme="dark"] {
+:root[data-theme="dark"] .root-rdk {
   .dynamic-form {
     background: var(--rdk-dark-surface-bg);
   }
@@ -146,12 +122,37 @@
   .dynamic-form__required {
     color: $color-error-400;
   }
+}
 
-  .dynamic-form-modal .ant-modal-content {
-    background: var(--rdk-dark-surface-bg);
-  }
+.rdk-theme-scope.dynamic-form-modal .ant-modal-body {
+  padding: 0 !important;
+}
 
-  .dynamic-form-drawer .ant-drawer-content {
-    background: var(--rdk-dark-surface-bg, #{$surface-bg-dark});
-  }
+.rdk-theme-scope.dynamic-form-modal .ant-modal-content {
+  background: var(--rdk-light-surface-bg, #{$color-bg-primary});
+  border-radius: 16px !important;
+}
+
+.rdk-theme-scope.dynamic-form-drawer .ant-drawer-content-wrapper {
+  border-radius: 16px 0 0 16px;
+}
+
+.rdk-theme-scope.dynamic-form-drawer .ant-drawer-content {
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  background: var(--rdk-light-surface-bg, #{$surface-bg});
+}
+
+.rdk-theme-scope.dynamic-form-drawer .ant-drawer-body {
+  padding: 20px;
+}
+
+:root[data-theme="dark"] .rdk-theme-scope.dynamic-form-modal .ant-modal-content {
+  background: var(--rdk-dark-surface-bg);
+}
+
+:root[data-theme="dark"]
+  .rdk-theme-scope.dynamic-form-drawer
+  .ant-drawer-content {
+  background: var(--rdk-dark-surface-bg, #{$surface-bg-dark});
 }

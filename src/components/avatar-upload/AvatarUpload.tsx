@@ -50,7 +50,7 @@ export function AvatarUpload({
       beforeUpload={uploadOnSelect ? beforeUpload : () => false}
       onChange={(info) => onChange?.(info.fileList.slice(-1))}
       showUploadList={false}
-      className={clsx("ui-avatar-upload", className)}
+      className={clsx("root-rdk", "ui-avatar-upload", className)}
     >
       <div
         className="ui-avatar-upload__trigger"

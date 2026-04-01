@@ -47,7 +47,7 @@ export function StringArrayField({
   };
 
   return (
-    <div className={clsx("ui-string-array-field", className)}>
+    <div className={clsx("root-rdk", "ui-string-array-field", className)}>
       {composerOpen && (
         <div className="ui-string-array-field__composer">
           <TextArea

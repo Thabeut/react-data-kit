@@ -39,7 +39,7 @@ export function DeleteModal({
       closable
       centered
       destroyOnClose
-      className="ui-delete-modal"
+      rootClassName="rdk-theme-scope ui-delete-modal"
       maskStyle={{ background: "transparent" }}
       onCancel={(e) => {
         e.stopPropagation();

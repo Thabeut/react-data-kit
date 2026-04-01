@@ -173,14 +173,20 @@
 :root[data-theme="dark"] .datatable-date-picker-dropdown {
   .ant-picker-panel-container {
     background: var(--rdk-dark-popover-bg, #{$surface-bg-dark}) !important;
-    border-color: var(--rdk-dark-surface-border, #{$surface-border-dark}) !important;
+    border-color: var(
+      --rdk-dark-surface-border,
+      #{$surface-border-dark}
+    ) !important;
     box-shadow:
       0 12px 40px rgba(0, 0, 0, 0.55),
       0 0 0 1px rgba(255, 255, 255, 0.06) !important;
   }
 
   .ant-picker-panel {
-    border-color: var(--rdk-dark-surface-border, #{$surface-border-dark}) !important;
+    border-color: var(
+      --rdk-dark-surface-border,
+      #{$surface-border-dark}
+    ) !important;
   }
 
   .ant-picker-panel:not(:last-child) {
@@ -201,7 +207,10 @@
   }
 
   .ant-picker-content th {
-    color: var(--rdk-dark-text-secondary, #{$color-text-secondary-dark}) !important;
+    color: var(
+      --rdk-dark-text-secondary,
+      #{$color-text-secondary-dark}
+    ) !important;
   }
 
   .ant-picker-cell-in-view .ant-picker-cell-inner {
@@ -209,7 +218,10 @@
   }
 
   .ant-picker-cell:not(.ant-picker-cell-in-view) .ant-picker-cell-inner {
-    color: var(--rdk-dark-text-secondary, #{$color-text-secondary-dark}) !important;
+    color: var(
+      --rdk-dark-text-secondary,
+      #{$color-text-secondary-dark}
+    ) !important;
     opacity: 0.5;
   }
 
@@ -274,19 +286,28 @@
   .datatable-date-filter-custom
   .ui-date-picker-range.ant-picker {
   background: var(--rdk-dark-surface-bg, #{$color-bg-primary-dark}) !important;
-  border-color: var(--rdk-dark-surface-border, #{$surface-border-dark}) !important;
+  border-color: var(
+    --rdk-dark-surface-border,
+    #{$surface-border-dark}
+  ) !important;
 
   .ant-picker-input > input {
     color: var(--rdk-dark-text-primary, #{$color-text-primary-dark}) !important;
   }
 
   .ant-picker-input > input::placeholder {
-    color: var(--rdk-dark-text-secondary, #{$color-text-secondary-dark}) !important;
+    color: var(
+      --rdk-dark-text-secondary,
+      #{$color-text-secondary-dark}
+    ) !important;
   }
 
   .ant-picker-range-separator,
   .ant-picker-suffix {
-    color: var(--rdk-dark-text-secondary, #{$color-text-secondary-dark}) !important;
+    color: var(
+      --rdk-dark-text-secondary,
+      #{$color-text-secondary-dark}
+    ) !important;
   }
 
   &:hover {

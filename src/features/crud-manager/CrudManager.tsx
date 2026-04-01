@@ -203,7 +203,6 @@ export function CrudManager<
         {renderToolbarRight}
         <Button
           variant="primary"
-          size="sm"
           icon={
             <Icon icon={datatableIconNames.PlusCircle} width={16} height={16} />
           }

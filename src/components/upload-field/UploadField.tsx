@@ -65,7 +65,7 @@ export function UploadField({
       onChange={(info) => {
         onChange?.(info.fileList);
       }}
-      className={clsx("ui-upload-field", className)}
+      className={clsx("root-rdk", "ui-upload-field", className)}
     >
       <div className="ui-upload-field__inner">
         <Icon

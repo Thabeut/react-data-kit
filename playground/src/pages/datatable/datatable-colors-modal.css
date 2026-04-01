@@ -1,0 +1,36 @@
+.dt-colors-custom-modal .ant-modal-content {
+  background: var(--rdk-light-surface-bg);
+  border: 1px solid var(--rdk-light-surface-border);
+  color: var(--rdk-light-text-primary);
+}
+
+.dt-colors-custom-modal .ant-modal-header {
+  background: transparent;
+  border-bottom-color: var(--rdk-light-surface-border);
+}
+
+.dt-colors-custom-modal .ant-modal-title {
+  color: var(--rdk-light-text-primary);
+}
+
+.dt-colors-custom-modal .ant-modal-close {
+  color: var(--rdk-light-text-secondary);
+}
+
+:root[data-theme="dark"] .dt-colors-custom-modal .ant-modal-content {
+  background: var(--rdk-dark-surface-bg);
+  border-color: var(--rdk-dark-surface-border);
+  color: var(--rdk-dark-text-primary);
+}
+
+:root[data-theme="dark"] .dt-colors-custom-modal .ant-modal-header {
+  border-bottom-color: var(--rdk-dark-surface-border);
+}
+
+:root[data-theme="dark"] .dt-colors-custom-modal .ant-modal-title {
+  color: var(--rdk-dark-text-primary);
+}
+
+:root[data-theme="dark"] .dt-colors-custom-modal .ant-modal-close {
+  color: var(--rdk-dark-text-secondary);
+}

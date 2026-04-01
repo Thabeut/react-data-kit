@@ -664,33 +664,37 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
   );
 
   const defaultContent = (
-    <form
-      className={clsx("rdk-theme-scope dynamic-form", className)}
-      onSubmit={handleSubmit(onValidSubmit)}
-    >
-      <div>
-        {header}
-        <div className="dynamic-form__fields" style={fieldsContainerStyle}>
-          {fieldNodes}
+    <div className="root-rdk">
+      <form
+        className={clsx("rdk-theme-scope dynamic-form", className)}
+        onSubmit={handleSubmit(onValidSubmit)}
+      >
+        <div>
+          {header}
+          <div className="dynamic-form__fields" style={fieldsContainerStyle}>
+            {fieldNodes}
+          </div>
+          {actions}
         </div>
-        {actions}
-      </div>
-    </form>
+      </form>
+    </div>
   );
 
   const modalContent = (
-    <form
-      className={clsx("rdk-theme-scope dynamic-form", className)}
-      onSubmit={handleSubmit(onValidSubmit)}
-    >
-      <div>
-        {header}
-        <div className="dynamic-form__fields" style={fieldsContainerStyle}>
-          {fieldNodes}
+    <div className="root-rdk">
+      <form
+        className={clsx("rdk-theme-scope dynamic-form", className)}
+        onSubmit={handleSubmit(onValidSubmit)}
+      >
+        <div>
+          {header}
+          <div className="dynamic-form__fields" style={fieldsContainerStyle}>
+            {fieldNodes}
+          </div>
+          {actions}
         </div>
-        {actions}
-      </div>
-    </form>
+      </form>
+    </div>
   );
 
   if (variant === "default") {
@@ -707,9 +711,9 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
         destroyOnClose={false}
         maskClosable
         closable={false}
-        rootClassName="dynamic-form-drawer"
+        rootClassName="rdk-theme-scope dynamic-form-drawer"
       >
-        <div className={clsx("dynamic-form-drawer__inner", className)}>
+        <div className={clsx("root-rdk dynamic-form-drawer__inner", className)}>
           <div className="dynamic-form-drawer__content">
             {header}
             <form
@@ -757,7 +761,7 @@ export function DynamicForm<TValues extends Record<string, unknown>>(
       centered
       width={modalWidth}
       title={null}
-      rootClassName="dynamic-form-modal"
+      rootClassName="rdk-theme-scope dynamic-form-modal"
     >
       {modalContent}
     </Modal>
