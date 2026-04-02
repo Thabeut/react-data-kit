@@ -2,9 +2,17 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
+  min-height: 100vh;
   background: var(--docs-bg);
   color: var(--docs-text);
   overflow: hidden;
+}
+
+@supports (height: 100dvh) {
+  .docs-shell {
+    height: 100dvh;
+    min-height: 100dvh;
+  }
 }
 
 .docs-header-row {
@@ -100,6 +108,30 @@
 }
 
 .docs-topbar__link:hover {
+  border-color: var(--docs-active-fg);
+  color: var(--docs-active-fg);
+  background: var(--docs-active-bg);
+}
+
+.docs-mobile-nav-toggle {
+  display: none;
+  width: 40px;
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid var(--docs-border);
+  background: color-mix(
+    in srgb,
+    var(--docs-topbar-bg) 75%,
+    var(--docs-sidebar-bg)
+  );
+  color: var(--docs-text);
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+}
+
+.docs-mobile-nav-toggle:hover {
   border-color: var(--docs-active-fg);
   color: var(--docs-active-fg);
   background: var(--docs-active-bg);
@@ -518,10 +550,6 @@
 }
 
 @media (max-width: 768px) {
-  .docs-shell {
-    min-height: unset;
-  }
-
   .docs-header-row {
     flex-direction: column;
     align-items: stretch;
@@ -541,34 +569,45 @@
     border-bottom: 1px solid var(--docs-border);
   }
 
+  .docs-mobile-nav-toggle {
+    display: inline-flex;
+  }
+
   .docs-main-row {
-    flex-direction: column;
+    position: relative;
   }
 
   .docs-sidebar {
-    width: 100%;
-    border-inline-end: none;
-    border-bottom: 1px solid var(--docs-border);
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-    padding: 1rem;
-    gap: 0.75rem;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 20;
+    width: 280px;
+    max-width: 85vw;
+    border-bottom: none;
+    transform: translateX(-103%);
+    transition: transform 0.2s ease;
+    pointer-events: none;
+    overflow-x: hidden;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
   }
 
-  .docs-sidebar__section {
-    display: none;
+  .docs-shell--sidebar-open .docs-sidebar {
+    transform: translateX(0);
+    pointer-events: auto;
   }
 
-  .docs-nav-tree {
-    flex-direction: row;
-    flex-wrap: wrap;
-    width: 100%;
-    padding: 0;
+  .docs-mobile-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 15;
+    background: rgba(0, 0, 0, 0.25);
+    cursor: pointer;
   }
 
-  .docs-nav__group {
-    min-width: min(100%, 200px);
+  :root[data-theme="dark"] .docs-mobile-overlay {
+    background: rgba(0, 0, 0, 0.55);
   }
 
   .docs-content {

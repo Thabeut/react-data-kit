@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import clsx from "clsx";
@@ -34,6 +35,19 @@ export function DocsLayout({
   children,
 }: DocsLayoutProps) {
   const { t } = useTranslation();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const closeSidebar = useCallback(() => setSidebarOpen(false), []);
+  const toggleSidebar = useCallback(() => setSidebarOpen((v) => !v), []);
+
+  useEffect(() => {
+    if (!sidebarOpen) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeSidebar();
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [sidebarOpen, closeSidebar]);
+
   const homeGroup = navGroups.find((group) => group.id === "home");
   const contributingGroup = navGroups.find((group) => group.id === "contributing");
   const componentGroups = navGroups.filter(
@@ -41,10 +55,15 @@ export function DocsLayout({
   );
 
   return (
-    <div className="docs-shell">
+    <div className={clsx("docs-shell", sidebarOpen && "docs-shell--sidebar-open")}>
       <div className="docs-header-row">
         <div className="docs-sidebar__brand">
-          <Link to="/" aria-label={t("docsNavHome")} className="docs-sidebar__logo-link">
+          <Link
+            to="/"
+            aria-label={t("docsNavHome")}
+            className="docs-sidebar__logo-link"
+            onClick={closeSidebar}
+          >
             <img src={logo} alt={t("homeLogoAlt")} className="docs-sidebar__logo" />
           </Link>
           <div className="docs-sidebar__brand-text">
@@ -53,6 +72,20 @@ export function DocsLayout({
           </div>
         </div>
         <header className="docs-topbar">
+          <button
+            type="button"
+            className="docs-mobile-nav-toggle"
+            aria-label={sidebarOpen ? "Close sidebar" : "Open sidebar"}
+            aria-expanded={sidebarOpen}
+            onClick={toggleSidebar}
+          >
+            <Icon
+              icon={sidebarOpen ? ICONS.close : ICONS.menu}
+              width={20}
+              height={20}
+              aria-hidden
+            />
+          </button>
           <div className="docs-topbar__links" aria-label="Package links">
             <a
               className="docs-topbar__link"
@@ -78,6 +111,9 @@ export function DocsLayout({
       </div>
 
       <div className="docs-main-row">
+        {sidebarOpen ? (
+          <div className="docs-mobile-overlay" onClick={closeSidebar} aria-hidden="true" />
+        ) : null}
         <aside className="docs-sidebar" aria-label="Documentation">
           {homeGroup?.children?.length ? (
             <nav className="docs-nav-home" aria-label={t("docsNavHome")}>
@@ -86,6 +122,7 @@ export function DocsLayout({
                   <li key={child.to}>
                     <NavLink
                       to={child.to}
+                      onClick={closeSidebar}
                       className={({ isActive }) =>
                         clsx(
                           "docs-nav__sublink",
@@ -112,6 +149,7 @@ export function DocsLayout({
                     <li key={child.to}>
                       <NavLink
                         to={child.to}
+                            onClick={closeSidebar}
                         className={({ isActive }) =>
                           clsx(
                             "docs-nav__sublink",
@@ -135,6 +173,7 @@ export function DocsLayout({
                   <li key={child.to}>
                     <NavLink
                       to={child.to}
+                      onClick={closeSidebar}
                       className={({ isActive }) =>
                         clsx("docs-nav__sublink", isActive && "docs-nav__sublink--active")
                       }
