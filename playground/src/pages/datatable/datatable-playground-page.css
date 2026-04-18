@@ -47,12 +47,6 @@
   border-radius: 12px;
 }
 
-@supports (height: 100dvh) {
-  .dt-playground__preview {
-    max-height: calc(100dvh - var(--rdk-playground-sticky-top) - 1rem);
-  }
-}
-
 .dt-playground__panel .ant-card {
   border-radius: 12px;
   box-shadow: 0 1px 2px var(--rdk-playground-border);

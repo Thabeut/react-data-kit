@@ -1,7 +1,7 @@
 {
   "name": "@thabeut/react-data-kit",
   "version": "0.1.15",
-  "description": "React data kit: datatable, query table, dynamic forms, CRUD, infinite scroll \u2014 TypeScript, Ant Design, React Hook Form",
+  "description": "React data kit: datatable, query table, dynamic forms, CRUD, infinite scroll — TypeScript, Ant Design, React Hook Form",
   "keywords": [
     "react",
     "typescript",
@@ -82,24 +82,22 @@
     "node": ">=18"
   },
   "devDependencies": {
-    "@hookform/resolvers": "5.2.2",
-    "@iconify/react": "5.2.0",
-    "@types/react": "^18.2.0",
-    "@types/react-dom": "^18.2.0",
-    "antd": "5.24.3",
-    "clsx": "2.1.1",
-    "dayjs": "1.11.20",
-    "dotenv": "^8.2.0",
-    "esbuild-sass-plugin": "^3.7.0",
-    "i18next": "24.2.3",
-    "node-fetch": "^3.3.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "antd": "5.24.3",
     "react-hook-form": "7.72.0",
+    "@hookform/resolvers": "5.2.2",
+    "yup": "1.6.1",
+    "dayjs": "1.11.20",
+    "clsx": "2.1.1",
+    "i18next": "24.2.3",
     "react-i18next": "15.4.1",
-    "sass": "^1.98.0",
-    "tsup": "^8.4.0",
+    "@iconify/react": "5.2.0",
     "typescript": "^5.8.2",
-    "yup": "1.6.1"
+    "tsup": "^8.4.0",
+    "sass": "^1.98.0",
+    "esbuild-sass-plugin": "^3.7.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0"
   }
 }

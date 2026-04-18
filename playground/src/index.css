@@ -55,16 +55,6 @@ body {
   min-height: 100vh;
 }
 
-@supports (height: 100dvh) {
-  body {
-    min-height: 100dvh;
-  }
-
-  #root {
-    min-height: 100dvh;
-  }
-}
-
 .infinite-scroll-demo-height {
   height: 70vh;
 }
