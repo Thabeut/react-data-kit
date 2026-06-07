@@ -220,7 +220,7 @@ export function useDataTableColumns<T extends object>(
       mappedColumns.push({
         id: "__actions",
         label: "",
-        title: <></>,
+        title: null,
         key: "__actions",
         width: 80,
         onCell: (record: InternalRow<T>) => {
